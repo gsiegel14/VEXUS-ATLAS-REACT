@@ -1,0 +1,822 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Astro to React Conversion Workflow
+
+## 🎯 **SYSTEMATIC CONVERSION PROCESS**
+
+### **Phase 1: Pre-Conversion Analysis (1-2 hours per page)**
+
+#### **Step 1.1: Content Inventory**
+```bash
+# For each .astro file, document:
+- [ ] Page purpose and functionality
+- [ ] All text content (titles, descriptions, body text)
+- [ ] Interactive elements (forms, buttons, links)
+- [ ] Data dependencies (APIs, static data)
+- [ ] CSS classes and styling patterns
+- [ ] JavaScript functionality
+- [ ] Image and asset usage
+- [ ] External integrations (Airtable, Modal.run, etc.)
+```
+
+#### **Step 1.2: Component Pattern Analysis**
+```typescript
+// Identify reusable patterns across pages:
+interface PatternAnalysis {
+  heroSections: Array<{
+    page: string;
+    title: string;
+    hasSubtitle: boolean;
+    hasBackground: boolean;
+    hasActions: boolean;
+  }>;
+  
+  cardLayouts: Array<{
+    page: string;
+    layout: 'image-left' | 'image-right' | 'image-top';
+    hasActions: boolean;
+    contentType: 'text' | 'list' | 'mixed';
+  }>;
+  
+  navigationPatterns: Array<{
+    page: string;
+    type: 'breadcrumb' | 'tabs' | 'sidebar' | 'dropdown';
+    items: number;
+  }>;
+}
+
+// Example pattern analysis:
+const patternAnalysis: PatternAnalysis = {
+  heroSections: [
+    { page: 'index.astro', title: 'A Collaborative...', hasSubtitle: true, hasBackground: false, hasActions: false },
+    { page: 'education.astro', title: 'VEXUS Education', hasSubtitle: true, hasBackground: false, hasActions: true },
+  ],
+  // ... continue for all patterns
+};
+```
+
+#### **Step 1.3: Dependency Mapping**
+```typescript
+// Map all dependencies for each page:
+interface PageDependencies {
+  page: string;
+  components: string[];      // Astro components used
+  styles: string[];          // CSS files required
+  scripts: string[];         // JavaScript functionality
+  images: string[];          // Image assets
+  apis: string[];           // API endpoints
+  external: string[];       // External services
+}
+
+// Example:
+const calculatorDependencies: PageDependencies = {
+  page: 'calculator.astro',
+  components: ['CalculatorHeader', 'StepProgress', 'ImageUpload'],
+  styles: ['calculator.css', 'stepper.css'],
+  scripts: ['calculator-v2.js', 'image-cropper.js'],
+  images: ['icons/upload.svg'],
+  apis: ['/api/airtable-feedback'],
+  external: ['Modal.run AI endpoints', 'Cropper.js']
+};
+```
+
+---
+
+### **Phase 2: Component Architecture Design (30 minutes per page)**
+
+#### **Step 2.1: Component Hierarchy Planning**
+```typescript
+// Design component tree before coding:
+interface ComponentTree {
+  page: string;
+  layout: 'MainLayout' | 'FullscreenLayout' | 'MinimalLayout';
+  sections: Array<{
+    name: string;
+    reusable: boolean;
+    children?: string[];
+    props: Record<string, string>;
+  }>;
+}
+
+// Example for calculator page:
+const calculatorTree: ComponentTree = {
+  page: 'calculator',
+  layout: 'MainLayout',
+  sections: [
+    {
+      name: 'CalculatorHeader',
+      reusable: true,
+      props: { title: 'string', subtitle: 'string' }
+    },
+    {
+      name: 'CalculatorStepper',
+      reusable: false,
+      children: ['IVCStep', 'HepaticStep', 'PortalStep', 'RenalStep', 'ResultsStep'],
+      props: { currentStep: 'number', onStepChange: 'function' }
+    },
+    {
+      name: 'ResultsDisplay',
+      reusable: true,
+      props: { score: 'number', breakdown: 'object' }
+    }
+  ]
+};
+```
+
+#### **Step 2.2: Reusability Assessment**
+```typescript
+// Rate reusability potential for each component:
+interface ReusabilityScore {
+  component: string;
+  reusabilityScore: 1 | 2 | 3 | 4 | 5; // 1=page-specific, 5=highly reusable
+  variations: string[];
+  pages: string[];
+  extractionPriority: 'high' | 'medium' | 'low';
+}
+
+const reusabilityAssessment: ReusabilityScore[] = [
+  {
+    component: 'HeroSection',
+    reusabilityScore: 5,
+    variations: ['centered', 'left-aligned', 'with-background', 'with-actions'],
+    pages: ['index', 'education', 'team', 'about', 'contact'],
+    extractionPriority: 'high'
+  },
+  {
+    component: 'ContentCard',
+    reusabilityScore: 4,
+    variations: ['image-left', 'image-right', 'image-top', 'text-only'],
+    pages: ['index', 'education', 'about'],
+    extractionPriority: 'high'
+  },
+  {
+    component: 'CalculatorStep',
+    reusabilityScore: 2,
+    variations: ['upload-step', 'selection-step', 'results-step'],
+    pages: ['calculator'],
+    extractionPriority: 'medium'
+  }
+];
+```
+
+---
+
+### **Phase 3: Content Migration (15 minutes per page)**
+
+#### **Step 3.1: Text Content Extraction**
+```typescript
+// Extract all text content systematically:
+interface PageContent {
+  page: string;
+  meta: {
+    title: string;
+    description: string;
+    keywords?: string[];
+  };
+  content: {
+    hero?: {
+      title: string;
+      subtitle?: string;
+      ctaText?: string;
+    };
+    sections: Array<{
+      id: string;
+      title?: string;
+      subtitle?: string;
+      content: string | string[];
+      type: 'text' | 'list' | 'quote' | 'callout';
+    }>;
+    footer?: {
+      links: Array<{ text: string; href: string }>;
+      copyright: string;
+    };
+  };
+}
+
+// Example content extraction:
+const extractContent = (astroFile: string): PageContent => {
+  // Parse .astro file and extract all text content
+  return {
+    page: 'education',
+    meta: {
+      title: 'VEXUS Education - Learn Ultrasound Fundamentals',
+      description: 'Comprehensive guide to VEXUS (Venous Excess Ultrasound Score) fundamentals',
+    },
+    content: {
+      hero: {
+        title: 'VEXUS Education',
+        subtitle: 'Learn the fundamentals of Venous Excess Ultrasound Score',
+      },
+      sections: [
+        {
+          id: 'overview',
+          title: 'Understanding VEXUS',
+          content: 'The Venous Excess Ultrasound Score (VEXUS) is a point-of-care ultrasound protocol...',
+          type: 'text'
+        },
+        // ... more sections
+      ]
+    }
+  };
+};
+```
+
+#### **Step 3.2: Content Type Classification**
+```typescript
+// Classify content for appropriate React components:
+interface ContentClassification {
+  staticText: string[];      // Simple text content
+  dynamicContent: string[];  // Content from APIs
+  userGenerated: string[];   // Forms, inputs
+  interactive: string[];     // Buttons, links, modals
+  media: string[];          // Images, videos
+  layouts: string[];        // Grids, carousels, tabs
+}
+
+const classifyContent = (content: PageContent): ContentClassification => {
+  return {
+    staticText: ['hero.title', 'sections[0].content'],
+    dynamicContent: ['teamMembers', 'airtableImages'],
+    userGenerated: ['contactForm', 'feedbackForm'],
+    interactive: ['projectLinks', 'imageModal', 'calculator'],
+    media: ['teamPhotos', 'waveformImages', 'acquisitionGifs'],
+    layouts: ['projectGrid', 'imageGallery', 'testimonialCarousel']
+  };
+};
+```
+
+---
+
+### **Phase 4: Component Implementation (45-90 minutes per page)**
+
+#### **Step 4.1: Base Components First**
+```typescript
+// Always implement in this order:
+const implementationOrder = [
+  // 1. Layout components (highest reusability)
+  'MainLayout',
+  'PageLayout', 
+  'Section',
+  
+  // 2. Common UI components
+  'Button',
+  'Card', 
+  'Modal',
+  'Typography',
+  
+  // 3. Composite components
+  'HeroSection',
+  'ContentCard',
+  'ProjectCard',
+  
+  // 4. Page-specific components
+  'CalculatorStepper',
+  'ImageGallery',
+  'TeamGrid',
+  
+  // 5. Page implementation
+  'HomePage',
+  'CalculatorPage',
+  'EducationPage'
+];
+
+// Implementation checklist for each component:
+interface ComponentChecklist {
+  component: string;
+  implemented: {
+    typescript: boolean;        // TypeScript interfaces defined
+    props: boolean;            // Prop validation
+    styling: boolean;          // MUI styling applied
+    responsive: boolean;       // Mobile/desktop responsive
+    accessibility: boolean;    // ARIA attributes
+    testing: boolean;          // Unit tests written
+    documentation: boolean;    // Props documented
+  };
+}
+```
+
+#### **Step 4.2: Progressive Enhancement Strategy**
+```typescript
+// Build components in stages:
+enum ImplementationStage {
+  BASIC = 'basic',           // Core functionality only
+  STYLED = 'styled',         // MUI styling applied
+  RESPONSIVE = 'responsive', // Mobile/desktop optimized
+  ENHANCED = 'enhanced',     // Animations, interactions
+  OPTIMIZED = 'optimized'    // Performance optimized
+}
+
+const implementationStages = {
+  [ImplementationStage.BASIC]: {
+    goals: ['Functional component', 'Core props', 'Basic JSX structure'],
+    timeEstimate: '15-30 minutes',
+    acceptanceCriteria: ['Component renders without errors', 'Core functionality works']
+  },
+  
+  [ImplementationStage.STYLED]: {
+    goals: ['MUI theming applied', 'Consistent spacing', 'Typography matched'],
+    timeEstimate: '15-20 minutes', 
+    acceptanceCriteria: ['Visual match with original', 'Theme colors applied']
+  },
+  
+  [ImplementationStage.RESPONSIVE]: {
+    goals: ['Mobile breakpoints', 'Tablet optimization', 'Touch interactions'],
+    timeEstimate: '20-30 minutes',
+    acceptanceCriteria: ['Works on mobile', 'No horizontal scroll', 'Touch-friendly']
+  },
+  
+  [ImplementationStage.ENHANCED]: {
+    goals: ['Hover effects', 'Loading states', 'Smooth animations'],
+    timeEstimate: '15-25 minutes',
+    acceptanceCriteria: ['Polished interactions', 'Good UX feedback']
+  },
+  
+  [ImplementationStage.OPTIMIZED]: {
+    goals: ['Lazy loading', 'Memoization', 'Bundle optimization'],
+    timeEstimate: '10-15 minutes',
+    acceptanceCriteria: ['Fast load times', 'Minimal re-renders']
+  }
+};
+```
+
+---
+
+### **Phase 5: Integration & Testing (30 minutes per page)**
+
+#### **Step 5.1: Visual Comparison Testing**
+```typescript
+// Systematic visual testing process:
+interface VisualTest {
+  page: string;
+  device: 'mobile' | 'tablet' | 'desktop';
+  sections: Array<{
+    name: string;
+    status: 'match' | 'close' | 'different' | 'broken';
+    issues?: string[];
+    resolution?: string;
+  }>;
+}
+
+const performVisualTest = (page: string): VisualTest[] => {
+  return ['mobile', 'tablet', 'desktop'].map(device => ({
+    page,
+    device: device as any,
+    sections: [
+      {
+        name: 'header',
+        status: 'match',
+      },
+      {
+        name: 'hero',
+        status: 'close',
+        issues: ['Font size slightly smaller on mobile'],
+        resolution: 'Adjust typography.h1 responsive values'
+      },
+      {
+        name: 'content',
+        status: 'different',
+        issues: ['Grid spacing not matching', 'Card shadows different'],
+        resolution: 'Update Grid spacing props, adjust card elevation'
+      }
+    ]
+  }));
+};
+```
+
+#### **Step 5.2: Functionality Testing**
+```typescript
+// Test all interactive elements:
+interface FunctionalityTest {
+  feature: string;
+  type: 'link' | 'button' | 'form' | 'modal' | 'api';
+  status: 'working' | 'broken' | 'untested';
+  testSteps: string[];
+  issues?: string[];
+}
+
+const functionalityTests: FunctionalityTest[] = [
+  {
+    feature: 'Project Gallery Links',
+    type: 'link',
+    status: 'working',
+    testSteps: [
+      'Click each project card',
+      'Verify external links open in new tab',
+      'Verify internal links navigate correctly'
+    ]
+  },
+  {
+    feature: 'Image Upload in Calculator',
+    type: 'form',
+    status: 'working',
+    testSteps: [
+      'Select image file',
+      'Verify crop modal opens',
+      'Complete crop and submit',
+      'Verify Modal.run API call',
+      'Check prediction results display'
+    ]
+  },
+  {
+    feature: 'Mobile Navigation',
+    type: 'modal',
+    status: 'working',
+    testSteps: [
+      'Open mobile menu',
+      'Test all navigation links',
+      'Verify submenu functionality',
+      'Test close behavior'
+    ]
+  }
+];
+```
+
+#### **Step 5.3: Performance Validation**
+```typescript
+// Performance benchmarks:
+interface PerformanceMetrics {
+  page: string;
+  metrics: {
+    firstContentfulPaint: number;  // ms
+    largestContentfulPaint: number; // ms
+    cumulativeLayoutShift: number;  // score
+    firstInputDelay: number;        // ms
+    bundleSize: number;            // KB
+    imageOptimization: boolean;
+  };
+  targets: {
+    fcp: number;    // Target FCP
+    lcp: number;    // Target LCP
+    cls: number;    // Target CLS
+    fid: number;    // Target FID
+  };
+}
+
+const performanceTargets = {
+  fcp: 1500,   // 1.5s
+  lcp: 2500,   // 2.5s
+  cls: 0.1,    // 0.1 or less
+  fid: 100     // 100ms or less
+};
+
+const validatePerformance = async (page: string): Promise<PerformanceMetrics> => {
+  // Use Lighthouse or similar tool to measure
+  return {
+    page,
+    metrics: {
+      firstContentfulPaint: 1200,
+      largestContentfulPaint: 2100,
+      cumulativeLayoutShift: 0.05,
+      firstInputDelay: 45,
+      bundleSize: 250,
+      imageOptimization: true
+    },
+    targets: performanceTargets
+  };
+};
+```
+
+---
+
+### **Phase 6: Quality Assurance (15 minutes per page)**
+
+#### **Step 6.1: Accessibility Audit**
+```typescript
+// Accessibility checklist:
+interface AccessibilityChecklist {
+  page: string;
+  checks: {
+    semanticHTML: boolean;        // Proper HTML5 semantics
+    keyboardNavigation: boolean;  // Tab navigation works
+    screenReaderSupport: boolean; // ARIA labels, roles
+    colorContrast: boolean;       // WCAG color contrast
+    focusManagement: boolean;     // Focus indicators
+    alternativeText: boolean;     // Image alt attributes
+    formLabeling: boolean;        // Form labels associated
+  };
+  issues: string[];
+  score: number; // 0-100
+}
+
+const performAccessibilityAudit = (page: string): AccessibilityChecklist => {
+  return {
+    page,
+    checks: {
+      semanticHTML: true,
+      keyboardNavigation: true,
+      screenReaderSupport: false, // Issue found
+      colorContrast: true,
+      focusManagement: true,
+      alternativeText: false,     // Issue found
+      formLabeling: true
+    },
+    issues: [
+      'Missing ARIA labels on icon buttons',
+      'Some images missing alt text',
+      'Modal focus trap not implemented'
+    ],
+    score: 75
+  };
+};
+```
+
+#### **Step 6.2: Code Quality Review**
+```typescript
+// Code quality metrics:
+interface CodeQualityMetrics {
+  page: string;
+  metrics: {
+    componentComplexity: number;     // Cyclomatic complexity
+    propsInterface: boolean;         // TypeScript interfaces
+    errorBoundaries: boolean;        // Error handling
+    memoization: boolean;           // Performance optimization
+    testCoverage: number;           // % test coverage
+    lintingScore: number;           // ESLint score
+    duplicateCode: number;          // Lines of duplicate code
+  };
+  refactorSuggestions: string[];
+}
+
+const reviewCodeQuality = (page: string): CodeQualityMetrics => {
+  return {
+    page,
+    metrics: {
+      componentComplexity: 8,      // Good (< 10)
+      propsInterface: true,
+      errorBoundaries: false,      // Needs improvement
+      memoization: true,
+      testCoverage: 85,           // Good
+      lintingScore: 95,           // Excellent
+      duplicateCode: 12           // Acceptable (< 20)
+    },
+    refactorSuggestions: [
+      'Add error boundary around async components',
+      'Extract common form validation logic',
+      'Consider memoizing expensive calculations'
+    ]
+  };
+};
+```
+
+---
+
+### **Phase 7: Documentation & Handoff (10 minutes per page)**
+
+#### **Step 7.1: Component Documentation**
+```typescript
+// Document each component:
+interface ComponentDocumentation {
+  component: string;
+  purpose: string;
+  props: Array<{
+    name: string;
+    type: string;
+    required: boolean;
+    description: string;
+    defaultValue?: any;
+  }>;
+  examples: Array<{
+    title: string;
+    code: string;
+    description: string;
+  }>;
+  notes: string[];
+}
+
+const documentComponent = (component: string): ComponentDocumentation => {
+  return {
+    component: 'HeroSection',
+    purpose: 'Displays page title, subtitle, and optional actions in a prominent banner',
+    props: [
+      {
+        name: 'title',
+        type: 'string',
+        required: true,
+        description: 'Main heading text'
+      },
+      {
+        name: 'subtitle',
+        type: 'string',
+        required: false,
+        description: 'Secondary text below title'
+      },
+      {
+        name: 'actions',
+        type: 'React.ReactNode',
+        required: false,
+        description: 'Buttons or other interactive elements'
+      }
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: '<HeroSection title="Welcome" subtitle="Get started today" />',
+        description: 'Simple hero with title and subtitle'
+      },
+      {
+        title: 'With Actions',
+        code: '<HeroSection title="VEXUS" actions={<Button>Learn More</Button>} />',
+        description: 'Hero section with call-to-action button'
+      }
+    ],
+    notes: [
+      'Automatically handles responsive typography',
+      'Uses theme spacing for consistent padding',
+      'Supports background images via sx prop'
+    ]
+  };
+};
+```
+
+#### **Step 7.2: Conversion Summary Report**
+```typescript
+// Final conversion report:
+interface ConversionReport {
+  page: string;
+  originalFile: string;
+  newFiles: string[];
+  conversionTime: number;        // minutes
+  reusableComponents: string[];
+  newComponents: string[];
+  issues: Array<{
+    type: 'visual' | 'functional' | 'performance' | 'accessibility';
+    severity: 'low' | 'medium' | 'high';
+    description: string;
+    status: 'resolved' | 'open' | 'wontfix';
+  }>;
+  metrics: {
+    visualAccuracy: number;      // % match with original
+    performanceScore: number;    // Lighthouse score
+    accessibilityScore: number;  // A11y score
+    codeQuality: number;        // Quality metrics
+  };
+  recommendations: string[];
+}
+
+const generateConversionReport = (page: string): ConversionReport => {
+  return {
+    page: 'calculator',
+    originalFile: 'src/pages/calculator.astro',
+    newFiles: [
+      'src/app/calculator/page.tsx',
+      'src/components/forms/Calculator/CalculatorForm.tsx',
+      'src/components/forms/Calculator/CalculatorStep.tsx',
+      'src/hooks/useModalPrediction.ts'
+    ],
+    conversionTime: 135,
+    reusableComponents: ['Button', 'Modal', 'FormField', 'LoadingSpinner'],
+    newComponents: ['CalculatorStepper', 'ImageCropStep', 'ResultsDisplay'],
+    issues: [
+      {
+        type: 'performance',
+        severity: 'medium',
+        description: 'Image cropping library increases bundle size',
+        status: 'open'
+      }
+    ],
+    metrics: {
+      visualAccuracy: 95,
+      performanceScore: 87,
+      accessibilityScore: 92,
+      codeQuality: 88
+    },
+    recommendations: [
+      'Consider lazy loading cropper library',
+      'Add more comprehensive error handling',
+      'Implement loading skeletons for better UX'
+    ]
+  };
+};
+```
+
+---
+
+## 🔄 **AUTOMATED WORKFLOW TOOLS**
+
+### **Conversion Progress Tracker**
+```bash
+#!/bin/bash
+# conversion-tracker.sh
+
+PAGES_DIR="src/pages"
+REACT_DIR="src/app"
+PROGRESS_FILE="conversion-progress.json"
+
+# Initialize progress tracking
+init_progress() {
+  echo "Initializing conversion progress tracker..."
+  
+  # Find all .astro files
+  ASTRO_FILES=$(find $PAGES_DIR -name "*.astro" | wc -l)
+  
+  # Create progress file
+  cat > $PROGRESS_FILE << EOF
+{
+  "totalPages": $ASTRO_FILES,
+  "completedPages": 0,
+  "inProgressPages": 0,
+  "pages": {}
+}
+EOF
+}
+
+# Update page status
+update_page_status() {
+  local page=$1
+  local status=$2  # "not-started" | "in-progress" | "completed" | "reviewed"
+  
+  # Update progress file using jq
+  jq --arg page "$page" --arg status "$status" \
+    '.pages[$page] = $status' $PROGRESS_FILE > tmp.json && mv tmp.json $PROGRESS_FILE
+  
+  echo "✅ Updated $page status to $status"
+}
+
+# Generate progress report
+generate_report() {
+  echo "📊 Conversion Progress Report"
+  echo "=============================="
+  
+  TOTAL=$(jq -r '.totalPages' $PROGRESS_FILE)
+  COMPLETED=$(jq -r '.pages | to_entries | map(select(.value == "completed")) | length' $PROGRESS_FILE)
+  IN_PROGRESS=$(jq -r '.pages | to_entries | map(select(.value == "in-progress")) | length' $PROGRESS_FILE)
+  
+  echo "Total Pages: $TOTAL"
+  echo "Completed: $COMPLETED"
+  echo "In Progress: $IN_PROGRESS"
+  echo "Remaining: $((TOTAL - COMPLETED - IN_PROGRESS))"
+  echo "Progress: $((COMPLETED * 100 / TOTAL))%"
+}
+```
+
+### **Quality Gate Automation**
+```typescript
+// quality-gate.ts - Automated quality checks
+interface QualityGate {
+  name: string;
+  check: () => Promise<boolean>;
+  errorMessage: string;
+}
+
+const qualityGates: QualityGate[] = [
+  {
+    name: 'TypeScript Compilation',
+    check: async () => {
+      const result = await execCommand('npx tsc --noEmit');
+      return result.exitCode === 0;
+    },
+    errorMessage: 'TypeScript compilation failed. Fix type errors before proceeding.'
+  },
+  
+  {
+    name: 'ESLint Validation',
+    check: async () => {
+      const result = await execCommand('npx eslint src/ --max-warnings 0');
+      return result.exitCode === 0;
+    },
+    errorMessage: 'ESLint validation failed. Fix linting errors before proceeding.'
+  },
+  
+  {
+    name: 'Visual Regression Test',
+    check: async () => {
+      const result = await execCommand('npm run test:visual');
+      return result.exitCode === 0;
+    },
+    errorMessage: 'Visual regression tests failed. Check for UI differences.'
+  },
+  
+  {
+    name: 'Performance Budget',
+    check: async () => {
+      const result = await execCommand('npm run lighthouse:ci');
+      return result.exitCode === 0;
+    },
+    errorMessage: 'Performance budget exceeded. Optimize before proceeding.'
+  }
+];
+
+const runQualityGates = async (): Promise<boolean> => {
+  console.log('🔍 Running quality gates...');
+  
+  for (const gate of qualityGates) {
+    console.log(`Checking: ${gate.name}`);
+    const passed = await gate.check();
+    
+    if (!passed) {
+      console.error(`❌ ${gate.name} failed: ${gate.errorMessage}`);
+      return false;
+    }
+    
+    console.log(`✅ ${gate.name} passed`);
+  }
+  
+  console.log('🎉 All quality gates passed!');
+  return true;
+};
+```
+
+This systematic workflow ensures consistent, high-quality conversions with proper validation at each step! 🚀

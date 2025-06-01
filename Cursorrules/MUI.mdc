@@ -1,0 +1,1763 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Material UI (MUI) Best Practices Guide ⭐
+
+*Building professional applications with Google's Material Design system*
+
+## Why Material UI?
+
+- **90.8k+ GitHub Stars** - Most popular React UI library
+- **Battle-tested** - Used by thousands of production applications
+- **Comprehensive** - Complete component ecosystem
+- **Consistent** - Google's proven Material Design language
+- **Professional** - Perfect for enterprise and business applications
+
+## 🏗️ Project Setup & Architecture
+
+### Installation & Core Dependencies
+
+```bash
+npm install @mui/material @emotion/react @emotion/styled
+npm install @mui/icons-material @mui/lab @mui/x-date-pickers
+npm install @fontsource/roboto
+```
+
+### Theme Configuration
+
+```typescript
+// theme/index.ts
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+
+const theme = createTheme({
+  palette: {
+    mode: 'light', // or 'dark'
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+  typography: {
+    fontFamily: 'Roboto, Arial, sans-serif',
+    h1: {
+      fontSize: '2.5rem',
+      fontWeight: 500,
+    },
+  },
+  spacing: 8, // 8px base spacing unit
+  shape: {
+    borderRadius: 8,
+  },
+});
+export default theme;
+```
+
+### App Structure
+
+```typescript
+// App.tsx
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+import theme from './theme';
+
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {/* Your app content */}
+    </ThemeProvider>
+  );
+}
+```
+
+## 🎨 Theming Best Practices
+
+### 1. Custom Theme Structure
+
+```typescript
+// theme/palette.ts
+export const lightPalette = {
+  mode: 'light' as const,
+  primary: {
+    main: '#1976d2',
+    light: '#42a5f5',
+    dark: '#1565c0',
+  },
+  secondary: {
+    main: '#9c27b0',
+  },
+  background: {
+    default: '#fafafa',
+    paper: '#ffffff',
+  },
+};
+
+// theme/typography.ts
+export const typography = {
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  h1: {
+    fontSize: '2.5rem',
+    fontWeight: 500,
+    lineHeight: 1.2,
+  },
+  body1: {
+    fontSize: '1rem',
+    lineHeight: 1.5,
+  },
+};
+```
+
+### 2. Responsive Breakpoints
+
+```typescript
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
+});
+```
+
+### 3. Custom Component Variants
+
+```typescript
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    gradient: true;
+  }
+}
+
+const theme = createTheme({
+  components: {
+    MuiButton: {
+      variants: [
+        {
+          props: { variant: 'gradient' },
+          style: {
+            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+            color: 'white',
+          },
+        },
+      ],
+    },
+  },
+});
+```
+
+## 🧩 Component Best Practices
+
+### 1. Layout Components
+
+```typescript
+// Use Container for consistent max-width
+<Container maxWidth="lg">
+  <Grid container spacing={3}>
+    <Grid item xs={12} md={6}>
+      <Paper elevation={2} sx={{ p: 3 }}>
+        Content
+      </Paper>
+    </Grid>
+  </Grid>
+</Container>
+
+// Use Stack for simple layouts
+<Stack spacing={2} direction="row" alignItems="center">
+  <Button>Action 1</Button>
+  <Button>Action 2</Button>
+</Stack>
+```
+
+### 2. Form Components
+
+```typescript
+// Consistent form structure
+<Box component="form" sx={{ mt: 3 }}>
+  <Grid container spacing={2}>
+    <Grid item xs={12} sm={6}>
+      <TextField
+        required
+        fullWidth
+        label="First Name"
+        autoComplete="given-name"
+      />
+    </Grid>
+    <Grid item xs={12}>
+      <FormControlLabel
+        control={<Checkbox color="primary" />}
+        label="I agree to the terms"
+      />
+    </Grid>
+  </Grid>
+  <Button
+    type="submit"
+    fullWidth
+    variant="contained"
+    sx={{ mt: 3, mb: 2 }}
+  >
+    Submit
+  </Button>
+</Box>
+```
+
+### 3. Navigation Components
+
+```typescript
+// AppBar with responsive menu
+<AppBar position="static">
+  <Toolbar>
+    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+      App Name
+    </Typography>
+    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+      <Button color="inherit">Home</Button>
+      <Button color="inherit">About</Button>
+    </Box>
+    <IconButton
+      sx={{ display: { xs: 'flex', md: 'none' } }}
+      onClick={handleMenuOpen}
+    >
+      <MenuIcon />
+    </IconButton>
+  </Toolbar>
+</AppBar>
+```
+
+## 🎯 Styling Best Practices
+
+### 1. Use sx Prop for One-off Styles
+
+```typescript
+// Good: sx prop for component-specific styles
+<Button
+  sx={{
+    backgroundColor: 'primary.main',
+    '&:hover': {
+      backgroundColor: 'primary.dark',
+    },
+    borderRadius: 2,
+  }}
+>
+  Click me
+</Button>
+```
+
+### 2. Styled Components for Reusable Styles
+
+```typescript
+import { styled } from '@mui/material/styles';
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  maxWidth: 345,
+  margin: theme.spacing(2),
+  transition: 'transform 0.2s',
+  '&:hover': {
+    transform: 'scale(1.02)',
+  },
+}));
+```
+
+### 3. Theme-aware Styling
+
+```typescript
+// Access theme values in sx
+<Box
+  sx={(theme) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? 'grey.800' : 'grey.100',
+    padding: theme.spacing(2),
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(4),
+    },
+  })}
+>
+  Content
+</Box>
+```
+
+## 📱 Responsive Design
+
+### 1. Grid System
+
+```typescript
+<Grid container spacing={3}>
+  <Grid item xs={12} sm={6} md={4} lg={3}>
+    <Card>Mobile: 12, Tablet: 6, Desktop: 4, Large: 3</Card>
+  </Grid>
+</Grid>
+```
+
+### 2. Responsive Typography
+
+```typescript
+<Typography
+  variant="h1"
+  sx={{
+    fontSize: {
+      xs: '1.5rem',
+      sm: '2rem',
+      md: '2.5rem',
+      lg: '3rem',
+    },
+  }}
+>
+  Responsive Heading
+</Typography>
+```
+
+### 3. Conditional Rendering
+
+```typescript
+import { useMediaQuery, useTheme } from '@mui/material';
+
+function ResponsiveComponent() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  return (
+    <>
+      {isMobile ? (
+        <IconButton>
+          <MenuIcon />
+        </IconButton>
+      ) : (
+        <Button>Full Menu</Button>
+      )}
+    </>
+  );
+}
+```
+
+## 🚀 Performance Optimization
+
+### 1. Tree Shaking
+
+```typescript
+// Good: Import specific components
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+
+// Avoid: Importing entire library
+import { Button, TextField } from '@mui/material';
+```
+
+### 2. Lazy Loading
+
+```typescript
+import { lazy, Suspense } from 'react';
+import { CircularProgress } from '@mui/material';
+
+const HeavyComponent = lazy(() => import('./HeavyComponent'));
+
+function App() {
+  return (
+    <Suspense fallback={<CircularProgress />}>
+      <HeavyComponent />
+    </Suspense>
+  );
+}
+```
+
+### 3. Memoization
+
+```typescript
+import { memo } from 'react';
+
+const ExpensiveCard = memo(({ data }) => (
+  <Card>
+    <CardContent>
+      {/* Expensive rendering logic */}
+    </CardContent>
+  </Card>
+));
+```
+
+## 🎨 Design System Integration
+
+### 1. Design Tokens
+
+```typescript
+// tokens/spacing.ts
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+};
+
+// tokens/colors.ts
+export const colors = {
+  primary: {
+    50: '#e3f2fd',
+    500: '#2196f3',
+    900: '#0d47a1',
+  },
+};
+```
+
+### 2. Component Library Structure
+
+```
+src/
+  components/
+    common/
+      Button/
+        Button.tsx
+        Button.stories.tsx
+        Button.test.tsx
+        index.ts
+    layout/
+      Header/
+      Sidebar/
+    forms/
+      ContactForm/
+```
+
+### 3. Storybook Integration
+
+```typescript
+// Button.stories.tsx
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from './Button';
+
+const meta: Meta<typeof Button> = {
+  title: 'Components/Button',
+  component: Button,
+  parameters: {
+    layout: 'centered',
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Primary: Story = {
+  args: {
+    variant: 'contained',
+    children: 'Button',
+  },
+};
+```
+
+## 🧪 Testing Best Practices
+
+### 1. Component Testing
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import { ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
+import Button from './Button';
+
+const theme = createTheme();
+
+const renderWithTheme = (component: React.ReactElement) => {
+  return render(
+    <ThemeProvider theme={theme}>
+      {component}
+    </ThemeProvider>
+  );
+};
+
+test('renders button with correct text', () => {
+  renderWithTheme(<Button>Click me</Button>);
+  expect(screen.getByRole('button', { name: /click me/i })).toBeInTheDocument();
+});
+```
+
+### 2. Theme Testing
+
+```typescript
+test('applies correct theme colors', () => {
+  const { container } = renderWithTheme(
+    <Button variant="contained" color="primary">
+      Test
+    </Button>
+  );
+  
+  const button = container.querySelector('button');
+  expect(button).toHaveStyle({
+    backgroundColor: theme.palette.primary.main,
+  });
+});
+```
+
+## 🔧 Common Patterns
+
+### 1. Loading States
+
+```typescript
+function DataTable({ loading, data }) {
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" p={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  return (
+    <TableContainer component={Paper}>
+      {/* Table content */}
+    </TableContainer>
+  );
+}
+```
+
+### 2. Error Boundaries
+
+```typescript
+import { Alert, AlertTitle } from '@mui/material';
+
+function ErrorFallback({ error }) {
+  return (
+    <Alert severity="error">
+      <AlertTitle>Something went wrong</AlertTitle>
+      {error.message}
+    </Alert>
+  );
+}
+```
+
+### 3. Form Validation
+
+```typescript
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
+const validationSchema = yup.object({
+  email: yup.string().email('Invalid email').required('Email is required'),
+});
+
+function ContactForm() {
+  const formik = useFormik({
+    initialValues: { email: '' },
+    validationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
+  return (
+    <TextField
+      fullWidth
+      name="email"
+      label="Email"
+      value={formik.values.email}
+      onChange={formik.handleChange}
+      error={formik.touched.email && Boolean(formik.errors.email)}
+      helperText={formik.touched.email && formik.errors.email}
+    />
+  );
+}
+```
+
+## 🚫 Common Pitfalls to Avoid
+
+### 1. Don't Override Core Styles Aggressively
+
+```typescript
+// Bad: Overriding too many default styles
+const theme = createTheme({
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          // Completely changing button appearance
+          borderRadius: 0,
+          textTransform: 'none',
+          boxShadow: 'none',
+        },
+      },
+    },
+  },
+});
+
+// Good: Selective overrides
+const theme = createTheme({
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none', // Only change what's necessary
+        },
+      },
+    },
+  },
+});
+```
+
+### 2. Don't Ignore Accessibility
+
+```typescript
+// Bad: Missing accessibility props
+<IconButton onClick={handleClick}>
+  <DeleteIcon />
+</IconButton>
+
+// Good: Proper accessibility
+<IconButton
+  onClick={handleClick}
+  aria-label="Delete item"
+  title="Delete item"
+>
+  <DeleteIcon />
+</IconButton>
+```
+
+### 3. Don't Mix Styling Approaches
+
+```typescript
+// Bad: Mixing styled-components with sx
+const StyledButton = styled(Button)`
+  background-color: red;
+`;
+
+<StyledButton sx={{ color: 'blue' }}>Mixed styles</StyledButton>
+
+// Good: Consistent approach
+<Button sx={{ backgroundColor: 'red', color: 'blue' }}>
+  Consistent styling
+</Button>
+```
+
+## 📚 Advanced Patterns
+
+### 1. Custom Hooks for MUI
+
+```typescript
+// hooks/useResponsive.ts
+import { useMediaQuery, useTheme } from '@mui/material';
+
+export function useResponsive() {
+  const theme = useTheme();
+  
+  return {
+    isMobile: useMediaQuery(theme.breakpoints.down('md')),
+    isTablet: useMediaQuery(theme.breakpoints.between('md', 'lg')),
+    isDesktop: useMediaQuery(theme.breakpoints.up('lg')),
+  };
+}
+```
+
+### 2. Theme Context
+
+```typescript
+// contexts/ThemeContext.tsx
+import { createContext, useContext, useState } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const ThemeContext = createContext({
+  toggleColorMode: () => {},
+  mode: 'light' as 'light' | 'dark',
+});
+
+export function CustomThemeProvider({ children }) {
+  const [mode, setMode] = useState<'light' | 'dark'>('light');
+
+  const toggleColorMode = () => {
+    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+  };
+
+  const theme = createTheme({
+    palette: {
+      mode,
+    },
+  });
+
+  return (
+    <ThemeContext.Provider value={{ toggleColorMode, mode }}>
+      <ThemeProvider theme={theme}>
+        {children}
+      </ThemeProvider>
+    </ThemeContext.Provider>
+  );
+}
+
+export const useThemeMode = () => useContext(ThemeContext);
+```
+
+### 3. Dynamic Theming
+
+```typescript
+// utils/themeGenerator.ts
+export function generateTheme(primaryColor: string, secondaryColor: string) {
+  return createTheme({
+    palette: {
+      primary: {
+        main: primaryColor,
+      },
+      secondary: {
+        main: secondaryColor,
+      },
+    },
+  });
+}
+```
+
+## 🎯 Production Checklist
+
+### Before Deployment
+
+- [ ] **Bundle Size**: Check bundle analyzer for MUI tree-shaking
+- [ ] **Accessibility**: Run axe-core or similar accessibility testing
+- [ ] **Performance**: Test with React DevTools Profiler
+- [ ] **Responsive**: Test on multiple screen sizes
+- [ ] **Theme**: Verify dark/light mode switching
+- [ ] **Icons**: Ensure all icons are properly imported
+- [ ] **Typography**: Check font loading and fallbacks
+- [ ] **Colors**: Verify contrast ratios meet WCAG guidelines
+
+### Performance Monitoring
+
+```typescript
+// Monitor bundle size
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+
+// webpack.config.js
+module.exports = {
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+    }),
+  ],
+};
+```
+
+## 📖 Resources & Documentation
+
+### Official Resources
+- @MUI Documentation
+- @Material Design Guidelines
+- @MUI GitHub Repository
+
+### Community Resources
+- @MUI Templates
+- @Awesome MUI
+- @MUI Discord Community
+
+### Tools & Extensions
+- @MUI Theme Creator
+- @Material Design Color Tool
+- @MUI Storybook Addon
+
+---
+
+*This guide covers the essential best practices for building professional applications with Material UI. Remember: consistency, accessibility, and performance should always be your top priorities when working with MUI.*
+
+## 🌟 Advanced Responsive Design with MUI: Mobile & Laptop Optimization
+
+### 1. MUI Breakpoint System Mastery
+
+```typescript
+// ✅ Custom responsive hook with MUI breakpoints
+import { useTheme, useMediaQuery } from '@mui/material';
+
+export const useMUIResponsive = () => {
+  const theme = useTheme();
+  
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isSmallMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
+  // Responsive values based on breakpoints
+  const spacing = {
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4
+  };
+  
+  const containerMaxWidth = isMobile ? 'sm' : isTablet ? 'md' : 'lg';
+  const paperElevation = isMobile ? 0 : 2;
+  const buttonSize = isMobile ? 'large' : 'medium';
+  
+  return {
+    isMobile,
+    isTablet,
+    isDesktop,
+    isSmallMobile,
+    spacing,
+    containerMaxWidth,
+    paperElevation,
+    buttonSize,
+    breakpoint: isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop'
+  };
+};
+
+// ✅ Advanced responsive values
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
+  components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: ({ theme, ownerState }) => ({
+          [theme.breakpoints.down('sm')]: {
+            paddingLeft: theme.spacing(2),
+            paddingRight: theme.spacing(2),
+          },
+          [theme.breakpoints.up('sm')]: {
+            paddingLeft: theme.spacing(3),
+            paddingRight: theme.spacing(3),
+          },
+        }),
+      },
+    },
+  },
+});
+```
+
+### 2. Modular Layout Components
+
+```typescript
+// ✅ Responsive app shell with modular components
+interface AppShellProps {
+  children: React.ReactNode;
+  sidebar?: React.ReactNode;
+  header?: React.ReactNode;
+  sidebarWidth?: number;
+}
+
+export const AppShell: React.FC<AppShellProps> = ({
+  children,
+  sidebar,
+  header,
+  sidebarWidth = 280
+}) => {
+  const { isMobile } = useMUIResponsive();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  return (
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Mobile/Desktop Sidebar */}
+      {sidebar && (
+        <>
+          {/* Desktop Sidebar */}
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: 'none', md: 'block' },
+              width: sidebarWidth,
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: sidebarWidth,
+                boxSizing: 'border-box',
+              },
+            }}
+          >
+            {sidebar}
+          </Drawer>
+          
+          {/* Mobile Drawer */}
+          <Drawer
+            variant="temporary"
+            open={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+            sx={{
+              display: { xs: 'block', md: 'none' },
+              '& .MuiDrawer-paper': {
+                width: sidebarWidth,
+                boxSizing: 'border-box',
+              },
+            }}
+          >
+            {sidebar}
+          </Drawer>
+        </>
+      )}
+      
+      {/* Main Content Area */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          width: { md: `calc(100% - ${sidebarWidth}px)` },
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {/* Header */}
+        {header && (
+          <AppBar
+            position="sticky"
+            elevation={0}
+            sx={{
+              zIndex: (theme) => theme.zIndex.drawer + 1,
+              bgcolor: 'background.paper',
+              color: 'text.primary',
+              borderBottom: 1,
+              borderColor: 'divider',
+            }}
+          >
+            <Toolbar>
+              {/* Mobile Menu Button */}
+              {sidebar && (
+                <IconButton
+                  edge="start"
+                  onClick={() => setSidebarOpen(true)}
+                  sx={{ mr: 2, display: { md: 'none' } }}
+                >
+                  <MenuIcon />
+                </IconButton>
+              )}
+              {header}
+            </Toolbar>
+          </AppBar>
+        )}
+        
+        {/* Page Content */}
+        <Container
+          maxWidth="xl"
+          sx={{
+            flexGrow: 1,
+            py: { xs: 2, sm: 3, md: 4 },
+            px: { xs: 2, sm: 3 },
+          }}
+        >
+          {children}
+        </Container>
+      </Box>
+    </Box>
+  );
+};
+```
+
+### 3. Responsive Grid Layouts
+
+```typescript
+// ✅ Smart responsive grid with MUI Grid v2
+interface ResponsiveCardGridProps<T> {
+  items: T[];
+  renderCard: (item: T, index: number) => React.ReactNode;
+  minCardWidth?: number;
+  loading?: boolean;
+  emptyState?: React.ReactNode;
+}
+
+export const ResponsiveCardGrid = <T,>({
+  items,
+  renderCard,
+  minCardWidth = 300,
+  loading = false,
+  emptyState
+}: ResponsiveCardGridProps<T>) => {
+  const theme = useTheme();
+  const { spacing } = useMUIResponsive();
+  
+  if (loading) {
+    return (
+      <Grid container spacing={spacing.md}>
+        {Array.from({ length: 8 }).map((_, index) => (
+          <Grid xs={12} sm={6} md={4} lg={3} key={index}>
+            <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 1 }} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+  
+  if (items.length === 0 && emptyState) {
+    return (
+      <Box sx={{ textAlign: 'center', py: 8 }}>
+        {emptyState}
+      </Box>
+    );
+  }
+  
+  return (
+    <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+      {items.map((item, index) => (
+        <Grid 
+          xs={12} 
+          sm={6} 
+          md={4} 
+          lg={3} 
+          xl={2.4}
+          key={index}
+        >
+          {renderCard(item, index)}
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+// ✅ Responsive dashboard layout
+export const DashboardLayout: React.FC<{
+  widgets: Array<{
+    id: string;
+    component: React.ReactNode;
+    size: { xs: number; sm?: number; md?: number; lg?: number };
+  }>;
+}> = ({ widgets }) => {
+  return (
+    <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+      {widgets.map((widget) => (
+        <Grid 
+          key={widget.id}
+          xs={widget.size.xs}
+          sm={widget.size.sm || widget.size.xs}
+          md={widget.size.md || widget.size.sm || widget.size.xs}
+          lg={widget.size.lg || widget.size.md || widget.size.sm || widget.size.xs}
+        >
+          <Paper 
+            elevation={1}
+            sx={{ 
+              p: { xs: 2, sm: 3 },
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
+            {widget.component}
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+```
+
+### 4. Adaptive Navigation Components
+
+```typescript
+// ✅ Responsive navigation with breadcrumbs
+interface AdaptiveNavigationProps {
+  menuItems: MenuItem[];
+  breadcrumbs?: BreadcrumbItem[];
+  logo?: React.ReactNode;
+  userProfile?: React.ReactNode;
+}
+
+export const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({
+  menuItems,
+  breadcrumbs = [],
+  logo,
+  userProfile
+}) => {
+  const { isMobile, isTablet } = useMUIResponsive();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  
+  return (
+    <>
+      <AppBar position="static" elevation={1}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          {/* Logo */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {logo}
+          </Box>
+          
+          {/* Desktop Navigation */}
+          <Box sx={{ display: { xs: 'none', lg: 'flex' }, gap: 1 }}>
+            {menuItems.map((item) => (
+              <Button
+                key={item.id}
+                color="inherit"
+                href={item.href}
+                sx={{ textTransform: 'none' }}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </Box>
+          
+          {/* Tablet/Mobile Menu */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {userProfile}
+            <IconButton
+              color="inherit"
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              sx={{ display: { lg: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+        
+        {/* Breadcrumbs */}
+        {breadcrumbs.length > 0 && (
+          <Box sx={{ px: 2, pb: 1 }}>
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize="small" />}
+              sx={{ color: 'inherit' }}
+            >
+              {breadcrumbs.map((crumb, index) => (
+                <Typography
+                  key={index}
+                  color={index === breadcrumbs.length - 1 ? 'inherit' : 'text.secondary'}
+                  variant="body2"
+                >
+                  {crumb.label}
+                </Typography>
+              ))}
+            </Breadcrumbs>
+          </Box>
+        )}
+      </AppBar>
+      
+      {/* Mobile Menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+        PaperProps={{
+          sx: { width: 280, mt: 1 }
+        }}
+      >
+        {menuItems.map((item) => (
+          <MenuItem key={item.id} onClick={() => setAnchorEl(null)}>
+            <ListItemIcon>
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText primary={item.label} />
+          </MenuItem>
+        ))}
+      </Menu>
+    </>
+  );
+};
+```
+
+### 5. Responsive Form Layouts
+
+```typescript
+// ✅ Multi-step responsive form
+interface ResponsiveFormProps {
+  steps: FormStep[];
+  currentStep: number;
+  onStepChange: (step: number) => void;
+  onSubmit: (data: any) => Promise<void>;
+}
+
+export const ResponsiveMultiStepForm: React.FC<ResponsiveFormProps> = ({
+  steps,
+  currentStep,
+  onStepChange,
+  onSubmit
+}) => {
+  const { isMobile, paperElevation, buttonSize } = useMUIResponsive();
+  
+  return (
+    <Container maxWidth="md">
+      <Paper 
+        elevation={paperElevation}
+        sx={{ 
+          p: { xs: 2, sm: 3, md: 4 },
+          mt: { xs: 1, sm: 2, md: 3 }
+        }}
+      >
+        {/* Stepper */}
+        <Stepper 
+          activeStep={currentStep} 
+          orientation={isMobile ? "vertical" : "horizontal"}
+          sx={{ mb: { xs: 3, sm: 4 } }}
+        >
+          {steps.map((step, index) => (
+            <Step key={step.id}>
+              <StepLabel 
+                optional={
+                  isMobile ? null : (
+                    <Typography variant="caption">{step.description}</Typography>
+                  )
+                }
+              >
+                {step.title}
+              </StepLabel>
+              {isMobile && (
+                <StepContent>
+                  <Typography variant="body2" color="text.secondary">
+                    {step.description}
+                  </Typography>
+                </StepContent>
+              )}
+            </Step>
+          ))}
+        </Stepper>
+        
+        {/* Form Content */}
+        <Box component="form" sx={{ mt: 2 }}>
+          <Grid container spacing={{ xs: 2, sm: 3 }}>
+            {steps[currentStep].fields.map((field) => (
+              <Grid 
+                xs={12} 
+                sm={field.width === 'full' ? 12 : 6}
+                key={field.name}
+              >
+                <ResponsiveFormField field={field} />
+              </Grid>
+            ))}
+          </Grid>
+          
+          {/* Navigation Buttons */}
+          <Box 
+            sx={{ 
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              justifyContent: 'space-between',
+              gap: 2,
+              mt: 4
+            }}
+          >
+            <Button
+              disabled={currentStep === 0}
+              onClick={() => onStepChange(currentStep - 1)}
+              size={buttonSize}
+              fullWidth={isMobile}
+              sx={{ order: { xs: 2, sm: 1 } }}
+            >
+              Back
+            </Button>
+            
+            <Button
+              variant="contained"
+              onClick={() => {
+                if (currentStep === steps.length - 1) {
+                  onSubmit({});
+                } else {
+                  onStepChange(currentStep + 1);
+                }
+              }}
+              size={buttonSize}
+              fullWidth={isMobile}
+              sx={{ order: { xs: 1, sm: 2 } }}
+            >
+              {currentStep === steps.length - 1 ? 'Submit' : 'Next'}
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
+  );
+};
+
+// ✅ Responsive form field component
+const ResponsiveFormField: React.FC<{ field: FormField }> = ({ field }) => {
+  const { isMobile } = useMUIResponsive();
+  
+  const baseProps = {
+    fullWidth: true,
+    size: isMobile ? 'medium' : 'small' as const,
+    variant: 'outlined' as const,
+  };
+  
+  switch (field.type) {
+    case 'text':
+      return <TextField {...baseProps} label={field.label} />;
+      
+    case 'select':
+      return (
+        <FormControl {...baseProps}>
+          <InputLabel>{field.label}</InputLabel>
+          <Select label={field.label}>
+            {field.options?.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      );
+      
+    case 'date':
+      return (
+        <DatePicker
+          label={field.label}
+          slotProps={{
+            textField: baseProps
+          }}
+        />
+      );
+      
+    default:
+      return null;
+  }
+};
+```
+
+### 6. Responsive Data Display
+
+```typescript
+// ✅ Adaptive data table/card view
+interface ResponsiveDataViewProps<T> {
+  data: T[];
+  columns: TableColumn<T>[];
+  loading?: boolean;
+  pagination?: PaginationProps;
+  mobileCardContent?: (item: T) => React.ReactNode;
+}
+
+export const ResponsiveDataView = <T extends Record<string, any>>({
+  data,
+  columns,
+  loading = false,
+  pagination,
+  mobileCardContent
+}: ResponsiveDataViewProps<T>) => {
+  const { isMobile } = useMUIResponsive();
+  
+  if (loading) {
+    return (
+      <Stack spacing={2}>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Skeleton key={index} variant="rectangular" height={60} />
+        ))}
+      </Stack>
+    );
+  }
+  
+  if (isMobile) {
+    return (
+      <Stack spacing={2}>
+        {data.map((item, index) => (
+          <Card key={index} elevation={1}>
+            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+              {mobileCardContent ? (
+                mobileCardContent(item)
+              ) : (
+                <MobileDataCard item={item} columns={columns} />
+              )}
+            </CardContent>
+          </Card>
+        ))}
+        {pagination && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+            <Pagination {...pagination} />
+          </Box>
+        )}
+      </Stack>
+    );
+  }
+  
+  return (
+    <TableContainer component={Paper} elevation={1}>
+      <Table stickyHeader>
+        <TableHead>
+          <TableRow>
+            {columns.map((column) => (
+              <TableCell key={column.id} align={column.align}>
+                {column.sortable ? (
+                  <TableSortLabel>
+                    {column.label}
+                  </TableSortLabel>
+                ) : (
+                  column.label
+                )}
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((item, index) => (
+            <TableRow key={index} hover>
+              {columns.map((column) => (
+                <TableCell key={column.id} align={column.align}>
+                  {column.render ? column.render(item) : item[column.id]}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      {pagination && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+          <Pagination {...pagination} />
+        </Box>
+      )}
+    </TableContainer>
+  );
+};
+
+// ✅ Mobile card layout for data
+const MobileDataCard: React.FC<{
+  item: Record<string, any>;
+  columns: TableColumn<any>[];
+}> = ({ item, columns }) => {
+  const primaryColumn = columns.find(col => col.primary) || columns[0];
+  const secondaryColumns = columns.filter(col => !col.primary && col.showInMobile !== false);
+  
+  return (
+    <Box>
+      <Typography variant="subtitle1" fontWeight="medium" gutterBottom>
+        {primaryColumn.render ? primaryColumn.render(item) : item[primaryColumn.id]}
+      </Typography>
+      
+      <Grid container spacing={2}>
+        {secondaryColumns.slice(0, 4).map((column) => (
+          <Grid xs={6} key={column.id}>
+            <Typography variant="caption" color="text.secondary">
+              {column.label}
+            </Typography>
+            <Typography variant="body2">
+              {column.render ? column.render(item) : item[column.id]}
+            </Typography>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+};
+```
+
+### 7. Performance Optimization for Mobile
+
+```typescript
+// ✅ Optimized image component with MUI
+interface OptimizedImageProps {
+  src: string;
+  alt: string;
+  aspectRatio?: number;
+  sizes?: string;
+  priority?: boolean;
+}
+
+export const OptimizedImage: React.FC<OptimizedImageProps> = ({
+  src,
+  alt,
+  aspectRatio = 16/9,
+  sizes,
+  priority = false
+}) => {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        width: '100%',
+        aspectRatio: aspectRatio,
+        borderRadius: 1,
+        overflow: 'hidden',
+        bgcolor: 'grey.100'
+      }}
+    >
+      {!loaded && (
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="100%"
+          sx={{ position: 'absolute' }}
+        />
+      )}
+      
+      <Box
+        component="img"
+        src={src}
+        alt={alt}
+        sizes={sizes}
+        loading={priority ? 'eager' : 'lazy'}
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+        sx={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          transition: 'opacity 0.3s ease',
+          opacity: loaded ? 1 : 0
+        }}
+      />
+      
+      {error && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bgcolor: 'grey.100'
+          }}
+        >
+          <BrokenImageIcon color="disabled" />
+        </Box>
+      )}
+    </Box>
+  );
+};
+
+// ✅ Lazy loading container
+export const LazyContainer: React.FC<{
+  children: React.ReactNode;
+  height?: number;
+  threshold?: number;
+}> = ({ children, height = 200, threshold = 0.1 }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold }
+    );
+    
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    
+    return () => observer.disconnect();
+  }, [threshold]);
+  
+  return (
+    <Box ref={ref} sx={{ minHeight: height }}>
+      {isVisible ? (
+        children
+      ) : (
+        <Skeleton variant="rectangular" height={height} />
+      )}
+    </Box>
+  );
+};
+```
+
+### 8. Mobile-First Component Library
+
+```typescript
+// ✅ Mobile-optimized action sheet
+interface ActionSheetProps {
+  open: boolean;
+  onClose: () => void;
+  actions: Array<{
+    label: string;
+    icon?: React.ReactNode;
+    onClick: () => void;
+    color?: 'primary' | 'secondary' | 'error';
+    disabled?: boolean;
+  }>;
+}
+
+export const ActionSheet: React.FC<ActionSheetProps> = ({
+  open,
+  onClose,
+  actions
+}) => {
+  const { isMobile } = useMUIResponsive();
+  
+  if (isMobile) {
+    return (
+      <Drawer
+        anchor="bottom"
+        open={open}
+        onClose={onClose}
+        PaperProps={{
+          sx: {
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+            maxHeight: '50vh'
+          }
+        }}
+      >
+        <Box sx={{ p: 2 }}>
+          <Box
+            sx={{
+              width: 40,
+              height: 4,
+              bgcolor: 'grey.300',
+              borderRadius: 2,
+              mx: 'auto',
+              mb: 2
+            }}
+          />
+          <List>
+            {actions.map((action, index) => (
+              <ListItem
+                key={index}
+                button
+                onClick={() => {
+                  action.onClick();
+                  onClose();
+                }}
+                disabled={action.disabled}
+              >
+                {action.icon && (
+                  <ListItemIcon>
+                    {action.icon}
+                  </ListItemIcon>
+                )}
+                <ListItemText 
+                  primary={action.label}
+                  sx={{ 
+                    color: action.color === 'error' ? 'error.main' : 'inherit'
+                  }}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
+    );
+  }
+  
+  return (
+    <Menu open={open} onClose={onClose}>
+      {actions.map((action, index) => (
+        <MenuItem
+          key={index}
+          onClick={() => {
+            action.onClick();
+            onClose();
+          }}
+          disabled={action.disabled}
+        >
+          {action.icon && (
+            <ListItemIcon>
+              {action.icon}
+            </ListItemIcon>
+          )}
+          <ListItemText primary={action.label} />
+        </MenuItem>
+      ))}
+    </Menu>
+  );
+};
+
+// ✅ Responsive dialog
+export const ResponsiveDialog: React.FC<{
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  actions?: React.ReactNode;
+}> = ({ open, onClose, title, children, actions }) => {
+  const { isMobile } = useMUIResponsive();
+  
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullScreen={isMobile}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          ...(isMobile && {
+            margin: 0,
+            borderRadius: 0
+          })
+        }
+      }}
+    >
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        {isMobile && (
+          <IconButton edge="start" onClick={onClose}>
+            <ArrowBackIcon />
+          </IconButton>
+        )}
+        {title}
+        {!isMobile && (
+          <IconButton
+            edge="end"
+            onClick={onClose}
+            sx={{ ml: 'auto' }}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
+      </DialogTitle>
+      
+      <DialogContent dividers>
+        {children}
+      </DialogContent>
+      
+      {actions && (
+        <DialogActions sx={{ p: 2 }}>
+          {actions}
+        </DialogActions>
+      )}
+    </Dialog>
+  );
+};
+```
+
+## 📊 Responsive Design Testing
+
+### Testing Responsive Components
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+// Mock useMediaQuery for testing
+jest.mock('@mui/material/useMediaQuery');
+const mockedUseMediaQuery = useMediaQuery as jest.MockedFunction<typeof useMediaQuery>;
+
+describe('ResponsiveComponent', () => {
+  beforeEach(() => {
+    mockedUseMediaQuery.mockClear();
+  });
+
+  test('renders mobile layout', () => {
+    mockedUseMediaQuery.mockReturnValue(true); // isMobile = true
+    
+    render(
+      <ThemeProvider theme={createTheme()}>
+        <ResponsiveComponent />
+      </ThemeProvider>
+    );
+    
+    expect(screen.getByTestId('mobile-layout')).toBeInTheDocument();
+  });
+
+  test('renders desktop layout', () => {
+    mockedUseMediaQuery.mockReturnValue(false); // isMobile = false
+    
+    render(
+      <ThemeProvider theme={createTheme()}>
+        <ResponsiveComponent />
+      </ThemeProvider>
+    );
+    
+    expect(screen.getByTestId('desktop-layout')).toBeInTheDocument();
+  });
+});
+```
+
+## 🎯 Best Practices Summary
+
+### Mobile-First Design Principles
+
+1. **Start with mobile constraints** - Design for the smallest screen first
+2. **Progressive enhancement** - Add features for larger screens
+3. **Touch-friendly interfaces** - Minimum 44px touch targets
+4. **Optimize for performance** - Lazy loading, image optimization
+5. **Responsive typography** - Use MUI's responsive typography scales
+6. **Flexible layouts** - Use MUI Grid v2 and Stack components
+7. **Contextual navigation** - Different navigation patterns for different screen sizes
+
+### Component Architecture
+
+1. **Modular design** - Create reusable, responsive components
+2. **Composition over inheritance** - Use compound components
+3. **Responsive props** - Accept responsive configuration
+4. **Performance optimization** - Memoization and lazy loading
+5. **Accessibility first** - Proper ARIA labels and keyboard navigation
+
+This comprehensive guide provides you with modern, production-ready patterns for building responsive React applications with MUI that work seamlessly across mobile and laptop devices! 🚀

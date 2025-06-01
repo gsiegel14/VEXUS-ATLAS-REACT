@@ -1,0 +1,181 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 🔄 Astro HTML/CSS/JS → React Conversion Rules
+
+## 🎯 **PRIMARY GOAL**
+Convert every `.astro` page into a React + MUI page with absolutely **no loss of features, text content, images, or styling intent**.
+
+---
+
+## 1️⃣  HTML ➜ JSX STRUCTURE PRESERVATION
+
+1. **One-to-One Mapping**
+   • Every semantic HTML element (&lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;section&gt;, &lt;footer&gt;) must exist in the React version.  
+   • Use MUI components that render the same element (`Container` ⇒ &lt;div&gt;, `Typography` ⇒ &lt;h1-h6/p&gt;).
+
+2. **Attribute Conversion Checklist**
+   | Astro Attribute | JSX Equivalent |
+   |-----------------|---------------|
+   | `class`         | `className`   |
+   | `for`           | `htmlFor`     |
+   | `onclick`       | `onClick`     |
+   | `style="…"`    | `sx={{ … }}` or `style={{ … }}` |
+
+3. **Preserve IDs & Anchors**  
+   • IDs used for hash links (#section-id) must not change.  
+   • Scroll-spy libraries rely on these anchors.
+
+4. **Data Attributes**  
+   • Copy verbatim: `data-xyz="value"` ⇒ `data-xyz="value"`.
+
+5. **ARIA & Accessibility**  
+   • Keep all `aria-*` attributes.  
+   • Add missing labels discovered during audit.
+
+---
+
+## 2️⃣  CSS ➜ MUI STYLING STRATEGY
+
+1. **Global Styles**  
+   • Copy `/src/styles/*.css` into `src/styles/globals.css`.  
+   • Import once in `app/layout.tsx`.
+
+2. **Class-Based Styles**  
+   • If a class appears ≥3 times → convert to reusable MUI `sx` mixin in `src/theme/commonStyles.ts`.  
+   • Else keep as global class to avoid inline duplication.
+
+3. **Inline Styles**  
+   • Prefer `sx` prop for simple objects:  
+   ```tsx
+   <Box sx={{ display: 'flex', gap: 2 }}>
+   ```
+
+4. **CSS Modules / SCSS**  
+   • Rename `.scss` → `.module.scss` and import in component.  
+   • Scope guarantees no leakage.
+
+5. **Animation & Keyframes**  
+   • Copy `@keyframes` to `src/styles/animations.css`.  
+   • Reference via `sx={{ animation: 'fadeIn 0.4s ease-out' }}`.
+
+---
+
+## 3️⃣  JAVASCRIPT ➜ REACT HOOKS
+
+| Astro/Vanilla Pattern | React Equivalent |
+|-----------------------|------------------|
+| `<script>` in front-matter | `useEffect` / `useState` |
+| `window.addEventListener`  | `useEffect(() => { … return () => … })` |
+| jQuery DOM queries         | Component refs / MUI APIs |
+| Global variables           | React Context / `useReducer` |
+
+**Migration Steps:**
+1. Isolate logic into pure functions in `src/utils`.  
+2. Wrap side-effects inside custom hooks.  
+3. Provide type-safe interfaces.
+
+Example:
+```astro
+---
+const handleScroll = () => { … }
+---
+```
+```tsx
+useEffect(() => {
+  const handleScroll = () => { … };
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+```
+
+---
+
+## 4️⃣  TEXT & CONTENT INTEGRITY
+
+1. **Centralize Text**  
+   • Extract every static string to `src/content/pageContent.ts` (see File-Structure-Plan).  
+   • Provide TypeScript types (`HeroContent`, `PageContent`).
+
+2. **Diff Verification**  
+   • Use `diff-so-fancy` or VS Code diff to compare original `.astro` innerText with JSX render snapshot.  
+   • No missing sentences, punctuation, or special characters.
+
+3. **Markdown Segments**  
+   • If Astro used Markdown inside components, convert to `react-markdown`.
+
+---
+
+## 5️⃣  IMAGE & ASSET GUARANTEE
+
+1. **Follow Image-Migration-Plan.md Paths**  
+   • Use new organized paths (`/images/icons/atlas-icon.png`).
+
+2. **`next/image` or MUI `ImageList`**  
+   • Provide `alt` text identical to original.  
+   • Set `priority` for hero images.
+
+3. **Automated Asset Test**  
+   ```bash
+   # ci/image-check.sh
+   for img in $(grep -Roh "src=\"/images/[^\"]*" src/app | cut -d'"' -f2); do
+     [ -f "public$img" ] || echo "🚨 Missing $img" && exit 1
+   done
+   ```
+
+4. **Responsive Variants**  
+   • Generate WebP & 2× versions via Next.js image optimizer.
+
+---
+
+## 6️⃣  FEATURE PARITY CHECKLIST (per page)
+
+- [ ] All navigation links present & functional
+- [ ] Mobile menu behavior replicated
+- [ ] Forms submit & validate identical rules
+- [ ] Modals open/close logically
+- [ ] AI endpoints called with same payload
+- [ ] Airtable gallery filters & pagination working
+- [ ] Scroll animations / carousels preserved
+- [ ] SEO meta tags transferred (`<head>` additions via `next/head`)
+
+Document results in `conversion-workflow.mdc` Phase 5.
+
+---
+
+## 7️⃣  AUTOMATED QUALITY GATES (ADD TO CI)
+
+```yaml
+name: Conversion QA
+on: [pull_request]
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install deps
+        run: npm ci
+      - name: Type Check
+        run: npm run typecheck
+      - name: ESLint
+        run: npm run lint
+      - name: Images Exist
+        run: bash ci/image-check.sh
+      - name: Jest
+        run: npm test -- --coverage
+```
+
+---
+
+## 8️⃣  SIGN-OFF DEFINITION OF DONE
+
+1. ✅ Visual diff ≤ 2 px deviation on desktop & mobile screenshots.  
+2. ✅ Lighthouse scores ≥ 90 (PWA not required).  
+3. ✅ All unit tests pass with ≥ 80 % coverage for new code.  
+4. ✅ Accessibility score ≥ 90 (axe-core).  
+5. ✅ All items in Feature Parity Checklist checked.  
+6. ✅ Conversion report added to `docs/CONVERSION_LOG.md`.
+
+Once all conditions met, mark the page **completed** in `conversion-progress.json`. 🚀

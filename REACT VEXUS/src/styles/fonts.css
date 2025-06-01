@@ -1,0 +1,215 @@
+/* ========================================
+   EUROPA FONT DECLARATIONS
+   ======================================== */
+
+/* Option 1: Adobe Fonts (ACTIVE - Europa Kit) */
+@import url('https://use.typekit.net/abj6gjp.css');
+
+/* Option 2: Self-hosted Europa fonts */
+/* Use these @font-face declarations if you want to self-host Europa font files as backup */
+
+/*
+@font-face {
+  font-family: 'europa';
+  src: url('/fonts/europa/europa-light.woff2') format('woff2'),
+       url('/fonts/europa/europa-light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'europa';
+  src: url('/fonts/europa/europa-regular.woff2') format('woff2'),
+       url('/fonts/europa/europa-regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'europa';
+  src: url('/fonts/europa/europa-medium.woff2') format('woff2'),
+       url('/fonts/europa/europa-medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'europa';
+  src: url('/fonts/europa/europa-semibold.woff2') format('woff2'),
+       url('/fonts/europa/europa-semibold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'europa';
+  src: url('/fonts/europa/europa-bold.woff2') format('woff2'),
+       url('/fonts/europa/europa-bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'europa';
+  src: url('/fonts/europa/europa-extrabold.woff2') format('woff2'),
+       url('/fonts/europa/europa-extrabold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
+/* ========================================
+   FONT LOADING UTILITIES
+   ======================================== */
+
+/* Font loading class for preventing FOIT (Flash of Invisible Text) */
+.font-loading {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.font-loaded {
+  font-family: 'europa', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.font-fallback {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Critical font preload - Add to HTML head for better performance */
+/*
+<link rel="preload" href="/fonts/europa/europa-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/europa/europa-bold.woff2" as="font" type="font/woff2" crossorigin>
+*/
+
+/* ========================================
+   EUROPA FONT UTILITIES
+   ======================================== */
+
+.europa-light {
+  font-family: 'europa', 'Inter', system-ui, sans-serif;
+  font-weight: 300;
+}
+
+.europa-regular {
+  font-family: 'europa', 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+}
+
+.europa-medium {
+  font-family: 'europa', 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+}
+
+.europa-semibold {
+  font-family: 'europa', 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+.europa-bold {
+  font-family: 'europa', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+}
+
+.europa-extrabold {
+  font-family: 'europa', 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+}
+
+/* ========================================
+   FONT WEIGHT UTILITIES
+   ======================================== */
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-regular {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+/* ========================================
+   RESPONSIVE FONT SCALING
+   ======================================== */
+
+:root {
+  --font-scale: 1;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --font-scale: 0.875;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-scale: 0.75;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY & PERFORMANCE
+   ======================================== */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --font-weight-normal: 600;
+    --font-weight-bold: 800;
+  }
+}
+
+/* ========================================
+   ALTERNATIVE FONT OPTIONS
+   ======================================== */
+
+/* Option 3A: Use Inter as primary (if Europa unavailable) */
+.font-inter {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Option 3B: Use Avenir Next as primary */
+.font-avenir {
+  font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Option 3C: Use Proxima Nova as primary */
+.font-proxima {
+  font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Option 3D: Use Helvetica Neue as primary */
+.font-helvetica {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+} 

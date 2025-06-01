@@ -1,0 +1,650 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Astro to React Porting Rules & Best Practices
+
+## 🎯 **CORE PORTING PRINCIPLES**
+
+### **1. Pre-Conversion Analysis**
+Before touching any code, always analyze the Astro file:
+
+```bash
+# Step 1: Analyze the .astro file structure
+- [ ] Identify frontmatter logic (will become React hooks/state)
+- [ ] List all components used 
+- [ ] Document CSS classes and styling
+- [ ] Note any client-side JavaScript
+- [ ] Map out image/asset dependencies
+- [ ] Identify reusable patterns across pages
+```
+
+### **2. Component-First Approach**
+Never convert pages in isolation. Always identify reusable components first:
+
+```typescript
+// ❌ WRONG: Converting page directly
+const AboutPage = () => {
+  return (
+    <div className="hero-section">
+      <h1>About Us</h1>
+      <p>Description...</p>
+    </div>
+  );
+};
+
+// ✅ CORRECT: Extract reusable components first
+const HeroSection = ({ title, description, variant = 'default' }) => {
+  return (
+    <Box sx={{ textAlign: 'center', py: { xs: 4, md: 8 } }}>
+      <Typography variant="h1">{title}</Typography>
+      <Typography variant="h3" color="text.secondary">
+        {description}
+      </Typography>
+    </Box>
+  );
+};
+
+const AboutPage = () => {
+  return (
+    <MainLayout>
+      <HeroSection 
+        title="About VEXUS ATLAS" 
+        description="Our mission and vision"
+      />
+    </MainLayout>
+  );
+};
+```
+
+## 📋 **PAGE STRUCTURE PORTING RULES**
+
+### **Rule 1: Map Astro Sections to React Components**
+
+```typescript
+// Original Astro structure:
+// ---
+// const title = "Page Title";
+// const items = await getItems();
+// ---
+// <Layout>
+//   <section class="hero">
+//     <h1>{title}</h1>
+//   </section>
+//   <section class="content">
+//     {items.map(item => <Card>{item.name}</Card>)}
+//   </section>
+// </Layout>
+
+// React conversion:
+const PageName = () => {
+  // Frontmatter becomes hooks/state
+  const [items, setItems] = useState([]);
+  
+  useEffect(() => {
+    getItems().then(setItems);
+  }, []);
+
+  return (
+    <MainLayout title="Page Title">
+      <HeroSection title="Page Title" />
+      <ContentSection items={items} />
+    </MainLayout>
+  );
+};
+```
+
+### **Rule 2: Extract Common Patterns Immediately**
+
+```typescript
+// If you see this pattern more than once, extract it:
+// PATTERN: Image + Text Card Layout
+
+// ✅ Create reusable component:
+interface ContentCardProps {
+  title: string;
+  description: string;
+  imageSrc: string;
+  imageAlt: string;
+  imagePosition?: 'left' | 'right';
+  actions?: React.ReactNode;
+}
+
+const ContentCard: React.FC<ContentCardProps> = ({
+  title,
+  description,
+  imageSrc,
+  imageAlt,
+  imagePosition = 'left',
+  actions
+}) => {
+  return (
+    <Card sx={{ mb: 4 }}>
+      <Grid container spacing={3} alignItems="center">
+        <Grid item xs={12} md={6} order={{ md: imagePosition === 'right' ? 2 : 1 }}>
+          <CardMedia
+            component="img"
+            image={imageSrc}
+            alt={imageAlt}
+            sx={{ borderRadius: 1 }}
+          />
+        </Grid>
+        <Grid item xs={12} md={6} order={{ md: imagePosition === 'right' ? 1 : 2 }}>
+          <CardContent>
+            <Typography variant="h4" gutterBottom>{title}</Typography>
+            <Typography variant="body1" paragraph>{description}</Typography>
+            {actions}
+          </CardContent>
+        </Grid>
+      </Grid>
+    </Card>
+  );
+};
+
+// Now reuse across multiple pages:
+// HomePage: <ContentCard title="Mission" description="..." imageSrc="/mission.jpg" />
+// AboutPage: <ContentCard title="History" description="..." imageSrc="/history.jpg" imagePosition="right" />
+```
+
+### **Rule 3: Standardize Data Fetching Patterns**
+
+```typescript
+// ❌ WRONG: Different data fetching in each page
+const EducationPage = () => {
+  const [courses, setCourses] = useState([]);
+  useEffect(() => {
+    fetch('/api/courses').then(res => res.json()).then(setCourses);
+  }, []);
+  // ...
+};
+
+const TeamPage = () => {
+  const [members, setMembers] = useState([]);
+  useEffect(() => {
+    fetch('/api/team').then(res => res.json()).then(setMembers);
+  }, []);
+  // ...
+};
+
+// ✅ CORRECT: Standardized data fetching hook
+const useApiData = <T>(endpoint: string) => {
+  const [data, setData] = useState<T[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(endpoint);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Fetch failed');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [endpoint]);
+
+  return { data, loading, error, refetch: () => fetchData() };
+};
+
+// Now all pages use the same pattern:
+const EducationPage = () => {
+  const { data: courses, loading, error } = useApiData<Course>('/api/courses');
+  // ...
+};
+
+const TeamPage = () => {
+  const { data: members, loading, error } = useApiData<Member>('/api/team');
+  // ...
+};
+```
+
+## 🏗️ **CODE ORGANIZATION RULES**
+
+### **Rule 4: Use Barrel Exports for Clean Imports**
+
+```typescript
+// ❌ WRONG: Long import statements
+import { HeroSection } from '../../../components/sections/Hero/HeroSection';
+import { ProjectsGallery } from '../../../components/sections/Gallery/ProjectsGallery';
+import { ShopSection } from '../../../components/sections/Shop/ShopSection';
+
+// ✅ CORRECT: Barrel exports
+// src/components/sections/index.ts
+export { HeroSection } from './Hero';
+export { ProjectsGallery } from './Gallery';
+export { ShopSection } from './Shop';
+
+// src/components/index.ts
+export * from './common';
+export * from './layout';
+export * from './sections';
+export * from './forms';
+
+// Now clean imports:
+import { HeroSection, ProjectsGallery, ShopSection } from '@/components/sections';
+```
+
+### **Rule 5: Consistent Component File Structure**
+
+```typescript
+// Every component folder follows this structure:
+src/components/common/Button/
+├── 📄 Button.tsx          # Main component
+├── 📄 Button.types.ts     # TypeScript interfaces
+├── 📄 Button.styles.ts    # Styled components (if needed)
+├── 📄 Button.stories.tsx  # Storybook stories (if using)
+├── 📄 Button.test.tsx     # Unit tests
+└── 📄 index.ts            # Barrel export
+
+// index.ts content:
+export { Button } from './Button';
+export type { ButtonProps } from './Button.types';
+```
+
+### **Rule 6: Shared Constants and Utilities**
+
+```typescript
+// src/utils/constants.ts - Extract all hardcoded values
+export const VEXUS_CONSTANTS = {
+  SCORING: {
+    IVC_THRESHOLD: 2, // cm
+    HEPATIC_MILD: 1,
+    HEPATIC_SEVERE: 2,
+    PORTAL_MILD: 1,
+    PORTAL_SEVERE: 2,
+    RENAL_MILD: 1,
+    RENAL_SEVERE: 2,
+  },
+  API: {
+    AIRTABLE_BASE_URL: 'https://api.airtable.com/v0',
+    MODAL_ENDPOINTS: {
+      hepatic: 'https://gsiegel14--vexus-hepatic-endpoint-hepaticmodel-predict.modal.run',
+      portal: 'https://gsiegel14--vexus-renal-portal-endpoint-portalmodel-predict.modal.run',
+      renal: 'https://gsiegel14--vexus-renal-portal-endpoint-renalmodel-predict.modal.run',
+    }
+  },
+  IMAGES: {
+    TEAM_PHOTOS: '/images/team',
+    WAVEFORMS: '/images/waveforms',
+    ACQUISITION: '/images/acquisition',
+  }
+} as const;
+
+// src/utils/helpers.ts - Shared utility functions
+export const calculateVexusScore = (selections: VexusSelections): number => {
+  let score = 0;
+  const { SCORING } = VEXUS_CONSTANTS;
+  
+  if (selections.ivc === '>2cm') score += 1;
+  if (selections.hepatic === 'HV Mild') score += SCORING.HEPATIC_MILD;
+  if (selections.hepatic === 'HV Severe') score += SCORING.HEPATIC_SEVERE;
+  // ... rest of scoring logic
+  
+  return score;
+};
+
+export const formatImagePath = (category: string, filename: string): string => {
+  return `${VEXUS_CONSTANTS.IMAGES[category.toUpperCase()]}/${filename}`;
+};
+```
+
+## 🔄 **DUPLICATE CODE AVOIDANCE STRATEGIES**
+
+### **Strategy 1: Component Composition over Inheritance**
+
+```typescript
+// ❌ WRONG: Duplicating layout logic
+const EducationPage = () => {
+  return (
+    <Box sx={{ py: 4 }}>
+      <Container maxWidth="lg">
+        <Typography variant="h1">Education</Typography>
+        <Typography variant="body1">Content...</Typography>
+      </Container>
+    </Box>
+  );
+};
+
+const TeamPage = () => {
+  return (
+    <Box sx={{ py: 4 }}>
+      <Container maxWidth="lg">
+        <Typography variant="h1">Team</Typography>
+        <Typography variant="body1">Content...</Typography>
+      </Container>
+    </Box>
+  );
+};
+
+// ✅ CORRECT: Composable layout component
+interface PageLayoutProps {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+}
+
+const PageLayout: React.FC<PageLayoutProps> = ({
+  title,
+  description,
+  children,
+  maxWidth = 'lg'
+}) => {
+  return (
+    <Box sx={{ py: 4 }}>
+      <Container maxWidth={maxWidth}>
+        <Typography variant="h1" gutterBottom>{title}</Typography>
+        {description && (
+          <Typography variant="h3" color="text.secondary" paragraph>
+            {description}
+          </Typography>
+        )}
+        {children}
+      </Container>
+    </Box>
+  );
+};
+
+// Now pages are clean and consistent:
+const EducationPage = () => (
+  <MainLayout>
+    <PageLayout title="VEXUS Education" description="Learn the fundamentals">
+      <EducationContent />
+    </PageLayout>
+  </MainLayout>
+);
+
+const TeamPage = () => (
+  <MainLayout>
+    <PageLayout title="Our Team" description="Meet the VEXUS ATLAS team">
+      <TeamGrid />
+    </PageLayout>
+  </MainLayout>
+);
+```
+
+### **Strategy 2: Shared Styling Patterns**
+
+```typescript
+// src/theme/commonStyles.ts - Shared style objects
+export const commonStyles = {
+  pageContainer: {
+    py: { xs: 4, md: 6 },
+    px: { xs: 2, sm: 3 },
+  },
+  heroSection: {
+    textAlign: 'center' as const,
+    py: { xs: 6, md: 10 },
+    mb: { xs: 4, md: 6 },
+  },
+  sectionSpacing: {
+    mb: { xs: 6, md: 8 },
+  },
+  cardHover: {
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: 2,
+    },
+  },
+};
+
+// Usage across components:
+const HeroSection = ({ title, description }) => (
+  <Box sx={commonStyles.heroSection}>
+    <Typography variant="h1">{title}</Typography>
+    <Typography variant="h3">{description}</Typography>
+  </Box>
+);
+
+const ProjectCard = ({ project }) => (
+  <Card sx={commonStyles.cardHover}>
+    <CardContent>{/* ... */}</CardContent>
+  </Card>
+);
+```
+
+### **Strategy 3: Template Components for Similar Pages**
+
+```typescript
+// src/components/templates/ContentPageTemplate.tsx
+interface ContentPageTemplateProps {
+  title: string;
+  description?: string;
+  images?: Array<{ src: string; alt: string; caption?: string }>;
+  content: Array<{
+    type: 'text' | 'image' | 'list' | 'quote';
+    data: any;
+  }>;
+  relatedLinks?: Array<{ text: string; href: string }>;
+}
+
+const ContentPageTemplate: React.FC<ContentPageTemplateProps> = ({
+  title,
+  description,
+  images,
+  content,
+  relatedLinks
+}) => {
+  return (
+    <PageLayout title={title} description={description}>
+      {/* Dynamic content rendering based on content array */}
+      {content.map((section, index) => {
+        switch (section.type) {
+          case 'text':
+            return <Typography key={index} variant="body1" paragraph>{section.data}</Typography>;
+          case 'image':
+            return <ImageSection key={index} {...section.data} />;
+          case 'list':
+            return <BulletList key={index} items={section.data} />;
+          case 'quote':
+            return <BlockQuote key={index} {...section.data} />;
+          default:
+            return null;
+        }
+      })}
+      
+      {relatedLinks && <RelatedLinksSection links={relatedLinks} />}
+    </PageLayout>
+  );
+};
+
+// Now simple content pages become data-driven:
+const AboutPage = () => {
+  const aboutContent = [
+    { type: 'text', data: 'VEXUS ATLAS is a collaborative platform...' },
+    { type: 'image', data: { src: '/about-image.jpg', alt: 'About us' } },
+    { type: 'text', data: 'Our mission is to provide...' },
+  ];
+
+  return (
+    <MainLayout>
+      <ContentPageTemplate
+        title="About VEXUS ATLAS"
+        description="Learn about our mission and vision"
+        content={aboutContent}
+        relatedLinks={[
+          { text: 'Our Team', href: '/team' },
+          { text: 'Contact Us', href: '/contact' }
+        ]}
+      />
+    </MainLayout>
+  );
+};
+```
+
+## 📝 **TEXT CONTENT MIGRATION RULES**
+
+### **Rule 7: Centralized Content Management**
+
+```typescript
+// src/content/pageContent.ts - All page text in one place
+export const pageContent = {
+  home: {
+    hero: {
+      title: "A Collaborative Ultrasound Education Platform",
+      subtitle: "We create, share, and curate free ultrasound educational content contributed by educators around the world.",
+    },
+    sections: {
+      projects: {
+        title: "Explore Our Projects",
+        items: [
+          {
+            title: "Image Atlas",
+            description: "Comprehensive collection of ultrasound images",
+            icon: "atlas-icon.png",
+            href: "/image-atlas"
+          },
+          // ... more items
+        ]
+      }
+    }
+  },
+  education: {
+    hero: {
+      title: "VEXUS Education",
+      subtitle: "Learn the fundamentals of Venous Excess Ultrasound Score",
+    },
+    sections: {
+      overview: {
+        title: "Understanding VEXUS",
+        content: "The Venous Excess Ultrasound Score (VEXUS) is a point-of-care ultrasound protocol..."
+      }
+    }
+  }
+} as const;
+
+// Usage in components:
+const HomePage = () => {
+  const { hero, sections } = pageContent.home;
+  
+  return (
+    <MainLayout>
+      <HeroSection title={hero.title} subtitle={hero.subtitle} />
+      <ProjectsGallery title={sections.projects.title} items={sections.projects.items} />
+    </MainLayout>
+  );
+};
+```
+
+### **Rule 8: Type-Safe Content Structure**
+
+```typescript
+// src/types/content.ts
+export interface HeroContent {
+  title: string;
+  subtitle?: string;
+  backgroundImage?: string;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+export interface ProjectItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  href: string;
+  external?: boolean;
+}
+
+export interface PageContent {
+  hero: HeroContent;
+  sections: Record<string, {
+    title: string;
+    content?: string;
+    items?: ProjectItem[];
+  }>;
+}
+
+// Now content is type-safe:
+const homeContent: PageContent = {
+  hero: {
+    title: "A Collaborative Ultrasound Education Platform",
+    subtitle: "We create, share, and curate free ultrasound educational content...",
+  },
+  sections: {
+    projects: {
+      title: "Explore Our Projects",
+      items: [/* ... */]
+    }
+  }
+};
+```
+
+## 🔍 **CONVERSION QUALITY CHECKLIST**
+
+### **Before Converting Each Page:**
+- [ ] Check if similar components already exist
+- [ ] Identify reusable patterns (hero sections, card layouts, etc.)
+- [ ] Document all CSS classes and their purposes
+- [ ] List all images and assets needed
+- [ ] Map out data dependencies (APIs, static content)
+
+### **During Conversion:**
+- [ ] Use TypeScript interfaces for all props
+- [ ] Extract reusable components immediately
+- [ ] Use theme values instead of hardcoded styles
+- [ ] Implement responsive design from the start
+- [ ] Add proper loading and error states
+- [ ] Include accessibility attributes
+
+### **After Conversion:**
+- [ ] Visual comparison with original page
+- [ ] Test on mobile and desktop
+- [ ] Verify all links and interactions work
+- [ ] Check loading performance
+- [ ] Review code for potential reuse opportunities
+- [ ] Document any new patterns for future use
+
+## 🚀 **AUTOMATION TOOLS**
+
+### **Astro to React Conversion Helper Script:**
+
+```bash
+#!/bin/bash
+# astro-to-react.sh - Helper script for conversion
+
+ASTRO_FILE=$1
+PAGE_NAME=$2
+
+echo "Converting $ASTRO_FILE to React..."
+
+# Extract component imports
+echo "Components used:"
+grep -o "import.*from.*" $ASTRO_FILE
+
+# Extract image references
+echo "Images referenced:"
+grep -o '"/images/[^"]*"' $ASTRO_FILE
+
+# Extract CSS classes
+echo "CSS classes used:"
+grep -o 'class="[^"]*"' $ASTRO_FILE
+
+# Generate React component template
+cat > "src/app/$PAGE_NAME/page.tsx" << EOF
+import React from 'react';
+import { MainLayout } from '@/components/layout/MainLayout';
+
+export default function ${PAGE_NAME^}Page() {
+  return (
+    <MainLayout title="$PAGE_NAME">
+      {/* TODO: Convert content from $ASTRO_FILE */}
+    </MainLayout>
+  );
+}
+EOF
+
+echo "React template created at src/app/$PAGE_NAME/page.tsx"
+```
+
+This comprehensive guide ensures consistent, maintainable code during the Astro to React conversion process! 🎯

@@ -1,0 +1,2153 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# React Best Practices Guide: 2025 Standards for High-Quality Functional Frontends
+
+This guide provides comprehensive best practices for building modern, high-quality React applications using functional components and the latest 2025 standards.
+
+## I. Modern React Architecture Principles
+
+### 1. Functional Components Only
+```tsx
+// ✅ Modern functional component with TypeScript
+interface UserProfileProps {
+  userId: string;
+  onUpdate?: (user: User) => void;
+}
+
+export const UserProfile: React.FC<UserProfileProps> = ({ 
+  userId, 
+  onUpdate 
+}) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  
+  // Component logic here
+  
+  return (
+    <div className="user-profile">
+      {/* JSX here */}
+    </div>
+  );
+};
+
+// ❌ Avoid class components
+class UserProfile extends React.Component {
+  // Don't use this pattern anymore
+}
+```
+
+### 2. TypeScript First Approach
+```tsx
+// ✅ Comprehensive type definitions
+interface User {
+  readonly id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  preferences: UserPreferences;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface UserPreferences {
+  theme: 'light' | 'dark' | 'system';
+  notifications: {
+    email: boolean;
+    push: boolean;
+    sms: boolean;
+  };
+  privacy: {
+    profileVisible: boolean;
+    activityVisible: boolean;
+  };
+}
+
+// ✅ Generic component props
+interface ListProps<T> {
+  items: T[];
+  renderItem: (item: T, index: number) => React.ReactNode;
+  keyExtractor: (item: T) => string;
+  loading?: boolean;
+  emptyMessage?: string;
+}
+
+export const List = <T,>({ 
+  items, 
+  renderItem, 
+  keyExtractor,
+  loading = false,
+  emptyMessage = 'No items found'
+}: ListProps<T>) => {
+  // Implementation
+};
+```
+
+## II. Modern Hooks Patterns
+
+### 1. Custom Hooks for Logic Separation
+```tsx
+// ✅ Custom hook for data fetching
+interface UseUserDataReturn {
+  user: User | null;
+  loading: boolean;
+  error: Error | null;
+  refetch: () => Promise<void>;
+  updateUser: (updates: Partial<User>) => Promise<void>;
+}
+
+export const useUserData = (userId: string): UseUserDataReturn => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  
+  const fetchUser = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const userData = await userService.getById(userId);
+      setUser(userData);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Unknown error'));
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
+  
+  const updateUser = useCallback(async (updates: Partial<User>) => {
+    if (!user) return;
+    
+    try {
+      const updatedUser = await userService.update(user.id, updates);
+      setUser(updatedUser);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Update failed'));
+      throw err;
+    }
+  }, [user]);
+  
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+  
+  return {
+    user,
+    loading,
+    error,
+    refetch: fetchUser,
+    updateUser
+  };
+};
+
+// ✅ Usage in component
+export const UserProfile: React.FC<{ userId: string }> = ({ userId }) => {
+  const { user, loading, error, updateUser } = useUserData(userId);
+  
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage error={error} />;
+  if (!user) return <NotFound />;
+  
+  return <UserCard user={user} onUpdate={updateUser} />;
+};
+```
+
+### 2. Advanced Hook Patterns
+```tsx
+// ✅ useReducer for complex state
+interface FormState {
+  values: Record<string, any>;
+  errors: Record<string, string>;
+  touched: Record<string, boolean>;
+  isSubmitting: boolean;
+  isValid: boolean;
+}
+
+type FormAction = 
+  | { type: 'SET_FIELD'; field: string; value: any }
+  | { type: 'SET_ERROR'; field: string; error: string }
+  | { type: 'SET_TOUCHED'; field: string }
+  | { type: 'SET_SUBMITTING'; isSubmitting: boolean }
+  | { type: 'RESET_FORM' };
+
+const formReducer = (state: FormState, action: FormAction): FormState => {
+  switch (action.type) {
+    case 'SET_FIELD':
+      return {
+        ...state,
+        values: { ...state.values, [action.field]: action.value },
+        errors: { ...state.errors, [action.field]: '' }
+      };
+    case 'SET_ERROR':
+      return {
+        ...state,
+        errors: { ...state.errors, [action.field]: action.error }
+      };
+    // ... other cases
+    default:
+      return state;
+  }
+};
+
+export const useForm = <T extends Record<string, any>>(
+  initialValues: T,
+  validationSchema?: ValidationSchema<T>
+) => {
+  const [state, dispatch] = useReducer(formReducer, {
+    values: initialValues,
+    errors: {},
+    touched: {},
+    isSubmitting: false,
+    isValid: true
+  });
+  
+  // Form logic here
+  
+  return {
+    values: state.values as T,
+    errors: state.errors,
+    touched: state.touched,
+    isSubmitting: state.isSubmitting,
+    isValid: state.isValid,
+    setFieldValue: (field: keyof T, value: any) => 
+      dispatch({ type: 'SET_FIELD', field: field as string, value }),
+    setFieldError: (field: keyof T, error: string) =>
+      dispatch({ type: 'SET_ERROR', field: field as string, error }),
+    handleSubmit: (onSubmit: (values: T) => Promise<void>) => async (e: React.FormEvent) => {
+      e.preventDefault();
+      // Handle submission
+    }
+  };
+};
+```
+
+### 3. Performance Optimization Hooks
+```tsx
+// ✅ useMemo for expensive calculations
+export const ExpensiveComponent: React.FC<{ data: DataItem[] }> = ({ data }) => {
+  const processedData = useMemo(() => {
+    return data
+      .filter(item => item.isActive)
+      .sort((a, b) => b.priority - a.priority)
+      .map(item => ({
+        ...item,
+        displayName: `${item.name} (${item.category})`
+      }));
+  }, [data]);
+  
+  const stats = useMemo(() => ({
+    total: processedData.length,
+    highPriority: processedData.filter(item => item.priority > 8).length,
+    categories: [...new Set(processedData.map(item => item.category))]
+  }), [processedData]);
+  
+  return (
+    <div>
+      <DataStats stats={stats} />
+      <DataList items={processedData} />
+    </div>
+  );
+};
+
+// ✅ useCallback for stable function references
+export const SearchableList: React.FC<{ items: Item[] }> = ({ items }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState<'name' | 'date'>('name');
+  
+  const handleSearch = useCallback((term: string) => {
+    setSearchTerm(term);
+  }, []);
+  
+  const handleSort = useCallback((field: 'name' | 'date') => {
+    setSortBy(field);
+  }, []);
+  
+  const filteredItems = useMemo(() => {
+    return items
+      .filter(item => 
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (sortBy === 'name') return a.name.localeCompare(b.name);
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      });
+  }, [items, searchTerm, sortBy]);
+  
+  return (
+    <div>
+      <SearchInput onSearch={handleSearch} />
+      <SortControls onSort={handleSort} currentSort={sortBy} />
+      <ItemList items={filteredItems} />
+    </div>
+  );
+};
+```
+
+## III. Component Design Patterns
+
+### 1. Compound Components Pattern
+```tsx
+// ✅ Compound component for flexible composition
+interface TabsContextValue {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}
+
+const TabsContext = createContext<TabsContextValue | null>(null);
+
+const useTabs = () => {
+  const context = useContext(TabsContext);
+  if (!context) {
+    throw new Error('Tabs components must be used within a Tabs provider');
+  }
+  return context;
+};
+
+export const Tabs: React.FC<{ 
+  children: React.ReactNode;
+  defaultTab?: string;
+  onTabChange?: (tab: string) => void;
+}> = ({ children, defaultTab, onTabChange }) => {
+  const [activeTab, setActiveTab] = useState(defaultTab || '');
+  
+  const handleTabChange = useCallback((tab: string) => {
+    setActiveTab(tab);
+    onTabChange?.(tab);
+  }, [onTabChange]);
+  
+  return (
+    <TabsContext.Provider value={{ activeTab, setActiveTab: handleTabChange }}>
+      <div className="tabs">{children}</div>
+    </TabsContext.Provider>
+  );
+};
+
+export const TabList: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="tab-list" role="tablist">{children}</div>
+);
+
+export const Tab: React.FC<{ 
+  value: string;
+  children: React.ReactNode;
+  disabled?: boolean;
+}> = ({ value, children, disabled = false }) => {
+  const { activeTab, setActiveTab } = useTabs();
+  const isActive = activeTab === value;
+  
+  return (
+    <button
+      className={`tab ${isActive ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
+      role="tab"
+      aria-selected={isActive}
+      disabled={disabled}
+      onClick={() => !disabled && setActiveTab(value)}
+    >
+      {children}
+    </button>
+  );
+};
+
+export const TabPanels: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="tab-panels">{children}</div>
+);
+
+export const TabPanel: React.FC<{ 
+  value: string;
+  children: React.ReactNode;
+}> = ({ value, children }) => {
+  const { activeTab } = useTabs();
+  
+  if (activeTab !== value) return null;
+  
+  return (
+    <div className="tab-panel" role="tabpanel">
+      {children}
+    </div>
+  );
+};
+
+// Usage
+<Tabs defaultTab="profile" onTabChange={handleTabChange}>
+  <TabList>
+    <Tab value="profile">Profile</Tab>
+    <Tab value="settings">Settings</Tab>
+    <Tab value="billing">Billing</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel value="profile"><ProfileContent /></TabPanel>
+    <TabPanel value="settings"><SettingsContent /></TabPanel>
+    <TabPanel value="billing"><BillingContent /></TabPanel>
+  </TabPanels>
+</Tabs>
+```
+
+### 2. Render Props and Children as Functions
+```tsx
+// ✅ Flexible data fetcher with render props
+interface DataFetcherProps<T> {
+  url: string;
+  children: (state: {
+    data: T | null;
+    loading: boolean;
+    error: Error | null;
+    refetch: () => void;
+  }) => React.ReactNode;
+}
+
+export const DataFetcher = <T,>({ url, children }: DataFetcherProps<T>) => {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch');
+      const result = await response.json();
+      setData(result);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Unknown error'));
+    } finally {
+      setLoading(false);
+    }
+  }, [url]);
+  
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+  
+  return <>{children({ data, loading, error, refetch: fetchData })}</>;
+};
+
+// Usage
+<DataFetcher<User[]> url="/api/users">
+  {({ data, loading, error, refetch }) => {
+    if (loading) return <LoadingSpinner />;
+    if (error) return <ErrorMessage error={error} onRetry={refetch} />;
+    return <UserList users={data || []} />;
+  }}
+</DataFetcher>
+```
+
+### 3. Higher-Order Components (Modern Approach)
+```tsx
+// ✅ HOC with proper TypeScript support
+interface WithLoadingProps {
+  loading?: boolean;
+}
+
+export const withLoading = <P extends object>(
+  Component: React.ComponentType<P>
+) => {
+  const WithLoadingComponent = (props: P & WithLoadingProps) => {
+    const { loading, ...restProps } = props;
+    
+    if (loading) {
+      return <LoadingSpinner />;
+    }
+    
+    return <Component {...(restProps as P)} />;
+  };
+  
+  WithLoadingComponent.displayName = `withLoading(${Component.displayName || Component.name})`;
+  
+  return WithLoadingComponent;
+};
+
+// Usage
+const UserListWithLoading = withLoading(UserList);
+<UserListWithLoading users={users} loading={isLoading} />
+```
+
+## IV. State Management Patterns
+
+### 1. Context + useReducer for Complex State
+```tsx
+// ✅ Application state management
+interface AppState {
+  user: User | null;
+  theme: 'light' | 'dark';
+  notifications: Notification[];
+  settings: AppSettings;
+}
+
+type AppAction = 
+  | { type: 'SET_USER'; user: User | null }
+  | { type: 'SET_THEME'; theme: 'light' | 'dark' }
+  | { type: 'ADD_NOTIFICATION'; notification: Notification }
+  | { type: 'REMOVE_NOTIFICATION'; id: string }
+  | { type: 'UPDATE_SETTINGS'; settings: Partial<AppSettings> };
+
+const appReducer = (state: AppState, action: AppAction): AppState => {
+  switch (action.type) {
+    case 'SET_USER':
+      return { ...state, user: action.user };
+    case 'SET_THEME':
+      return { ...state, theme: action.theme };
+    case 'ADD_NOTIFICATION':
+      return { 
+        ...state, 
+        notifications: [...state.notifications, action.notification] 
+      };
+    case 'REMOVE_NOTIFICATION':
+      return {
+        ...state,
+        notifications: state.notifications.filter(n => n.id !== action.id)
+      };
+    case 'UPDATE_SETTINGS':
+      return {
+        ...state,
+        settings: { ...state.settings, ...action.settings }
+      };
+    default:
+      return state;
+  }
+};
+
+interface AppContextValue {
+  state: AppState;
+  dispatch: React.Dispatch<AppAction>;
+  actions: {
+    setUser: (user: User | null) => void;
+    setTheme: (theme: 'light' | 'dark') => void;
+    addNotification: (notification: Omit<Notification, 'id'>) => void;
+    removeNotification: (id: string) => void;
+    updateSettings: (settings: Partial<AppSettings>) => void;
+  };
+}
+
+const AppContext = createContext<AppContextValue | null>(null);
+
+export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [state, dispatch] = useReducer(appReducer, {
+    user: null,
+    theme: 'light',
+    notifications: [],
+    settings: defaultSettings
+  });
+  
+  const actions = useMemo(() => ({
+    setUser: (user: User | null) => dispatch({ type: 'SET_USER', user }),
+    setTheme: (theme: 'light' | 'dark') => dispatch({ type: 'SET_THEME', theme }),
+    addNotification: (notification: Omit<Notification, 'id'>) => 
+      dispatch({ 
+        type: 'ADD_NOTIFICATION', 
+        notification: { ...notification, id: generateId() } 
+      }),
+    removeNotification: (id: string) => dispatch({ type: 'REMOVE_NOTIFICATION', id }),
+    updateSettings: (settings: Partial<AppSettings>) => 
+      dispatch({ type: 'UPDATE_SETTINGS', settings })
+  }), []);
+  
+  return (
+    <AppContext.Provider value={{ state, dispatch, actions }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+export const useApp = () => {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('useApp must be used within AppProvider');
+  }
+  return context;
+};
+```
+
+### 2. Zustand for Simple Global State
+```tsx
+// ✅ Zustand store with TypeScript
+interface UserStore {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  
+  // Actions
+  setUser: (user: User | null) => void;
+  fetchUser: (id: string) => Promise<void>;
+  updateUser: (id: string, updates: Partial<User>) => Promise<void>;
+  clearError: () => void;
+}
+
+export const useUserStore = create<UserStore>((set, get) => ({
+  user: null,
+  loading: false,
+  error: null,
+  
+  setUser: (user) => set({ user }),
+  
+  fetchUser: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      const user = await userService.getById(id);
+      set({ user, loading: false });
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Unknown error',
+        loading: false 
+      });
+    }
+  },
+  
+  updateUser: async (id, updates) => {
+    const { user } = get();
+    if (!user) return;
+    
+    try {
+      const updatedUser = await userService.update(id, updates);
+      set({ user: updatedUser });
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : 'Update failed' });
+      throw error;
+    }
+  },
+  
+  clearError: () => set({ error: null })
+}));
+
+// Usage in component
+export const UserProfile: React.FC<{ userId: string }> = ({ userId }) => {
+  const { user, loading, error, fetchUser, updateUser } = useUserStore();
+  
+  useEffect(() => {
+    fetchUser(userId);
+  }, [userId, fetchUser]);
+  
+  // Component logic
+};
+```
+
+## V. Performance Optimization
+
+### 1. React.memo and Memoization
+```tsx
+// ✅ Memoized component with custom comparison
+interface UserCardProps {
+  user: User;
+  onEdit: (user: User) => void;
+  onDelete: (id: string) => void;
+  isSelected?: boolean;
+}
+
+export const UserCard = React.memo<UserCardProps>(({ 
+  user, 
+  onEdit, 
+  onDelete, 
+  isSelected = false 
+}) => {
+  const handleEdit = useCallback(() => {
+    onEdit(user);
+  }, [user, onEdit]);
+  
+  const handleDelete = useCallback(() => {
+    onDelete(user.id);
+  }, [user.id, onDelete]);
+  
+  return (
+    <div className={`user-card ${isSelected ? 'selected' : ''}`}>
+      <img src={user.avatar} alt={user.name} />
+      <h3>{user.name}</h3>
+      <p>{user.email}</p>
+      <button onClick={handleEdit}>Edit</button>
+      <button onClick={handleDelete}>Delete</button>
+    </div>
+  );
+}, (prevProps, nextProps) => {
+  // Custom comparison function
+  return (
+    prevProps.user.id === nextProps.user.id &&
+    prevProps.user.name === nextProps.user.name &&
+    prevProps.user.email === nextProps.user.email &&
+    prevProps.user.avatar === nextProps.user.avatar &&
+    prevProps.isSelected === nextProps.isSelected &&
+    prevProps.onEdit === nextProps.onEdit &&
+    prevProps.onDelete === nextProps.onDelete
+  );
+});
+
+UserCard.displayName = 'UserCard';
+```
+
+### 2. Virtual Scrolling for Large Lists
+```tsx
+// ✅ Virtual scrolling implementation
+interface VirtualListProps<T> {
+  items: T[];
+  itemHeight: number;
+  containerHeight: number;
+  renderItem: (item: T, index: number) => React.ReactNode;
+  keyExtractor: (item: T) => string;
+}
+
+export const VirtualList = <T,>({
+  items,
+  itemHeight,
+  containerHeight,
+  renderItem,
+  keyExtractor
+}: VirtualListProps<T>) => {
+  const [scrollTop, setScrollTop] = useState(0);
+  
+  const visibleCount = Math.ceil(containerHeight / itemHeight);
+  const startIndex = Math.floor(scrollTop / itemHeight);
+  const endIndex = Math.min(startIndex + visibleCount + 1, items.length);
+  
+  const visibleItems = items.slice(startIndex, endIndex);
+  
+  const totalHeight = items.length * itemHeight;
+  const offsetY = startIndex * itemHeight;
+  
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    setScrollTop(e.currentTarget.scrollTop);
+  }, []);
+  
+  return (
+    <div
+      style={{ height: containerHeight, overflow: 'auto' }}
+      onScroll={handleScroll}
+    >
+      <div style={{ height: totalHeight, position: 'relative' }}>
+        <div style={{ transform: `translateY(${offsetY}px)` }}>
+          {visibleItems.map((item, index) => (
+            <div
+              key={keyExtractor(item)}
+              style={{ height: itemHeight }}
+            >
+              {renderItem(item, startIndex + index)}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+```
+
+### 3. Code Splitting and Lazy Loading
+```tsx
+// ✅ Route-based code splitting
+const HomePage = lazy(() => import('../pages/HomePage'));
+const UserPage = lazy(() => import('../pages/UserPage'));
+const SettingsPage = lazy(() => import('../pages/SettingsPage'));
+
+export const AppRouter: React.FC = () => {
+  return (
+    <Router>
+      <Suspense fallback={<PageLoadingSpinner />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/users/:id" element={<UserPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Routes>
+      </Suspense>
+    </Router>
+  );
+};
+
+// ✅ Component-based lazy loading
+const HeavyChart = lazy(() => 
+  import('./HeavyChart').then(module => ({ default: module.HeavyChart }))
+);
+
+export const Dashboard: React.FC = () => {
+  const [showChart, setShowChart] = useState(false);
+  
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <button onClick={() => setShowChart(true)}>
+        Load Chart
+      </button>
+      {showChart && (
+        <Suspense fallback={<ChartSkeleton />}>
+          <HeavyChart />
+        </Suspense>
+      )}
+    </div>
+  );
+};
+```
+
+## VI. Error Handling and Boundaries
+
+### 1. Error Boundaries
+```tsx
+// ✅ Comprehensive error boundary
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: ErrorInfo | null;
+}
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  fallback?: React.ComponentType<{ error: Error; retry: () => void }>;
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
+}
+
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null
+    };
+  }
+  
+  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
+    return {
+      hasError: true,
+      error
+    };
+  }
+  
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    this.setState({ errorInfo });
+    this.props.onError?.(error, errorInfo);
+    
+    // Log to error reporting service
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+  
+  handleRetry = () => {
+    this.setState({
+      hasError: false,
+      error: null,
+      errorInfo: null
+    });
+  };
+  
+  render() {
+    if (this.state.hasError && this.state.error) {
+      const FallbackComponent = this.props.fallback || DefaultErrorFallback;
+      return <FallbackComponent error={this.state.error} retry={this.handleRetry} />;
+    }
+    
+    return this.props.children;
+  }
+}
+
+// Default error fallback component
+const DefaultErrorFallback: React.FC<{ error: Error; retry: () => void }> = ({ 
+  error, 
+  retry 
+}) => (
+  <div className="error-boundary">
+    <h2>Something went wrong</h2>
+    <p>{error.message}</p>
+    <button onClick={retry}>Try again</button>
+  </div>
+);
+```
+
+### 2. Async Error Handling
+```tsx
+// ✅ Hook for async error handling
+export const useAsyncError = () => {
+  const [, setError] = useState();
+  
+  return useCallback((error: Error) => {
+    setError(() => {
+      throw error;
+    });
+  }, []);
+};
+
+// ✅ Safe async component
+export const AsyncComponent: React.FC = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const throwAsyncError = useAsyncError();
+  
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const result = await apiCall();
+      setData(result);
+    } catch (error) {
+      throwAsyncError(error instanceof Error ? error : new Error('Unknown error'));
+    } finally {
+      setLoading(false);
+    }
+  }, [throwAsyncError]);
+  
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+  
+  if (loading) return <LoadingSpinner />;
+  
+  return <div>{/* Render data */}</div>;
+};
+```
+
+## VII. Testing Patterns
+
+### 1. Component Testing with React Testing Library
+```tsx
+// ✅ Comprehensive component test
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { UserProfile } from './UserProfile';
+import { userService } from '../services/userService';
+
+// Mock the service
+jest.mock('../services/userService');
+const mockUserService = userService as jest.Mocked<typeof userService>;
+
+const mockUser: User = {
+  id: '1',
+  name: 'John Doe',
+  email: 'john@example.com',
+  avatar: 'avatar.jpg',
+  preferences: {
+    theme: 'light',
+    notifications: { email: true, push: false, sms: false },
+    privacy: { profileVisible: true, activityVisible: false }
+  },
+  createdAt: new Date('2023-01-01'),
+  updatedAt: new Date('2023-01-01')
+};
+
+describe('UserProfile', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  
+  it('renders user information correctly', async () => {
+    mockUserService.getById.mockResolvedValue(mockUser);
+    
+    render(<UserProfile userId="1" />);
+    
+    // Check loading state
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    
+    // Wait for data to load
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+    
+    expect(screen.getByText('john@example.com')).toBeInTheDocument();
+    expect(screen.getByAltText('John Doe')).toHaveAttribute('src', 'avatar.jpg');
+  });
+  
+  it('handles user update correctly', async () => {
+    const updatedUser = { ...mockUser, name: 'Jane Doe' };
+    mockUserService.getById.mockResolvedValue(mockUser);
+    mockUserService.update.mockResolvedValue(updatedUser);
+    
+    const user = userEvent.setup();
+    render(<UserProfile userId="1" />);
+    
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+    
+    // Click edit button
+    await user.click(screen.getByRole('button', { name: /edit/i }));
+    
+    // Update name
+    const nameInput = screen.getByLabelText(/name/i);
+    await user.clear(nameInput);
+    await user.type(nameInput, 'Jane Doe');
+    
+    // Submit form
+    await user.click(screen.getByRole('button', { name: /save/i }));
+    
+    await waitFor(() => {
+      expect(screen.getByText('Jane Doe')).toBeInTheDocument();
+    });
+    
+    expect(mockUserService.update).toHaveBeenCalledWith('1', { name: 'Jane Doe' });
+  });
+  
+  it('displays error message when fetch fails', async () => {
+    const errorMessage = 'Failed to fetch user';
+    mockUserService.getById.mockRejectedValue(new Error(errorMessage));
+    
+    render(<UserProfile userId="1" />);
+    
+    await waitFor(() => {
+      expect(screen.getByText(errorMessage)).toBeInTheDocument();
+    });
+  });
+});
+```
+
+### 2. Custom Hook Testing
+```tsx
+// ✅ Custom hook test
+import { renderHook, act } from '@testing-library/react';
+import { useUserData } from './useUserData';
+import { userService } from '../services/userService';
+
+jest.mock('../services/userService');
+const mockUserService = userService as jest.Mocked<typeof userService>;
+
+describe('useUserData', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  
+  it('fetches user data successfully', async () => {
+    const mockUser = { id: '1', name: 'John Doe', email: 'john@example.com' };
+    mockUserService.getById.mockResolvedValue(mockUser);
+    
+    const { result } = renderHook(() => useUserData('1'));
+    
+    expect(result.current.loading).toBe(true);
+    expect(result.current.user).toBe(null);
+    
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+    
+    expect(result.current.loading).toBe(false);
+    expect(result.current.user).toEqual(mockUser);
+    expect(result.current.error).toBe(null);
+  });
+  
+  it('handles fetch error correctly', async () => {
+    const errorMessage = 'User not found';
+    mockUserService.getById.mockRejectedValue(new Error(errorMessage));
+    
+    const { result } = renderHook(() => useUserData('1'));
+    
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+    
+    expect(result.current.loading).toBe(false);
+    expect(result.current.user).toBe(null);
+    expect(result.current.error?.message).toBe(errorMessage);
+  });
+});
+```
+
+## VIII. Accessibility Best Practices
+
+### 1. Semantic HTML and ARIA
+```tsx
+// ✅ Accessible form component
+export const AccessibleForm: React.FC = () => {
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Form submission logic
+  };
+  
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <fieldset>
+        <legend>User Information</legend>
+        
+        <div className="form-group">
+          <label htmlFor="name">
+            Name <span aria-label="required">*</span>
+          </label>
+          <input
+            id="name"
+            type="text"
+            value={formData.name}
+            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+            aria-describedby={errors.name ? 'name-error' : undefined}
+            aria-invalid={!!errors.name}
+            required
+          />
+          {errors.name && (
+            <div id="name-error" role="alert" className="error">
+              {errors.name}
+            </div>
+          )}
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="email">
+            Email <span aria-label="required">*</span>
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+            aria-describedby={errors.email ? 'email-error' : 'email-help'}
+            aria-invalid={!!errors.email}
+            required
+          />
+          <div id="email-help" className="help-text">
+            We'll never share your email with anyone else.
+          </div>
+          {errors.email && (
+            <div id="email-error" role="alert" className="error">
+              {errors.email}
+            </div>
+          )}
+        </div>
+        
+        <button type="submit" aria-describedby="submit-help">
+          Submit
+        </button>
+        <div id="submit-help" className="help-text">
+          Press Enter or click to submit the form.
+        </div>
+      </fieldset>
+    </form>
+  );
+};
+```
+
+### 2. Focus Management
+```tsx
+// ✅ Modal with proper focus management
+export const Modal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}> = ({ isOpen, onClose, title, children }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  
+  useEffect(() => {
+    if (isOpen) {
+      // Store the previously focused element
+      previousFocusRef.current = document.activeElement as HTMLElement;
+      
+      // Focus the modal
+      modalRef.current?.focus();
+      
+      // Trap focus within modal
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          onClose();
+        }
+        
+        if (e.key === 'Tab') {
+          const focusableElements = modalRef.current?.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          );
+          
+          if (focusableElements && focusableElements.length > 0) {
+            const firstElement = focusableElements[0] as HTMLElement;
+            const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+            
+            if (e.shiftKey && document.activeElement === firstElement) {
+              e.preventDefault();
+              lastElement.focus();
+            } else if (!e.shiftKey && document.activeElement === lastElement) {
+              e.preventDefault();
+              firstElement.focus();
+            }
+          }
+        }
+      };
+      
+      document.addEventListener('keydown', handleKeyDown);
+      
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+        // Restore focus to previously focused element
+        previousFocusRef.current?.focus();
+      };
+    }
+  }, [isOpen, onClose]);
+  
+  if (!isOpen) return null;
+  
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        ref={modalRef}
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        tabIndex={-1}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="modal-header">
+          <h2 id="modal-title">{title}</h2>
+          <button
+            className="modal-close"
+            onClick={onClose}
+            aria-label="Close modal"
+          >
+            ×
+          </button>
+        </div>
+        <div className="modal-content">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+```
+
+## IX. Modern Development Practices
+
+### 1. Strict TypeScript Configuration
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
+```
+
+### 2. ESLint and Prettier Configuration
+```json
+// .eslintrc.json
+{
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "rules": {
+    "react-hooks/exhaustive-deps": "error",
+    "react/jsx-key": "error",
+    "react/no-array-index-key": "warn",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "jsx-a11y/alt-text": "error",
+    "jsx-a11y/anchor-is-valid": "error"
+  }
+}
+```
+
+### 3. Performance Monitoring
+```tsx
+// ✅ Performance monitoring hook
+export const usePerformanceMonitor = (componentName: string) => {
+  useEffect(() => {
+    const startTime = performance.now();
+    
+    return () => {
+      const endTime = performance.now();
+      const renderTime = endTime - startTime;
+      
+      if (renderTime > 16) { // More than one frame at 60fps
+        console.warn(`${componentName} took ${renderTime.toFixed(2)}ms to render`);
+      }
+      
+      // Send to analytics service
+      analytics.track('component_render_time', {
+        component: componentName,
+        renderTime
+      });
+    };
+  });
+};
+
+// Usage
+export const ExpensiveComponent: React.FC = () => {
+  usePerformanceMonitor('ExpensiveComponent');
+  
+  // Component logic
+  return <div>Content</div>;
+};
+```
+
+## X. Best Practices Summary
+
+### ✅ Do's
+1. **Use functional components exclusively**
+2. **Implement comprehensive TypeScript types**
+3. **Create custom hooks for reusable logic**
+4. **Use React.memo for expensive components**
+5. **Implement proper error boundaries**
+6. **Write comprehensive tests**
+7. **Follow accessibility guidelines**
+8. **Use semantic HTML**
+9. **Implement proper loading and error states**
+10. **Use code splitting for performance**
+
+### ❌ Don'ts
+1. **Don't use class components**
+2. **Don't mutate state directly**
+3. **Don't use array indices as keys**
+4. **Don't ignore ESLint warnings**
+5. **Don't skip accessibility considerations**
+6. **Don't use inline styles for complex styling**
+7. **Don't forget to cleanup effects**
+8. **Don't use any type in TypeScript**
+9. **Don't skip error handling**
+10. **Don't ignore performance implications**
+
+This guide represents the current best practices for React development in 2025, focusing on functional components, TypeScript, performance, accessibility, and maintainability.
+
+## VIII. Modular Responsive Design: Mobile & Laptop Best Practices
+
+### 1. Modular Component Architecture for Multi-Device Support
+
+```tsx
+// ✅ Base responsive component structure
+interface ResponsiveComponentProps {
+  children: React.ReactNode;
+  className?: string;
+  mobileLayout?: 'stack' | 'grid' | 'flex';
+  desktopLayout?: 'sidebar' | 'grid' | 'centered';
+}
+
+export const ResponsiveContainer: React.FC<ResponsiveComponentProps> = ({
+  children,
+  className,
+  mobileLayout = 'stack',
+  desktopLayout = 'grid'
+}) => {
+  const { breakpoint } = useResponsive();
+  
+  const layoutClasses = useMemo(() => {
+    const base = 'responsive-container';
+    const mobile = `mobile-${mobileLayout}`;
+    const desktop = `desktop-${desktopLayout}`;
+    
+    return cn(base, mobile, desktop, className);
+  }, [mobileLayout, desktopLayout, className]);
+  
+  return (
+    <div className={layoutClasses} data-breakpoint={breakpoint}>
+      {children}
+    </div>
+  );
+};
+
+// ✅ Custom hook for responsive behavior
+interface UseResponsiveReturn {
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
+  breakpoint: 'mobile' | 'tablet' | 'desktop';
+  orientation: 'portrait' | 'landscape';
+  viewportWidth: number;
+  viewportHeight: number;
+}
+
+export const useResponsive = (): UseResponsiveReturn => {
+  const [viewport, setViewport] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
+    height: typeof window !== 'undefined' ? window.innerHeight : 800
+  });
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setViewport({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  const isMobile = viewport.width < 768;
+  const isTablet = viewport.width >= 768 && viewport.width < 1024;
+  const isDesktop = viewport.width >= 1024;
+  
+  const breakpoint = isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop';
+  const orientation = viewport.width > viewport.height ? 'landscape' : 'portrait';
+  
+  return {
+    isMobile,
+    isTablet,
+    isDesktop,
+    breakpoint,
+    orientation,
+    viewportWidth: viewport.width,
+    viewportHeight: viewport.height
+  };
+};
+```
+
+### 2. Modular Layout Components with MUI Integration
+
+```tsx
+// ✅ Adaptive navigation component
+interface AdaptiveNavigationProps {
+  items: NavigationItem[];
+  logo?: React.ReactNode;
+  userMenu?: React.ReactNode;
+}
+
+export const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({
+  items,
+  logo,
+  userMenu
+}) => {
+  const { isMobile } = useResponsive();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  if (isMobile) {
+    return (
+      <MobileNavigation 
+        items={items}
+        logo={logo}
+        userMenu={userMenu}
+        isOpen={mobileMenuOpen}
+        onToggle={setMobileMenuOpen}
+      />
+    );
+  }
+  
+  return (
+    <DesktopNavigation 
+      items={items}
+      logo={logo}
+      userMenu={userMenu}
+    />
+  );
+};
+
+// ✅ Mobile-specific navigation
+const MobileNavigation: React.FC<{
+  items: NavigationItem[];
+  logo?: React.ReactNode;
+  userMenu?: React.ReactNode;
+  isOpen: boolean;
+  onToggle: (open: boolean) => void;
+}> = ({ items, logo, userMenu, isOpen, onToggle }) => {
+  return (
+    <>
+      <AppBar position="fixed" elevation={1}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          {logo}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {userMenu}
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={() => onToggle(!isOpen)}
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      
+      <Drawer
+        anchor="right"
+        open={isOpen}
+        onClose={() => onToggle(false)}
+        PaperProps={{
+          sx: { width: 280, pt: 2 }
+        }}
+      >
+        <MobileNavigationContent 
+          items={items}
+          onItemClick={() => onToggle(false)}
+        />
+      </Drawer>
+    </>
+  );
+};
+
+// ✅ Desktop navigation with responsive grid
+const DesktopNavigation: React.FC<{
+  items: NavigationItem[];
+  logo?: React.ReactNode;
+  userMenu?: React.ReactNode;
+}> = ({ items, logo, userMenu }) => {
+  return (
+    <AppBar position="static" elevation={0} sx={{ mb: 2 }}>
+      <Container maxWidth="xl">
+        <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
+          {logo}
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            <Stack direction="row" spacing={2}>
+              {items.map((item) => (
+                <Button
+                  key={item.id}
+                  color="inherit"
+                  href={item.href}
+                  sx={{ textTransform: 'none' }}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </Stack>
+            {userMenu}
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+};
+```
+
+### 3. Responsive Grid System with Dynamic Columns
+
+```tsx
+// ✅ Smart responsive grid that adapts to content and screen size
+interface ResponsiveGridProps<T> {
+  items: T[];
+  renderItem: (item: T, index: number) => React.ReactNode;
+  minItemWidth?: number;
+  maxColumns?: {
+    mobile: number;
+    tablet: number;
+    desktop: number;
+  };
+  spacing?: number;
+  loading?: boolean;
+  emptyState?: React.ReactNode;
+}
+
+export const ResponsiveGrid = <T,>({
+  items,
+  renderItem,
+  minItemWidth = 280,
+  maxColumns = { mobile: 1, tablet: 2, desktop: 4 },
+  spacing = 2,
+  loading = false,
+  emptyState
+}: ResponsiveGridProps<T>) => {
+  const { breakpoint, viewportWidth } = useResponsive();
+  
+  const calculateColumns = useMemo(() => {
+    const availableWidth = viewportWidth - 64; // Account for padding
+    const columnsFromWidth = Math.floor(availableWidth / (minItemWidth + 16));
+    
+    const maxCols = maxColumns[breakpoint];
+    return Math.min(columnsFromWidth, maxCols);
+  }, [viewportWidth, minItemWidth, maxColumns, breakpoint]);
+  
+  if (loading) {
+    return (
+      <Grid container spacing={spacing}>
+        {Array.from({ length: calculateColumns * 2 }).map((_, index) => (
+          <Grid item xs={12 / calculateColumns} key={index}>
+            <Skeleton variant="rectangular" height={200} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+  
+  if (items.length === 0 && emptyState) {
+    return <Box sx={{ textAlign: 'center', py: 4 }}>{emptyState}</Box>;
+  }
+  
+  return (
+    <Grid container spacing={spacing}>
+      {items.map((item, index) => (
+        <Grid 
+          item 
+          xs={12} 
+          sm={breakpoint === 'mobile' ? 12 : 12 / calculateColumns}
+          md={12 / calculateColumns}
+          key={index}
+        >
+          {renderItem(item, index)}
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+```
+
+### 4. Modular Form Components for Different Screen Sizes
+
+```tsx
+// ✅ Adaptive form layout
+interface AdaptiveFormProps {
+  fields: FormField[];
+  onSubmit: (data: Record<string, any>) => Promise<void>;
+  loading?: boolean;
+  title?: string;
+}
+
+export const AdaptiveForm: React.FC<AdaptiveFormProps> = ({
+  fields,
+  onSubmit,
+  loading = false,
+  title
+}) => {
+  const { isMobile } = useResponsive();
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  
+  const getFieldLayout = (field: FormField, index: number) => {
+    if (isMobile) {
+      return { xs: 12 }; // Full width on mobile
+    }
+    
+    // Desktop/tablet logic
+    switch (field.width) {
+      case 'full':
+        return { xs: 12 };
+      case 'half':
+        return { xs: 12, sm: 6 };
+      case 'third':
+        return { xs: 12, sm: 6, md: 4 };
+      default:
+        return { xs: 12, sm: 6 };
+    }
+  };
+  
+  return (
+    <Paper 
+      elevation={isMobile ? 0 : 1} 
+      sx={{ 
+        p: isMobile ? 2 : 4,
+        maxWidth: isMobile ? '100%' : 800,
+        mx: 'auto'
+      }}
+    >
+      {title && (
+        <Typography 
+          variant={isMobile ? "h5" : "h4"} 
+          component="h1" 
+          gutterBottom
+          sx={{ textAlign: isMobile ? 'left' : 'center' }}
+        >
+          {title}
+        </Typography>
+      )}
+      
+      <Box component="form" onSubmit={handleSubmit}>
+        <Grid container spacing={isMobile ? 2 : 3}>
+          {fields.map((field, index) => (
+            <Grid item {...getFieldLayout(field, index)} key={field.name}>
+              <ResponsiveFormField
+                field={field}
+                value={formData[field.name]}
+                onChange={(value) => setFormData(prev => ({
+                  ...prev,
+                  [field.name]: value
+                }))}
+              />
+            </Grid>
+          ))}
+          
+          <Grid item xs={12}>
+            <Stack 
+              direction={isMobile ? "column" : "row"} 
+              spacing={2}
+              sx={{ 
+                mt: 2,
+                justifyContent: isMobile ? 'stretch' : 'flex-end'
+              }}
+            >
+              <Button
+                variant="outlined"
+                size={isMobile ? "large" : "medium"}
+                fullWidth={isMobile}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                size={isMobile ? "large" : "medium"}
+                fullWidth={isMobile}
+                loading={loading}
+              >
+                Submit
+              </Button>
+            </Stack>
+          </Grid>
+        </Grid>
+      </Box>
+    </Paper>
+  );
+};
+
+// ✅ Individual form field component
+const ResponsiveFormField: React.FC<{
+  field: FormField;
+  value: any;
+  onChange: (value: any) => void;
+}> = ({ field, value, onChange }) => {
+  const { isMobile } = useResponsive();
+  
+  const commonProps = {
+    fullWidth: true,
+    size: isMobile ? 'medium' : 'small' as const,
+    variant: 'outlined' as const,
+    value: value || '',
+    onChange: (e: any) => onChange(e.target.value)
+  };
+  
+  switch (field.type) {
+    case 'text':
+    case 'email':
+    case 'password':
+      return (
+        <TextField
+          {...commonProps}
+          type={field.type}
+          label={field.label}
+          required={field.required}
+          placeholder={field.placeholder}
+        />
+      );
+      
+    case 'select':
+      return (
+        <FormControl fullWidth size={commonProps.size}>
+          <InputLabel>{field.label}</InputLabel>
+          <Select
+            value={value || ''}
+            label={field.label}
+            onChange={commonProps.onChange}
+          >
+            {field.options?.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      );
+      
+    case 'textarea':
+      return (
+        <TextField
+          {...commonProps}
+          multiline
+          rows={isMobile ? 3 : 4}
+          label={field.label}
+          placeholder={field.placeholder}
+        />
+      );
+      
+    default:
+      return null;
+  }
+};
+```
+
+### 5. Responsive Data Display Components
+
+```tsx
+// ✅ Adaptive table/card view for data
+interface AdaptiveDataDisplayProps<T> {
+  data: T[];
+  columns: DataColumn<T>[];
+  loading?: boolean;
+  mobileCardRenderer?: (item: T) => React.ReactNode;
+  onRowClick?: (item: T) => void;
+}
+
+export const AdaptiveDataDisplay = <T extends Record<string, any>>({
+  data,
+  columns,
+  loading = false,
+  mobileCardRenderer,
+  onRowClick
+}: AdaptiveDataDisplayProps<T>) => {
+  const { isMobile } = useResponsive();
+  
+  if (loading) {
+    return <DataDisplaySkeleton isMobile={isMobile} />;
+  }
+  
+  if (isMobile) {
+    return (
+      <Stack spacing={2}>
+        {data.map((item, index) => (
+          <Card 
+            key={index}
+            sx={{ 
+              cursor: onRowClick ? 'pointer' : 'default',
+              '&:hover': onRowClick ? { elevation: 4 } : {}
+            }}
+            onClick={() => onRowClick?.(item)}
+          >
+            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+              {mobileCardRenderer ? 
+                mobileCardRenderer(item) : 
+                <DefaultMobileCard item={item} columns={columns} />
+              }
+            </CardContent>
+          </Card>
+        ))}
+      </Stack>
+    );
+  }
+  
+  return (
+    <TableContainer component={Paper} elevation={1}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            {columns.map((column) => (
+              <TableCell key={column.key} align={column.align || 'left'}>
+                {column.label}
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((item, index) => (
+            <TableRow 
+              key={index}
+              hover={!!onRowClick}
+              sx={{ cursor: onRowClick ? 'pointer' : 'default' }}
+              onClick={() => onRowClick?.(item)}
+            >
+              {columns.map((column) => (
+                <TableCell key={column.key} align={column.align || 'left'}>
+                  {column.render ? 
+                    column.render(item[column.key], item) : 
+                    item[column.key]
+                  }
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+// ✅ Default mobile card layout
+const DefaultMobileCard: React.FC<{
+  item: Record<string, any>;
+  columns: DataColumn<any>[];
+}> = ({ item, columns }) => {
+  const primaryColumn = columns.find(col => col.primary) || columns[0];
+  const secondaryColumns = columns.filter(col => !col.primary && col.showOnMobile !== false);
+  
+  return (
+    <Box>
+      <Typography variant="h6" component="div" gutterBottom>
+        {primaryColumn.render ? 
+          primaryColumn.render(item[primaryColumn.key], item) :
+          item[primaryColumn.key]
+        }
+      </Typography>
+      
+      <Grid container spacing={2}>
+        {secondaryColumns.map((column) => (
+          <Grid item xs={6} key={column.key}>
+            <Typography variant="body2" color="text.secondary">
+              {column.label}
+            </Typography>
+            <Typography variant="body2">
+              {column.render ? 
+                column.render(item[column.key], item) :
+                item[column.key]
+              }
+            </Typography>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+};
+```
+
+### 6. Performance Optimization for Responsive Components
+
+```tsx
+// ✅ Optimized responsive image component
+interface ResponsiveImageProps {
+  src: string;
+  alt: string;
+  sizes?: {
+    mobile: { width: number; height: number };
+    tablet: { width: number; height: number };
+    desktop: { width: number; height: number };
+  };
+  lazy?: boolean;
+  placeholder?: string;
+}
+
+export const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
+  src,
+  alt,
+  sizes,
+  lazy = true,
+  placeholder
+}) => {
+  const { breakpoint } = useResponsive();
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  
+  const currentSize = sizes?.[breakpoint] || { width: 300, height: 200 };
+  
+  const optimizedSrc = useMemo(() => {
+    if (!sizes) return src;
+    return `${src}?w=${currentSize.width}&h=${currentSize.height}&fit=cover`;
+  }, [src, currentSize]);
+  
+  return (
+    <Box
+      sx={{
+        width: currentSize.width,
+        height: currentSize.height,
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 1,
+        backgroundColor: 'grey.100'
+      }}
+    >
+      {!loaded && placeholder && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Skeleton variant="rectangular" width="100%" height="100%" />
+        </Box>
+      )}
+      
+      <img
+        src={optimizedSrc}
+        alt={alt}
+        loading={lazy ? 'lazy' : 'eager'}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          transition: 'opacity 0.3s ease',
+          opacity: loaded ? 1 : 0
+        }}
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+      />
+      
+      {error && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'text.secondary'
+          }}
+        >
+          <BrokenImageIcon />
+        </Box>
+      )}
+    </Box>
+  );
+};
+
+// ✅ Virtual scrolling for large lists on mobile
+interface VirtualizedListProps<T> {
+  items: T[];
+  renderItem: (item: T, index: number) => React.ReactNode;
+  itemHeight: number;
+  containerHeight?: number;
+}
+
+export const VirtualizedList = <T,>({
+  items,
+  renderItem,
+  itemHeight,
+  containerHeight = 400
+}: VirtualizedListProps<T>) => {
+  const [scrollTop, setScrollTop] = useState(0);
+  const { isMobile } = useResponsive();
+  
+  // Only virtualize on mobile or with large datasets
+  const shouldVirtualize = isMobile || items.length > 100;
+  
+  if (!shouldVirtualize) {
+    return (
+      <Box>
+        {items.map((item, index) => (
+          <Box key={index} sx={{ height: itemHeight }}>
+            {renderItem(item, index)}
+          </Box>
+        ))}
+      </Box>
+    );
+  }
+  
+  const visibleCount = Math.ceil(containerHeight / itemHeight);
+  const startIndex = Math.floor(scrollTop / itemHeight);
+  const endIndex = Math.min(startIndex + visibleCount + 1, items.length);
+  
+  const visibleItems = items.slice(startIndex, endIndex);
+  
+  return (
+    <Box
+      sx={{ 
+        height: containerHeight, 
+        overflow: 'auto' 
+      }}
+      onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
+    >
+      <Box sx={{ height: items.length * itemHeight, position: 'relative' }}>
+        <Box
+          sx={{
+            transform: `translateY(${startIndex * itemHeight}px)`,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0
+          }}
+        >
+          {visibleItems.map((item, index) => (
+            <Box key={startIndex + index} sx={{ height: itemHeight }}>
+              {renderItem(item, startIndex + index)}
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+```
+
+### 7. Responsive Layout Patterns
+
+```tsx
+// ✅ Common responsive layout patterns
+export const LayoutPatterns = {
+  // Sidebar layout that collapses to drawer on mobile
+  SidebarLayout: ({ sidebar, main }: { sidebar: React.ReactNode; main: React.ReactNode }) => {
+    const { isMobile } = useResponsive();
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    
+    if (isMobile) {
+      return (
+        <Box>
+          <AppBar position="sticky">
+            <Toolbar>
+              <IconButton onClick={() => setSidebarOpen(true)}>
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6">App Title</Typography>
+            </Toolbar>
+          </AppBar>
+          
+          <Drawer
+            open={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+            PaperProps={{ sx: { width: 280 } }}
+          >
+            {sidebar}
+          </Drawer>
+          
+          <Box sx={{ p: 2 }}>
+            {main}
+          </Box>
+        </Box>
+      );
+    }
+    
+    return (
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        <Box sx={{ width: 280, flexShrink: 0 }}>
+          {sidebar}
+        </Box>
+        <Box sx={{ flexGrow: 1, p: 3 }}>
+          {main}
+        </Box>
+      </Box>
+    );
+  },
+  
+  // Hero section with responsive text and images
+  HeroSection: ({ title, subtitle, image, actions }: {
+    title: string;
+    subtitle: string;
+    image?: string;
+    actions?: React.ReactNode;
+  }) => {
+    const { isMobile } = useResponsive();
+    
+    return (
+      <Container maxWidth="lg">
+        <Grid container spacing={4} alignItems="center" sx={{ minHeight: '60vh' }}>
+          <Grid item xs={12} md={6}>
+            <Typography
+              variant={isMobile ? "h3" : "h2"}
+              component="h1"
+              gutterBottom
+              sx={{ fontWeight: 'bold' }}
+            >
+              {title}
+            </Typography>
+            <Typography
+              variant={isMobile ? "body1" : "h6"}
+              color="text.secondary"
+              paragraph
+              sx={{ mb: 4 }}
+            >
+              {subtitle}
+            </Typography>
+            {actions && (
+              <Stack 
+                direction={isMobile ? "column" : "row"} 
+                spacing={2}
+                sx={{ width: isMobile ? '100%' : 'auto' }}
+              >
+                {actions}
+              </Stack>
+            )}
+          </Grid>
+          {image && (
+            <Grid item xs={12} md={6}>
+              <Box
+                component="img"
+                src={image}
+                alt="Hero"
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: 2
+                }}
+              />
+            </Grid>
+          )}
+        </Grid>
+      </Container>
+    );
+  }
+};
+```
