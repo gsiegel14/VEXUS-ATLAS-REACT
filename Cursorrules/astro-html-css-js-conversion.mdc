@@ -10,6 +10,8 @@ Convert every `.astro` page into a React + MUI page with absolutely **no loss of
 
 ---
 
+FILE ROOT: /Users/gabe/VEXUS ASTRO/REACT VEXUScan 
+
 ## 1️⃣  HTML ➜ JSX STRUCTURE PRESERVATION
 
 1. **One-to-One Mapping**

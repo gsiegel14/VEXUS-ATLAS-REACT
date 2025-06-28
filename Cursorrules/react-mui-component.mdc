@@ -1,5 +1,587 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: 
+globs: 
+alwaysApply: true
 ---
+# React MUI Component Development Template (.mdc)
+
+## CRITICAL DEVELOPMENT RULES - MUST FOLLOW ALL 7 CORE TENETS
+
+### 🏗️ MODULAR ARCHITECTURE REQUIREMENTS
+- ✅ Component must be feature-based and self-contained
+- ✅ Separate concerns into logical child components
+- ✅ Use clear import organization (utils, services, components)
+- ✅ Follow consistent file structure patterns
+
+### ✏️ MAINTAINABILITY REQUIREMENTS  
+- ✅ All styling must be configuration-driven
+- ✅ Component props must have clear interfaces
+- ✅ All magic numbers/strings must be in config files
+- ✅ Components must be easily editable without code changes
+
+### 📁 CODE ORGANIZATION REQUIREMENTS
+- ✅ Must use service layer for all API calls
+- ✅ Business logic must be in custom hooks
+- ✅ No direct API calls in components
+- ✅ Clear separation of concerns
+
+### 📊 ERROR LOGGING REQUIREMENTS
+- ✅ Every user action must be logged with context
+- ✅ All operations must have unique tracking IDs
+- ✅ Performance metrics must be captured
+- ✅ Debug information must be comprehensive
+
+### 🛡️ ERROR HANDLING REQUIREMENTS
+- ✅ Must use custom error classes (VexusError, ValidationError, APIError)
+- ✅ All errors must be handled gracefully with user feedback
+- ✅ Must provide error recovery mechanisms
+- ✅ No unhandled promise rejections allowed
+
+### 🔧 DEBUGGING REQUIREMENTS
+- ✅ Must include performance monitoring
+- ✅ All functions must be measurable
+- ✅ State changes must be trackable
+- ✅ Development mode must show debug info
+
+### 🩺 TROUBLESHOOTING REQUIREMENTS
+- ✅ Clear error messages with recovery steps
+- ✅ Operation traceability for debugging
+- ✅ User-friendly error reporting
+- ✅ Context preservation for issue resolution
+
+---
+
+## MANDATORY COMPONENT TEMPLATE
+
+```jsx
+// src/components/[module]/[ComponentName]/[ComponentName].jsx
+
+import React, { useState, useCallback } from 'react';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  // ... other MUI imports
+} from '@mui/material';
+import { /* MUI Icons */ } from '@mui/icons-material';
+
+// REQUIRED: Core utilities and services (RULE 3 & 4)
+import { logger } from '../../../utils/logger';
+import { useErrorHandler } from '../../../hooks/useErrorHandler';
+import { usePerformanceMonitor } from '../../../hooks/usePerformanceMonitor';
+import { [service] } from '../../../services/[service]';
+import { VexusError, ValidationError, APIError } from '../../../utils/errors';
+import { componentConfig } from '../../../config/componentConfig';
+
+// REQUIRED: Child components for modularity (RULE 1)
+import ChildComponent1 from './ChildComponent1';
+import ChildComponent2 from './ChildComponent2';
+import ErrorDisplay from '../../common/ErrorDisplay/ErrorDisplay';
+
+// REQUIRED: Component with comprehensive error handling (RULE 5)
+const ComponentName = ({ 
+  // Props with clear interfaces (RULE 2)
+  onAction,
+  onError,
+  configurable = true,
+  className,
+  ...props 
+}) => {
+  // REQUIRED: Performance monitoring (RULE 6)
+  const { measureFunction } = usePerformanceMonitor('ComponentName');
+  
+  // REQUIRED: Error handling (RULE 5)
+  const { errors, addError, removeError, clearErrors, handleAsyncError } = useErrorHandler();
+  
+  // Component state
+  const [componentState, setComponentState] = useState(initialState);
+  const [loading, setLoading] = useState(false);
+
+  // REQUIRED: All handlers must be measured and logged (RULE 4 & 6)
+  const handleUserAction = useCallback(measureFunction('handleUserAction', async (data) => {
+    try {
+      // REQUIRED: Log user actions with context (RULE 4)
+      logger.info('ComponentName: User action started', { 
+        action: 'userAction',
+        data,
+        timestamp: new Date().toISOString()
+      });
+
+      clearErrors();
+      setLoading(true);
+
+      // REQUIRED: Validation with custom errors (RULE 5)
+      if (!data || typeof data !== 'object') {
+        throw new ValidationError('data', data, 'Invalid data provided');
+      }
+
+      // REQUIRED: Use service layer with async error handling (RULE 3 & 5)
+      const result = await handleAsyncError(async () => {
+        return await [service].performAction(data);
+      }, { component: 'ComponentName', action: 'userAction' });
+
+      setComponentState(result);
+      
+      // REQUIRED: Success logging (RULE 4)
+      logger.info('ComponentName: User action completed successfully', { 
+        result: result.id || 'success',
+        duration: Date.now() - startTime
+      });
+
+      // Notify parent component
+      if (onAction) {
+        onAction(result);
+      }
+
+    } catch (error) {
+      setLoading(false);
+      
+      // REQUIRED: Comprehensive error logging (RULE 4)
+      logger.error('ComponentName: User action failed', { 
+        error: error.message,
+        data,
+        stack: error.stack,
+        context: { component: 'ComponentName', action: 'userAction' }
+      });
+
+      // REQUIRED: Parent error notification (RULE 7)
+      if (onError) {
+        onError(error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }), [addError, clearErrors, handleAsyncError, onAction, onError, measureFunction]);
+
+  // REQUIRED: Validation handlers with logging (RULE 4 & 5)
+  const validateInput = useCallback(measureFunction('validateInput', (input) => {
+    logger.debug('ComponentName: Validating input', { input });
+    
+    if (!input) {
+      throw new ValidationError('input', input, 'Input is required');
+    }
+    
+    return true;
+  }), [measureFunction]);
+
+  // REQUIRED: Configuration-driven rendering (RULE 2)
+  return (
+    <Card 
+      className={className}
+      sx={{ 
+        ...componentConfig.layout,
+        position: 'relative',
+        opacity: loading ? 0.8 : 1,
+        transition: `opacity ${componentConfig.animations.duration}ms ${componentConfig.animations.easing}`
+      }}
+      {...props}
+    >
+      <CardContent>
+        {/* REQUIRED: Error Display (RULE 5 & 7) */}
+        <ErrorDisplay 
+          errors={errors}
+          onDismiss={removeError}
+          variant="inline"
+        />
+
+        {/* Component content with modular children (RULE 1) */}
+        <ChildComponent1 
+          data={componentState}
+          onAction={handleUserAction}
+          disabled={loading}
+        />
+        
+        <ChildComponent2 
+          config={componentConfig}
+          onValidate={validateInput}
+        />
+      </CardContent>
+    </Card>
+  );
+};
+
+export default ComponentName;
+```
+
+---
+
+## MANDATORY CHILD COMPONENT TEMPLATE
+
+```jsx
+// src/components/[module]/[ComponentName]/ChildComponent.jsx
+
+import React, { useCallback } from 'react';
+import { Box, Typography } from '@mui/material';
+import { logger } from '../../../utils/logger';
+import { usePerformanceMonitor } from '../../../hooks/usePerformanceMonitor';
+import { componentConfig } from '../../../config/componentConfig';
+
+const ChildComponent = ({ 
+  data, 
+  onAction, 
+  disabled = false,
+  ...props 
+}) => {
+  // REQUIRED: Performance monitoring for all components (RULE 6)
+  const { measureFunction } = usePerformanceMonitor('ChildComponent');
+
+  // REQUIRED: All handlers must be measured and logged (RULE 4 & 6)
+  const handleClick = useCallback(measureFunction('handleClick', (event) => {
+    logger.debug('ChildComponent: Click event', { 
+      target: event.target.tagName,
+      disabled 
+    });
+
+    if (disabled) {
+      logger.warn('ChildComponent: Action attempted while disabled');
+      return;
+    }
+
+    if (onAction) {
+      onAction(data);
+    }
+  }), [data, disabled, onAction, measureFunction]);
+
+  return (
+    <Box 
+      sx={{
+        ...componentConfig.layout,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.6 : 1
+      }}
+      onClick={handleClick}
+      {...props}
+    >
+      <Typography variant="body1">
+        {/* Component content */}
+      </Typography>
+    </Box>
+  );
+};
+
+export default ChildComponent;
+```
+
+---
+
+## MANDATORY SERVICE TEMPLATE
+
+```jsx
+// src/services/[ServiceName].js
+
+import BaseService from './BaseService';
+import { logger } from '../utils/logger';
+import { APIError, ValidationError } from '../utils/errors';
+
+class ServiceName extends BaseService {
+  constructor() {
+    super(process.env.REACT_APP_API_BASE_URL || '/api');
+  }
+
+  // REQUIRED: All service methods must have operation IDs and logging (RULE 4)
+  async performAction(data) {
+    const operationId = Math.random().toString(36).substr(2, 9);
+    
+    try {
+      // REQUIRED: Operation logging with context (RULE 4)
+      logger.info(`ServiceName: Starting operation [${operationId}]`, { 
+        operation: 'performAction',
+        dataKeys: Object.keys(data || {}),
+        timestamp: new Date().toISOString()
+      });
+
+      // REQUIRED: Input validation (RULE 5)
+      if (!data) {
+        throw new ValidationError('data', data, 'Data is required for operation');
+      }
+
+      // REQUIRED: API call with error handling (RULE 5)
+      const result = await this.post('/action', {
+        ...data,
+        operationId,
+        clientTimestamp: new Date().toISOString()
+      });
+
+      // REQUIRED: Success logging (RULE 4)
+      logger.info(`ServiceName: Operation completed successfully [${operationId}]`, { 
+        resultId: result.id,
+        processingTime: result.processingTime 
+      });
+
+      return {
+        ...result,
+        operationId
+      };
+
+    } catch (error) {
+      // REQUIRED: Comprehensive error logging (RULE 4)
+      logger.error(`ServiceName: Operation failed [${operationId}]`, {
+        error: error.message,
+        data,
+        stack: error.stack,
+        operation: 'performAction'
+      });
+
+      // REQUIRED: Error transformation (RULE 5)
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        throw new APIError(0, 'Network connection failed', '/action');
+      }
+
+      if (error.message.includes('timeout')) {
+        throw new APIError(408, 'Operation timeout - please try again', '/action');
+      }
+
+      // Re-throw as appropriate error type
+      if (error instanceof APIError || error instanceof ValidationError) {
+        throw error;
+      }
+
+      throw new APIError(500, `Operation failed: ${error.message}`, '/action');
+    }
+  }
+}
+
+export const serviceName = new ServiceName();
+```
+
+---
+
+## MANDATORY HOOK TEMPLATE
+
+```jsx
+// src/hooks/use[HookName].js
+
+import { useState, useCallback, useEffect } from 'react';
+import { logger } from '../utils/logger';
+import { serviceName } from '../services/serviceName';
+
+export const useHookName = (initialData) => {
+  const [data, setData] = useState(initialData);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // REQUIRED: All hook operations must be logged (RULE 4)
+  const performAction = useCallback(async (actionData) => {
+    const operationId = Math.random().toString(36).substr(2, 9);
+    
+    try {
+      logger.info(`useHookName: Starting action [${operationId}]`, { actionData });
+      
+      setLoading(true);
+      setError(null);
+      
+      const result = await serviceName.performAction(actionData);
+      setData(result);
+      
+      logger.info(`useHookName: Action completed [${operationId}]`, { 
+        resultId: result.id 
+      });
+      
+      return result;
+    } catch (err) {
+      logger.error(`useHookName: Action failed [${operationId}]`, {
+        error: err.message,
+        actionData,
+        stack: err.stack
+      });
+      
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return {
+    data,
+    loading,
+    error,
+    performAction
+  };
+};
+```
+
+---
+
+## MANDATORY TESTING TEMPLATE
+
+```jsx
+// src/components/[module]/[ComponentName]/__tests__/ComponentName.test.jsx
+
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import ComponentName from '../ComponentName';
+import { serviceName } from '../../../services/serviceName';
+import { logger } from '../../../utils/logger';
+
+// REQUIRED: Mock all dependencies (RULE 6)
+jest.mock('../../../services/serviceName');
+jest.mock('../../../utils/logger');
+
+const theme = createTheme();
+
+const TestWrapper = ({ children }) => (
+  <ThemeProvider theme={theme}>
+    {children}
+  </ThemeProvider>
+);
+
+describe('ComponentName', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // REQUIRED: Mock logger methods (RULE 4)
+    logger.info.mockImplementation(() => {});
+    logger.error.mockImplementation(() => {});
+    logger.debug.mockImplementation(() => {});
+  });
+
+  // REQUIRED: Test error handling (RULE 5)
+  test('handles errors gracefully', async () => {
+    const mockError = new Error('Test error');
+    serviceName.performAction.mockRejectedValue(mockError);
+
+    render(
+      <TestWrapper>
+        <ComponentName />
+      </TestWrapper>
+    );
+
+    // Simulate error condition
+    // Verify error handling and logging
+    await waitFor(() => {
+      expect(logger.error).toHaveBeenCalledWith(
+        expect.stringContaining('failed'),
+        expect.objectContaining({
+          error: 'Test error'
+        })
+      );
+    });
+  });
+
+  // REQUIRED: Test performance monitoring (RULE 6)
+  test('logs performance metrics', async () => {
+    render(
+      <TestWrapper>
+        <ComponentName />
+      </TestWrapper>
+    );
+
+    expect(logger.debug).toHaveBeenCalledWith(
+      expect.stringContaining('Performance: ComponentName render'),
+      expect.any(Object)
+    );
+  });
+
+  // REQUIRED: Test all user interactions (RULE 4)
+  test('logs user actions', async () => {
+    render(
+      <TestWrapper>
+        <ComponentName />
+      </TestWrapper>
+    );
+
+    // Simulate user action
+    // Verify action logging
+    expect(logger.info).toHaveBeenCalledWith(
+      expect.stringContaining('User action'),
+      expect.any(Object)
+    );
+  });
+});
+```
+
+---
+
+## MANDATORY CONFIGURATION TEMPLATE
+
+```jsx
+// src/config/[moduleName]Config.js
+
+import { componentConfig } from './componentConfig';
+
+export const moduleNameConfig = {
+  // REQUIRED: All configurable values (RULE 2)
+  api: {
+    timeout: 30000,
+    retryAttempts: 3,
+    retryDelay: 1000
+  },
+  
+  validation: {
+    requiredFields: ['field1', 'field2'],
+    maxFileSize: 10 * 1024 * 1024,
+    allowedTypes: ['type1', 'type2']
+  },
+  
+  ui: {
+    ...componentConfig,
+    // Module-specific UI configuration
+    animationDuration: 300,
+    debounceDelay: 500
+  },
+  
+  // REQUIRED: Logging configuration (RULE 4)
+  logging: {
+    enablePerformanceMonitoring: true,
+    enableUserActionTracking: true,
+    logLevel: process.env.NODE_ENV === 'development' ? 'debug' : 'info'
+  },
+  
+  // REQUIRED: Error handling configuration (RULE 5)
+  errorHandling: {
+    showStackTrace: process.env.NODE_ENV === 'development',
+    autoRetry: true,
+    maxRetries: 3
+  }
+};
+```
+
+---
+
+## DEVELOPMENT CHECKLIST - MUST COMPLETE BEFORE SUBMISSION
+
+### ✅ Modular Architecture
+- [ ] Component is properly modularized
+- [ ] Child components are separated by concern
+- [ ] Clear import organization
+- [ ] Feature-based file structure
+
+### ✅ Maintainability  
+- [ ] All configuration is externalized
+- [ ] No magic numbers or strings in components
+- [ ] Clear prop interfaces documented
+- [ ] Component can be modified via config
+
+### ✅ Code Organization
+- [ ] Service layer used for all API calls
+- [ ] Custom hooks contain business logic
+- [ ] No direct API calls in components
+- [ ] Clear separation of concerns
+
+### ✅ Error Logging
+- [ ] All user actions logged with context
+- [ ] Operation IDs used for tracking
+- [ ] Performance metrics captured
+- [ ] Debug information comprehensive
+
+### ✅ Error Handling
+- [ ] Custom error classes used
+- [ ] All errors handled gracefully
+- [ ] Error recovery mechanisms present
+- [ ] No unhandled promise rejections
+
+### ✅ Debugging
+- [ ] Performance monitoring included
+- [ ] All functions measurable
+- [ ] State changes trackable
+- [ ] Debug mode shows detailed info
+
+### ✅ Troubleshooting
+- [ ] Clear error messages with steps
+- [ ] Operation traceability implemented
+- [ ] User-friendly error reporting
+- [ ] Context preserved for debugging
+
+## FAILURE TO FOLLOW THESE RULES WILL RESULT IN CODE REJECTION

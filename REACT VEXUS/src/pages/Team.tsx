@@ -4,7 +4,8 @@ import {
   Container,
   Typography,
   Card,
-  CardContent
+  CardContent,
+  Box
 } from '@mui/material';
 import { Groups } from '@mui/icons-material';
 import BaseLayout from '../components/templates/BaseLayout';
@@ -16,15 +17,15 @@ const Team: React.FC = () => {
 
   const sections = useMemo(() => [
     {
-      id: 'core-team',
-      title: 'Core Team',
-      description: 'VEXUS ATLAS is developed by a multidisciplinary team of medical professionals dedicated to improving patient care through innovative technology and clinical expertise in venous congestion assessment.',
+      id: 'faculty-members',
+      title: 'Faculty Members',
+      description: 'Our distinguished faculty members who lead clinical research and provide expertise in venous congestion assessment and ultrasound medicine.',
       members: teamMembers.filter(member => member.type === 'core')
     },
     {
-      id: 'contributors',
-      title: 'Contributors',
-      description: 'Our project benefits from the valuable contributions of these talented professionals who provide expertise and support in various capacities.',
+      id: 'current-fellows',
+      title: 'Current Fellows',
+      description: 'Our current fellows who are advancing their expertise in ultrasound medicine and contributing to VEXUS research and education.',
       members: teamMembers.filter(member => member.type === 'contributor')
     }
   ], [teamMembers]);
@@ -92,6 +93,29 @@ const Team: React.FC = () => {
         containerMaxWidth="xl"
       >
         <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
+          {/* Denver Health Ultrasound Logo */}
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            mb: 4,
+            p: 3,
+            bgcolor: 'background.paper',
+            borderRadius: 2,
+            boxShadow: 1
+          }}>
+            <img 
+              src="/images/logos/denver-health-ultrasound.png" 
+              alt="Denver Health Ultrasound" 
+              style={{ 
+                maxHeight: '120px',
+                maxWidth: '100%',
+                height: 'auto',
+                width: 'auto'
+              }} 
+            />
+          </Box>
+
           {/* Header */}
           <Card elevation={2} sx={{ mb: 4 }}>
             <CardContent sx={{ textAlign: 'center', p: { xs: 2, md: 4 } }}>

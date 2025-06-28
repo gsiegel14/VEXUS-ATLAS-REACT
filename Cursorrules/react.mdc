@@ -7,6 +7,8 @@ alwaysApply: true
 
 This guide provides comprehensive best practices for building modern, high-quality React applications using functional components and the latest 2025 standards.
 
+use file root: /Users/gabe/VEXUS ASTRO/REACT VEXUSbalance 
+
 ## I. Modern React Architecture Principles
 
 ### 1. Functional Components Only

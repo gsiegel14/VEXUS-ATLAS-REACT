@@ -1,5 +1,28 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+here are the modal endpoints: 
+@https://gsiegel14--vexus-hepatic-endpoint-hepaticmodel-predict.modal.run
+predict
+https://gsiegel14--vexus-hepatic-endpoint-hepaticmodel-info.modal.run
+info
+F 
+
+@https://gsiegel14--vexus-renal-portal-endpoint-portalmodel-predict.modal.run
+predict
+https://gsiegel14--vexus-renal-portal-endpoint-portalmodel-info.modal.run
+info 
+
+
+Calls: 0 running
+View logs
+Zoom out
+
+1d
+May 30, 4:48 PM – now
+https://gsiegel14--vexus-renal-portal-endpoint-renalmodel-predict.modal.run
+predict
+https://gsiegel14--vexus-renal-portal-endpoint-renalmodel-info.modal.run
+info

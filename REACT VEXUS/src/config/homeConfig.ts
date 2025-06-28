@@ -41,25 +41,25 @@ export const homeConfig = {
     {
       title: 'Image Atlas',
       icon: '/images/noun-atlas-1479193-453E3E.png',
-      link: '/image-atlas',
+      link: 'https://www.thepocusatlas.com/home',
       description: 'Comprehensive collection of VEXUS ultrasound images'
     },
     {
       title: 'Evidence Atlas', 
       icon: '/images/noun-literature-4460602-453E3E.png',
-      link: '/literature',
+      link: 'https://www.thepocusatlas.com/ea-home',
       description: 'Research papers and scientific evidence'
     },
     {
       title: 'Nerve Block Atlas',
       icon: '/images/noun-nerve-4666605-453E3E.png', 
-      link: '/nerve-blocks',
+      link: 'https://www.thepocusatlas.com/nerve-blocks',
       description: 'Comprehensive nerve block guidance'
     },
     {
       title: 'Image Review',
       icon: '/images/noun-video-review-4806914-453E3E.png',
-      link: '/image-review', 
+      link: 'https://www.thepocusatlas.com/image-review',
       description: 'Interactive image review and learning'
     }
   ],

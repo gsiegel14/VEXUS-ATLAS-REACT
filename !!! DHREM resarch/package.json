@@ -1,0 +1,61 @@
+{
+  "name": "dhrem-research",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Denver Health Ultrasound Research Portal",
+  "scripts": {
+    "dev": "vite --port 5173",
+    "backend": "node server.js",
+    "dev:all": "concurrently \"npm run backend\" \"npm run dev\"",
+    "build": "tsc && vite build",
+    "build:production": "NODE_ENV=production npm run build",
+    "start": "NODE_ENV=production node server.js",
+    "start:dev": "NODE_ENV=development node server.js",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "docker:build": "docker build -t dhrem-research .",
+    "docker:run": "docker run -p 4001:4001 dhrem-research",
+    "gcp:build": "gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/dhrem-research",
+    "gcp:deploy": "gcloud run deploy dhrem-research --image gcr.io/$GOOGLE_CLOUD_PROJECT/dhrem-research --platform managed --region us-central1 --allow-unauthenticated"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@google-cloud/secret-manager": "^5.0.1",
+    "@mui/icons-material": "^5.14.19",
+    "@mui/material": "^5.14.20",
+    "@types/node": "^20.10.0",
+    "axios": "^1.6.2",
+    "compression": "^1.8.0",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1"
+  },
+  "devDependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.41.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.41.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

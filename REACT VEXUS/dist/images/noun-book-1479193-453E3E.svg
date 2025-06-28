@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Book/Education Icon -->
+  <g fill="#453E3E">
+    <!-- Book cover - larger -->
+    <rect x="20" y="15" width="60" height="70" rx="3" ry="3"/>
+    
+    <!-- Book spine - larger -->
+    <rect x="12" y="15" width="12" height="70" rx="3" ry="3"/>
+    
+    <!-- Book pages - larger -->
+    <rect x="25" y="20" width="50" height="60" fill="white"/>
+    
+    <!-- Text lines on pages - more prominent -->
+    <line x1="30" y1="30" x2="65" y2="30" stroke="#453E3E" stroke-width="1.5"/>
+    <line x1="30" y1="36" x2="70" y2="36" stroke="#453E3E" stroke-width="1.5"/>
+    <line x1="30" y1="42" x2="60" y2="42" stroke="#453E3E" stroke-width="1.5"/>
+    <line x1="30" y1="48" x2="68" y2="48" stroke="#453E3E" stroke-width="1.5"/>
+    <line x1="30" y1="54" x2="62" y2="54" stroke="#453E3E" stroke-width="1.5"/>
+    <line x1="30" y1="60" x2="69" y2="60" stroke="#453E3E" stroke-width="1.5"/>
+    <line x1="30" y1="66" x2="58" y2="66" stroke="#453E3E" stroke-width="1.5"/>
+    <line x1="30" y1="72" x2="66" y2="72" stroke="#453E3E" stroke-width="1.5"/>
+    
+    <!-- Bookmark - larger -->
+    <rect x="48" y="10" width="4" height="20" fill="#453E3E"/>
+    <polygon points="48,30 52,30 50,22" fill="#453E3E"/>
+    
+    <!-- Additional book details -->
+    <rect x="15" y="20" width="6" height="3" fill="white"/>
+    <rect x="15" y="25" width="6" height="3" fill="white"/>
+  </g>
+</svg> 

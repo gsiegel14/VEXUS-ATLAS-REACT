@@ -233,7 +233,7 @@ const ImageInfoTable: React.FC<{
         <TableContainer component={Paper} elevation={2} sx={{ border: '1px solid #e0e0e0' }}>
           <Table>
             <TableHead>
-              <TableRow sx={{ bgcolor: '#f5f5f5' }}>
+              <TableRow sx={{ bgcolor: '#ffffff' }}>
                 <TableCell sx={{ 
                   color: '#424242', 
                   fontWeight: 'bold',
@@ -253,7 +253,7 @@ const ImageInfoTable: React.FC<{
             </TableHead>
             <TableBody>
               {data.map((row, index) => (
-                <TableRow key={index} sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
+                <TableRow key={index} sx={{ '&:nth-of-type(odd)': { bgcolor: '#ffffff' } }}>
                   <TableCell sx={{ 
                     fontFamily: 'Europa, sans-serif', 
                     color: '#424242',
@@ -295,7 +295,7 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
     content: (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {/* Images Section - Stacked vertically */}
-        <Box sx={{ backgroundColor: '#f5f5f5', p: 2, borderRadius: 2 }}>
+        <Box sx={{ backgroundColor: '#ffffff', p: 2, borderRadius: 2 }}>
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             IVC Assessment Images
           </Typography>
@@ -364,7 +364,7 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
     content: (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {/* Images Section - Stacked vertically */}
-        <Box sx={{ backgroundColor: '#f5f5f5', p: 2, borderRadius: 2 }}>
+        <Box sx={{ backgroundColor: '#ffffff', p: 2, borderRadius: 2 }}>
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Hepatic Vein Images & Animations
           </Typography>
@@ -437,7 +437,7 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
     content: (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {/* Images Section - Stacked vertically */}
-        <Box sx={{ backgroundColor: '#f5f5f5', p: 2, borderRadius: 2 }}>
+        <Box sx={{ backgroundColor: '#ffffff', p: 2, borderRadius: 2 }}>
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Portal Vein Images & Animations
           </Typography>
@@ -509,7 +509,7 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
     content: (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {/* Images Section - Stacked vertically */}
-        <Box sx={{ backgroundColor: '#f5f5f5', p: 2, borderRadius: 2 }}>
+        <Box sx={{ backgroundColor: '#ffffff', p: 2, borderRadius: 2 }}>
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Renal Vein Images & Animations
           </Typography>
@@ -622,7 +622,7 @@ const EducationPageContent: React.FC = () => {
         mb: 4, 
         p: 2,
         borderRadius: 2,
-        bgcolor: '#fafafa',
+        bgcolor: '#ffffff',
         border: '1px solid #e0e0e0',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         transition: 'all 0.3s ease',
@@ -706,7 +706,7 @@ const EducationPageContent: React.FC = () => {
           <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
               The VEXUS components are:
             </Typography>
-          <List sx={{ bgcolor: '#f8f9fa', borderRadius: 2, p: 2, border: '1px solid #e0e0e0' }}>
+          <List sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0' }}>
               {['Inferior Vena Cava (IVC) Diameter', 'Hepatic Vein Doppler', 'Portal Vein Doppler', 'Renal Vein Doppler'].map((item, index) => (
                 <ListItem key={index}>
                 <ListItemText 
@@ -886,7 +886,7 @@ const EducationPageContent: React.FC = () => {
           <TableContainer component={Paper} elevation={2} sx={{ mt: 2, border: '1px solid #e0e0e0' }}>
               <Table>
                 <TableHead>
-                <TableRow sx={{ bgcolor: '#f5f5f5' }}>
+                <TableRow sx={{ bgcolor: '#ffffff' }}>
                     {['Grade', 'IVC Diameter', 'Hepatic Vein Flow', 'Portal Vein Flow', 'Intrarenal Vein Flow'].map((header) => (
                     <TableCell 
                       key={header} 
@@ -904,7 +904,7 @@ const EducationPageContent: React.FC = () => {
                 </TableHead>
                 <TableBody>
                   {gradingData.map((row) => (
-                  <TableRow key={row.grade} sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
+                  <TableRow key={row.grade} sx={{ '&:nth-of-type(odd)': { bgcolor: '#ffffff' } }}>
                       <TableCell>
                       <Chip 
                         label={row.grade} 
@@ -1285,7 +1285,7 @@ const EducationPageContent: React.FC = () => {
             <Grid container spacing={2}>
               {references.map((ref) => (
                 <Grid item xs={12} md={6} key={ref.id}>
-                <Card sx={{ p: 2, height: '100%', bgcolor: '#fafafa', border: '1px solid #e0e0e0' }} id={ref.id}>
+                <Card sx={{ p: 2, height: '100%', bgcolor: '#ffffff', border: '1px solid #e0e0e0' }} id={ref.id}>
                     <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                     <Chip 
                       label={ref.number} 

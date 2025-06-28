@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- AI Brain/Circuit Icon -->
+  <g fill="#453E3E">
+    <!-- Brain outline - larger and more prominent -->
+    <path d="M50 10c-12 0-22 8-25 20-3-1-6-1-8 1-6 3-9 9-9 15 0 3 1 6 3 8-2 3-2 6 0 9 2 4 5 7 9 8v12c0 9 6 15 15 15h32c9 0 15-6 15-15v-12c4-1 7-4 9-8 2-3 2-6 0-9 2-2 3-5 3-8 0-6-3-12-9-15-2-2-5-2-8-1-3-12-13-20-25-20z"/>
+    
+    <!-- Circuit patterns inside brain - larger and more visible -->
+    <circle cx="30" cy="30" r="3" fill="white"/>
+    <circle cx="70" cy="30" r="3" fill="white"/>
+    <circle cx="50" cy="45" r="3" fill="white"/>
+    <circle cx="35" cy="60" r="3" fill="white"/>
+    <circle cx="65" cy="60" r="3" fill="white"/>
+    
+    <!-- Circuit lines - thicker -->
+    <line x1="30" y1="30" x2="50" y2="45" stroke="white" stroke-width="2"/>
+    <line x1="70" y1="30" x2="50" y2="45" stroke="white" stroke-width="2"/>
+    <line x1="50" y1="45" x2="35" y2="60" stroke="white" stroke-width="2"/>
+    <line x1="50" y1="45" x2="65" y2="60" stroke="white" stroke-width="2"/>
+    
+    <!-- Additional circuit elements -->
+    <rect x="25" y="40" width="6" height="2" fill="white"/>
+    <rect x="69" y="40" width="6" height="2" fill="white"/>
+    <rect x="47" y="25" width="6" height="2" fill="white"/>
+    
+    <!-- AI text indicator - larger -->
+    <text x="50" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#453E3E" font-weight="bold">AI</text>
+  </g>
+</svg> 

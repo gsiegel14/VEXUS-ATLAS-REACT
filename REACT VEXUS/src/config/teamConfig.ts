@@ -96,11 +96,18 @@ export const teamConfig = {
     {
       id: 'matthew-riscinti',
       name: 'Matthew Riscinti, MD',
-      role: 'Faculty Clinical Investigator',
+      role: 'Director of Emergency Ultrasound & Ultrasound Fellowship Director',
       type: 'core' as const,
       image: '/images/team/matthew-riscinti.jpg',
-      specialties: ['Cardiovascular Medicine', 'Venous Thromboembolism', 'Critical Care Cardiology'],
-      shortBio: 'Cardiovascular medicine specialist with expertise in venous thromboembolism and critical care cardiology, focusing on cardiovascular care and outcomes in critical illness.',
+      specialties: [
+        'Emergency Ultrasound',
+        'Medical Education',
+        'Deep Learning',
+        'Tele-guidance',
+        'Design Thinking'
+      ],
+      shortBio: 'Director of Emergency Ultrasound and Ultrasound Fellowship Director at Denver Health. Assistant Professor at the University of Colorado and co-founder of The POCUS Atlas and related ultrasound education initiatives.',
+      fullBio: 'Dr. Riscinti leads the Emergency Ultrasound program at Denver Health and directs the institution\'s Ultrasound Fellowship. His academic interests span deep learning and tele-guidance augmentation of ultrasound education, as well as design-thinking approaches to curriculum development. A former Chief Resident of Education at Kings County Hospital/SUNY Downstate (Brooklyn, NY), he is the co-founder and lead editor of The POCUS Atlas, The Evidence Atlas, The Denver Health Nerve Block Atlas, and The Nerve Block App, and serves as lead instructor for Bread and Butter Ultrasound. Based in Denver by way of Brooklyn, he strives to advance ultrasound in medicine by merging innovative technologies with medical education.',
       education: [
         {
           degree: 'MD',
@@ -108,9 +115,9 @@ export const teamConfig = {
           year: '2016'
         },
         {
-          degree: 'Fellowship in Cardiovascular Medicine',
-          institution: 'University of Colorado Hospital',
-          year: '2022'
+          degree: 'Emergency Ultrasound Fellowship',
+          institution: 'Denver Health Medical Center',
+          year: '2020'
         }
       ]
     },

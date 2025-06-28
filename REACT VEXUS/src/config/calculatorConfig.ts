@@ -43,9 +43,9 @@ export const stepsConfig: StepConfig[] = [
     options: {
       label: 'Hepatic Vein Classification',
       values: [
-        { label: 'HV Normal', value: 'HV Normal', score: 0 },
-        { label: 'HV Mild', value: 'HV Mild', score: 1 },
-        { label: 'HV Severe', value: 'HV Severe', score: 2 },
+        { label: 'Hepatic Vein Normal', value: 'HV Normal', score: 0 },
+        { label: 'Hepatic Vein Mild', value: 'HV Mild', score: 1 },
+        { label: 'Hepatic Vein Severe', value: 'HV Severe', score: 2 },
         { label: 'Confidence of waveform < 50%', value: 'Confidence of waveform < 50%', score: 0 },
       ]
     }
@@ -60,9 +60,9 @@ export const stepsConfig: StepConfig[] = [
     options: {
       label: 'Portal Vein Classification',
       values: [
-        { label: 'PV Normal', value: 'PV Normal', score: 0 },
-        { label: 'PV Mild', value: 'PV Mild', score: 1 },
-        { label: 'PV Severe', value: 'PV Severe', score: 2 },
+        { label: 'Portal Vein Normal', value: 'PV Normal', score: 0 },
+        { label: 'Portal Vein Mild', value: 'PV Mild', score: 1 },
+        { label: 'Portal Vein Severe', value: 'PV Severe', score: 2 },
         { label: 'Confidence of waveform < 50%', value: 'Confidence of waveform < 50%', score: 0 },
       ]
     }
@@ -77,9 +77,9 @@ export const stepsConfig: StepConfig[] = [
     options: {
       label: 'Renal Vein Classification',
       values: [
-        { label: 'RV Normal', value: 'RV Normal', score: 0 },
-        { label: 'RV Mild', value: 'RV Mild', score: 1 },
-        { label: 'RV Severe', value: 'RV Severe', score: 2 },
+        { label: 'Renal Vein Normal', value: 'RV Normal', score: 0 },
+        { label: 'Renal Vein Mild', value: 'RV Mild', score: 1 },
+        { label: 'Renal Vein Severe', value: 'RV Severe', score: 2 },
         { label: 'Confidence of waveform < 50%', value: 'Confidence of waveform < 50%', score: 0 },
       ]
     }

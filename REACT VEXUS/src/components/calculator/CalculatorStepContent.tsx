@@ -116,14 +116,6 @@ const CalculatorStepContent: React.FC<CalculatorStepContentProps> = ({
           <Typography variant="h6" component="h3" gutterBottom>
             {title}
           </Typography>
-          {score !== null && (
-            <Chip 
-              label={`Score: ${score}`} 
-              color="success" 
-              size="small"
-              sx={{ fontWeight: 'bold' }}
-            />
-          )}
         </Box>
       </Box>
 
@@ -154,7 +146,7 @@ const CalculatorStepContent: React.FC<CalculatorStepContentProps> = ({
             </MenuItem>
             {options.values.map((val) => (
               <MenuItem key={val.value} value={val.value}>
-                {val.label} ({val.score})
+                {val.label}
               </MenuItem>
             ))}
           </Select>
@@ -229,7 +221,7 @@ const CalculatorStepContent: React.FC<CalculatorStepContentProps> = ({
                       </MenuItem>
                       {options.values.map((val) => (
                         <MenuItem key={val.value} value={val.value}>
-                          {val.label} ({val.score})
+                          {val.label}
                         </MenuItem>
                       ))}
                     </Select>
@@ -273,7 +265,7 @@ const CalculatorStepContent: React.FC<CalculatorStepContentProps> = ({
                   </MenuItem>
                   {options.values.map((val) => (
                     <MenuItem key={val.value} value={val.value}>
-                      {val.label} ({val.score})
+                      {val.label}
                     </MenuItem>
                   ))}
                 </Select>
@@ -296,7 +288,7 @@ const CalculatorStepContent: React.FC<CalculatorStepContentProps> = ({
       {score !== null && (
         <Box sx={{ mt: 2, p: 2, backgroundColor: '#e8f5e8', borderRadius: 1 }}>
           <Typography variant="body2" color="success.main" sx={{ fontWeight: 'bold' }}>
-            ✓ Step completed with score: {score}
+            ✓ Step completed
           </Typography>
           {inputMethod === 'ai' && aiResult && (
             <Typography variant="caption" display="block" sx={{ mt: 1 }}>

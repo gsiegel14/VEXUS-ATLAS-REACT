@@ -487,33 +487,51 @@ const CategorySection: React.FC<{
         }}
       >
         <Box sx={{ position: 'relative', zIndex: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-            <Box sx={{ mr: 2, color: category.color }}>
-              {category.icon}
+          {/* Header row with title & top expand/collapse control */}
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>  
+            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+              <Box sx={{ mr: 2, color: category.color }}>
+                {category.icon}
+              </Box>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  fontWeight: 600,
+                  fontSize: { xs: '1.2rem', md: '1.4rem' },
+                  color: '#212529',
+                }}
+              >
+                {category.title}
+              </Typography>
+              <Chip
+                label={images.length}
+                sx={{
+                  ml: 2,
+                  bgcolor: '#f8f9fa',
+                  color: '#495057',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  fontWeight: 500,
+                  border: '1px solid #dee2e6',
+                  fontSize: '0.8rem',
+                }}
+              />
             </Box>
-            <Typography
-              variant="h5"
-              sx={{
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontWeight: 600,
-                fontSize: { xs: '1.2rem', md: '1.4rem' },
-                color: '#212529',
-              }}
-            >
-              {category.title}
-            </Typography>
-            <Chip
-              label={images.length}
-              sx={{
-                ml: 2,
-                bgcolor: '#f8f9fa',
-                color: '#495057',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontWeight: 500,
-                border: '1px solid #dee2e6',
-                fontSize: '0.8rem',
-              }}
-            />
+
+            {/* Top expand/collapse arrow */}
+            {hasMoreImages && (
+              <IconButton
+                onClick={() => setShowAll(!showAll)}
+                aria-label={showAll ? 'Collapse section' : 'Expand section'}
+                sx={{
+                  transform: showAll ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.3s ease',
+                  color: '#495057',
+                }}
+              >
+                <ExpandMore />
+              </IconButton>
+            )}
           </Box>
           <Typography
             variant="body2"

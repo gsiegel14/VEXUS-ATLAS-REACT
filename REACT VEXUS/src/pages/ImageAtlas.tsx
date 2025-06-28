@@ -340,40 +340,7 @@ const ImageAtlasPage: React.FC = () => {
                 A clean, comprehensive collection of VEXUS ultrasound images for medical education and research.
               </Typography>
 
-              {/* Stats */}
-              {totalImages > 0 && (
-                <Stack 
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={4}
-                  justifyContent="center"
-                  sx={{ mt: 4 }}
-                >
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h4" sx={{ fontWeight: 600, fontFamily: 'system-ui, -apple-system, sans-serif', color: '#495057' }}>
-                      {totalImages}
-                    </Typography>
-                    <Typography variant="body2" sx={{ fontFamily: 'system-ui, -apple-system, sans-serif', color: '#6c757d' }}>
-                      Total Images
-                    </Typography>
-                  </Box>
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h4" sx={{ fontWeight: 600, fontFamily: 'system-ui, -apple-system, sans-serif', color: '#495057' }}>
-                      {categorizedFilteredImages.hepatic.length + categorizedFilteredImages.portal.length + categorizedFilteredImages.renal.length}
-                    </Typography>
-                    <Typography variant="body2" sx={{ fontFamily: 'system-ui, -apple-system, sans-serif', color: '#6c757d' }}>
-                      Filtered Results
-                    </Typography>
-                  </Box>
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h4" sx={{ fontWeight: 600, fontFamily: 'system-ui, -apple-system, sans-serif', color: '#495057' }}>
-                      3
-                    </Typography>
-                    <Typography variant="body2" sx={{ fontFamily: 'system-ui, -apple-system, sans-serif', color: '#6c757d' }}>
-                      Categories
-                    </Typography>
-                  </Box>
-                </Stack>
-              )}
+
 
               {/* Upload Button */}
               <Box sx={{ mt: 4 }}>

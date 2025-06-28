@@ -140,6 +140,19 @@ const GlobalFooter: React.FC = () => {
                 justifyContent: { xs: 'center', md: 'flex-start' },
               }}
             >
+              {/* Social media links temporarily disabled pending account verification */}
+              <Typography
+                variant="body2"
+                sx={{
+                  color: '#777',
+                  fontFamily: 'Europa, sans-serif',
+                  fontSize: '0.9rem',
+                  fontStyle: 'italic',
+                }}
+              >
+                Social media coming soon
+              </Typography>
+              {/* 
               <Link
                 href="https://x.com/thevexusatlas"
                 target="_blank"
@@ -180,6 +193,7 @@ const GlobalFooter: React.FC = () => {
                 <InstagramIcon sx={{ mr: 0.5, fontSize: '1.1rem' }} />
                 {!isMobile && 'Instagram'}
               </Link>
+              */}
             </Box>
           </Grid>
         </Grid>

@@ -9,7 +9,8 @@ import {
   IconButton,
   Collapse,
   Button,
-  Divider
+  Divider,
+  Avatar
 } from '@mui/material';
 import {
   ExpandMore,
@@ -28,8 +29,23 @@ interface TeamMemberCardProps {
 
 const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, variant = 'standard' }) => {
   const [expanded, setExpanded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const isCompact = variant === 'compact';
+
+  // Generate initials from name
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
     <Card 
@@ -47,16 +63,41 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, variant = 'stan
     >
       {/* Member Image */}
       <Box sx={{ position: 'relative', bgcolor: 'grey.100' }}>
-        <CardMedia
-          component="img"
-          image={member.image}
-          alt={member.name}
-          sx={{
-            height: isCompact ? 200 : 300,
-            objectFit: 'cover',
-            objectPosition: 'center top'
-          }}
-        />
+        {!imageError ? (
+          <CardMedia
+            component="img"
+            image={member.image}
+            alt={member.name}
+            onError={handleImageError}
+            sx={{
+              height: isCompact ? 200 : 300,
+              objectFit: 'cover',
+              objectPosition: 'center top'
+            }}
+          />
+        ) : (
+          <Box
+            sx={{
+              height: isCompact ? 200 : 300,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              bgcolor: 'primary.main'
+            }}
+          >
+            <Avatar
+              sx={{
+                width: isCompact ? 80 : 120,
+                height: isCompact ? 80 : 120,
+                fontSize: isCompact ? '1.5rem' : '2rem',
+                bgcolor: 'primary.dark',
+                color: 'white'
+              }}
+            >
+              {getInitials(member.name)}
+            </Avatar>
+          </Box>
+        )}
         {member.featured && (
           <Chip
             label="Featured"

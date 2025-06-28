@@ -288,7 +288,7 @@ Convert Astro pages to production-quality React components using Material-UI v5+
 ## 1. UNIFIED DESIGN SYSTEM
 
 ### 1.1 Component Hierarchy & Consistency
-```typescript
+```typescriput
 interface DesignSystemPrinciples {
   consistency: 'All pages share identical header, footer, navigation with dropdowns';
   modularity: 'Components are atomic, reusable, and composable';
