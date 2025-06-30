@@ -132,6 +132,19 @@ const ImageCard: React.FC<{
     );
   };
 
+  const getQualityDescription = (quality: string) => {
+    switch (quality?.toLowerCase()) {
+      case 'high':
+        return 'Excellent image clarity with sharp anatomical details. Optimal for diagnostic assessment and educational use. All anatomical structures are clearly visible with minimal artifacts.';
+      case 'medium':
+        return 'Good image quality with adequate clarity for diagnostic purposes. Minor artifacts or slight resolution limitations that do not significantly impact interpretation.';
+      case 'low':
+        return 'Suboptimal image quality with reduced clarity or significant artifacts. May still have diagnostic or educational value but with limitations in detail visualization.';
+      default:
+        return 'Image quality assessment not available.';
+    }
+  };
+
   return (
     <Card
       ref={ref}
@@ -247,7 +260,7 @@ const ImageCard: React.FC<{
         >
           {image.quality && (
             <Tooltip 
-              title={createTooltipContent('Image Quality', `${image.quality} - Visual clarity and diagnostic value of the ultrasound image`)}
+              title={createTooltipContent('Image Quality', getQualityDescription(image.quality))}
               placement="top"
               arrow
             >

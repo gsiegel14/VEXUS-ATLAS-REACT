@@ -7,7 +7,7 @@ const Airtable = require('airtable');
 const axios = require('axios');
 
 const app = express();
-const PORT = process.env.PORT || 8080; // Cloud Run uses PORT environment variable
+const PORT = process.env.PORT || 3001; // Match frontend configuration (was 8080)
 
 // Enable CORS for production
 app.use(cors({
@@ -34,9 +34,89 @@ let secretsCache = null;
 let cacheTimestamp = null;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
+// SERP API Response Cache - 1 WEEK CACHING
+let serpCache = new Map();
+const SERP_CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 1 week (7 days) for SERP API responses
+const MAX_CACHE_SIZE = 50; // Maximum number of cached responses (smaller for longer TTL)
+
+// Helper function to generate cache key
+const generateCacheKey = (endpoint, params) => {
+  const sortedParams = Object.keys(params)
+    .sort()
+    .map(key => `${key}=${params[key]}`)
+    .join('&');
+  return `${endpoint}:${sortedParams}`;
+};
+
+// Helper function to clean expired cache entries
+const cleanExpiredCache = () => {
+  const now = Date.now();
+  let removedCount = 0;
+  for (const [key, value] of serpCache.entries()) {
+    if (now - value.timestamp > SERP_CACHE_DURATION) {
+      serpCache.delete(key);
+      removedCount++;
+      console.log('🗑️  Cache entry expired and removed:', key);
+    }
+  }
+  if (removedCount > 0) {
+    console.log(`🧹 Cleaned ${removedCount} expired cache entries`);
+  }
+};
+
+// Helper function to manage cache size
+const manageCacheSize = () => {
+  if (serpCache.size > MAX_CACHE_SIZE) {
+    // Remove oldest entries if cache is too large
+    const entries = Array.from(serpCache.entries());
+    entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
+    
+    const entriesToRemove = entries.slice(0, serpCache.size - MAX_CACHE_SIZE + 5);
+    entriesToRemove.forEach(([key]) => {
+      serpCache.delete(key);
+      console.log('🗑️  Cache entry removed due to size limit:', key);
+    });
+    console.log(`📦 Managed cache size: removed ${entriesToRemove.length} oldest entries`);
+  }
+};
+
+// Helper function to get cached response
+const getCachedResponse = (cacheKey) => {
+  cleanExpiredCache();
+  const cached = serpCache.get(cacheKey);
+  
+  if (cached && (Date.now() - cached.timestamp < SERP_CACHE_DURATION)) {
+    const ageInDays = Math.floor((Date.now() - cached.timestamp) / (24 * 60 * 60 * 1000));
+    console.log('🎯 Cache HIT:', { 
+      cacheKey, 
+      ageInDays,
+      cacheSize: serpCache.size 
+    });
+    return cached.data;
+  }
+  
+  return null;
+};
+
+// Helper function to set cached response
+const setCachedResponse = (cacheKey, data) => {
+  manageCacheSize();
+  serpCache.set(cacheKey, {
+    data,
+    timestamp: Date.now()
+  });
+  
+  console.log('💾 Response cached for 1 week:', { 
+    cacheKey, 
+    cacheSize: serpCache.size,
+    ttlDays: 7
+  });
+};
+
 // Reset cache on server start
 secretsCache = null;
 cacheTimestamp = null;
+serpCache.clear();
 
 // Function to get secrets from Google Secret Manager
 async function getSecrets() {
@@ -167,6 +247,13 @@ app.get('/api/health', async (req, res) => {
       status: 'healthy',
       secretManager: true,
       airtable: true,
+      googleScholarAPI: !!secrets.googlescholarapi,
+      serpCache: {
+        size: serpCache.size,
+        maxSize: MAX_CACHE_SIZE,
+        ttlDays: 7,
+        utilizationPercent: Math.round((serpCache.size / MAX_CACHE_SIZE) * 100)
+      },
       timestamp: new Date().toISOString()
     });
   } catch (error) {
@@ -310,6 +397,85 @@ app.get('/api/debug/secrets', async (req, res) => {
   }
 });
 
+// Cache management endpoint for Google Scholar API
+app.get('/api/admin/cache', (req, res) => {
+  const { action } = req.query;
+  
+  try {
+    if (action === 'clear') {
+      const clearedEntries = serpCache.size;
+      serpCache.clear();
+      
+      console.log('🗑️  SERP cache manually cleared:', { 
+        clearedEntries,
+        timestamp: new Date().toISOString()
+      });
+      
+      return res.json({
+        success: true,
+        message: 'Cache cleared successfully',
+        clearedEntries,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    if (action === 'cleanup') {
+      const sizeBefore = serpCache.size;
+      cleanExpiredCache();
+      const sizeAfter = serpCache.size;
+      
+      console.log('🧹 SERP cache cleanup performed:', { 
+        sizeBefore,
+        sizeAfter,
+        removedEntries: sizeBefore - sizeAfter,
+        timestamp: new Date().toISOString()
+      });
+      
+      return res.json({
+        success: true,
+        message: 'Cache cleanup completed',
+        sizeBefore,
+        sizeAfter,
+        removedEntries: sizeBefore - sizeAfter,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Default: return cache status
+    const cacheEntries = Array.from(serpCache.entries()).map(([key, value]) => ({
+      key,
+      timestamp: new Date(value.timestamp).toISOString(),
+      ageInDays: Math.floor((Date.now() - value.timestamp) / (24 * 60 * 60 * 1000)),
+      ttlRemainingDays: Math.max(0, 7 - Math.floor((Date.now() - value.timestamp) / (24 * 60 * 60 * 1000))),
+      expired: (Date.now() - value.timestamp) > SERP_CACHE_DURATION,
+      dataSize: JSON.stringify(value.data).length
+    }));
+    
+    res.json({
+      cache: {
+        size: serpCache.size,
+        maxSize: MAX_CACHE_SIZE,
+        ttlDays: 7,
+        utilizationPercent: Math.round((serpCache.size / MAX_CACHE_SIZE) * 100),
+        entries: cacheEntries
+      },
+      actions: {
+        clear: '/api/admin/cache?action=clear',
+        cleanup: '/api/admin/cache?action=cleanup'
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Cache management endpoint error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to manage cache',
+      details: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // Get images by category (vein type)
 app.get('/api/images/category/:veinType', async (req, res) => {
   try {
@@ -430,14 +596,22 @@ app.get('/api/scholar/search', async (req, res) => {
     console.log('🔍 Fetching Google Scholar results for:', q);
     console.log('🔗 SerpAPI URL:', serpApiUrl.toString().replace(secrets.googlescholarapi, '[API_KEY_HIDDEN]'));
     
-    const response = await axios.get(serpApiUrl.toString());
+    const cacheKey = generateCacheKey('/api/scholar/search', { q, start, num });
+    const cachedResponse = getCachedResponse(cacheKey);
     
-    const data = response.data;
-    
-    // Log some basic info for debugging
-    console.log(`📊 Found ${data.organic_results?.length || 0} results for "${q}"`);
-    
-    res.json(data);
+    if (cachedResponse) {
+      res.json(cachedResponse);
+    } else {
+      const response = await axios.get(serpApiUrl.toString());
+      
+      const data = response.data;
+      
+      // Log some basic info for debugging
+      console.log(`📊 Found ${data.organic_results?.length || 0} results for "${q}"`);
+      
+      setCachedResponse(cacheKey, data);
+      res.json(data);
+    }
   } catch (error) {
     console.error('❌ Google Scholar API Error Details:');
     console.error('Error message:', error.message);
@@ -661,14 +835,17 @@ app.use((req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log('🚀 VEXUS Atlas Backend Server (Updated)');
-  console.log('======================================');
+  console.log('🚀 VEXUS Atlas Backend Server (With 1-Week Caching)');
+  console.log('===============================================');
   console.log(`🌐 Server running on http://localhost:${PORT}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
   console.log(`📊 Images API: http://localhost:${PORT}/api/images`);
+  console.log(`🔍 Google Scholar API: http://localhost:${PORT}/api/scholar/search`);
+  console.log(`🗂️  Cache management: http://localhost:${PORT}/api/admin/cache`);
   console.log(`🔍 Debug fields: http://localhost:${PORT}/api/debug/fields`);
   console.log(`📋 Raw data: http://localhost:${PORT}/api/raw`);
   console.log('🔐 Using Google Secret Manager for configuration');
+  console.log('💾 SERP API responses cached for 1 WEEK (reduces API calls)');
   console.log('📋 Ready to serve React frontend on http://localhost:5439');
   
   // Test connection on startup

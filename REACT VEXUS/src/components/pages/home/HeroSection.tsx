@@ -80,132 +80,162 @@ const HeroSection: React.FC = () => {
               >
                 We create, share, and curate VEXUS ultrasound educational content contributed by experts in Pulse Wave Doppler around the world.
               </Typography>
-              
-              
             </Box>
 
             {/* VEXUS Features Section */}
             <Box sx={{ my: { xs: 8, md: 10 } }}>
-                             <Typography 
-                 variant="h2" 
-                 component="h2"
-                 sx={{ 
-                   fontFamily: "'Europa', 'proxima-nova', 'Helvetica Neue', Arial, sans-serif",
-                   fontSize: '1.8em',
-                   marginBottom: '1.5em',
-                   marginTop: '2em',
-                   color: '#333',
-                   textAlign: 'center',
-                   whiteSpace: 'pre-wrap'
-                 }}
-               >
-                 Explore the VEXUS Atlas
-               </Typography>
-               
-               <Typography 
-                 variant="h4" 
-                 component="h4" 
-                 sx={{ 
-                   fontFamily: "'Europa', 'proxima-nova', 'Helvetica Neue', Arial, sans-serif",
-                   fontWeight: 'normal',
-                   fontSize: '1.1em',
-                   lineHeight: '1.6em',
-                   marginBottom: '3em',
-                   color: '#555',
-                   textAlign: 'center',
-                   whiteSpace: 'pre-wrap'
-                 }}
-               >
-                 VEXUS Atlas is dedicated to advancing the understanding and application of the Venous Excess Ultrasound Score through collaborative learning and expert-driven resources.
-               </Typography>
+              <Typography 
+                variant="h2" 
+                component="h2"
+                sx={{ 
+                  fontFamily: "'Europa', 'proxima-nova', 'Helvetica Neue', Arial, sans-serif",
+                  fontSize: '1.8em',
+                  marginBottom: '2.5em',
+                  marginTop: '3em',
+                  color: '#333',
+                  textAlign: 'center',
+                  whiteSpace: 'pre-wrap'
+                }}
+              >
+                Explore the VEXUS Atlas
+              </Typography>
+              
+              <Typography 
+                variant="h4" 
+                component="h4" 
+                sx={{ 
+                  fontFamily: "'Europa', 'proxima-nova', 'Helvetica Neue', Arial, sans-serif",
+                  fontWeight: 'normal',
+                  fontSize: '1.1em',
+                  lineHeight: '1.6em',
+                  marginBottom: '4.5em',
+                  color: '#555',
+                  textAlign: 'center',
+                  whiteSpace: 'pre-wrap'
+                }}
+              >
+                VEXUS Atlas is dedicated to advancing the understanding and application of the Venous Excess Ultrasound Score through collaborative learning and expert-driven resources.
+              </Typography>
               
               <Box
                 sx={{
-                  display: 'grid',
-                  gridTemplateColumns: { 
-                    xs: 'repeat(2, 1fr)', 
-                    md: 'repeat(4, 1fr)' 
-                  },
-                  gap: { xs: 3, md: 4 },
-                  textAlign: 'center',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  width: '100%',
                   mb: 6
                 }}
               >
-                {vexusFeatures.map((feature, index) => (
-                  <Box
-                    key={index}
-                    component={RouterLink}
-                    to={feature.link}
-                    sx={{
-                      textDecoration: 'none !important',
-                      color: 'inherit',
-                      border: 'none !important',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      p: { xs: 2, md: 3 },
-                      borderRadius: 1,
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        transform: 'translateY(-4px)',
-                        boxShadow: 2
-                      }
-                    }}
-                  >
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { 
+                      xs: 'repeat(2, 1fr)', 
+                      md: 'repeat(4, 1fr)' 
+                    },
+                    gap: { xs: 3, md: 4 },
+                    textAlign: 'center',
+                    justifyItems: 'center',
+                    width: 'fit-content'
+                  }}
+                >
+                  {vexusFeatures.map((feature, index) => (
                     <Box
-                      component="img"
-                      src={feature.icon}
-                      alt={feature.title}
-                      loading="lazy"
+                      key={index}
+                      component={RouterLink}
+                      to={feature.link}
                       sx={{
-                        width: { xs: 70, md: 100 },
-                        height: { xs: 70, md: 100 },
-                        mb: 2,
-                        objectFit: 'contain',
-                        border: 'none !important'
-                      }}
-                    />
-                    <Typography 
-                      variant="body1" 
-                      component="div"
-                      sx={{ 
-                        fontSize: '1em',
-                        fontWeight: 500,
-                        fontFamily: "'Europa', 'proxima-nova', 'Helvetica Neue', Arial, sans-serif",
                         textDecoration: 'none !important',
+                        color: 'inherit',
                         border: 'none !important',
-                        borderBottom: 'none !important',
-                        borderTop: 'none !important',
-                        borderLeft: 'none !important',
-                        borderRight: 'none !important',
-                        color: 'inherit'
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        p: { xs: 2, md: 3 },
+                        borderRadius: 1,
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          boxShadow: 2
+                        }
                       }}
                     >
-                      {feature.title}
-                    </Typography>
-                  </Box>
-                ))}
+                      <Box
+                        sx={{
+                          width: { xs: 100, md: 120 },
+                          height: { xs: 100, md: 120 },
+                          mb: 2,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          border: 'none !important',
+                          borderRadius: 1,
+                          backgroundColor: 'transparent',
+                          padding: 1
+                        }}
+                      >
+                        <Box
+                          component="img"
+                          src={feature.icon}
+                          alt={feature.title}
+                          loading="lazy"
+                          sx={{
+                            width: { xs: 80, md: 100 },
+                            height: { xs: 80, md: 100 },
+                            minWidth: { xs: 80, md: 100 },
+                            minHeight: { xs: 80, md: 100 },
+                            maxWidth: { xs: 80, md: 100 },
+                            maxHeight: { xs: 80, md: 100 },
+                            objectFit: 'contain',
+                            objectPosition: 'center',
+                            border: 'none !important',
+                            display: 'block'
+                          }}
+                        />
+                      </Box>
+                      <Typography 
+                        variant="body1" 
+                        component="div"
+                        sx={{ 
+                          fontSize: '1em',
+                          fontWeight: 500,
+                          fontFamily: "'Europa', 'proxima-nova', 'Helvetica Neue', Arial, sans-serif",
+                          textDecoration: 'none !important',
+                          border: 'none !important',
+                          borderBottom: 'none !important',
+                          borderTop: 'none !important',
+                          borderLeft: 'none !important',
+                          borderRight: 'none !important',
+                          color: 'inherit',
+                          textAlign: 'center',
+                          lineHeight: 1.2
+                        }}
+                      >
+                        {feature.title}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
               </Box>
 
               <Divider sx={{ my: 6 }} />
             </Box>
 
             <Box sx={{ mt: { xs: 6, md: 8 } }}>
-                             <Typography 
-                 variant="h2" 
-                 component="h2"
-                 sx={{ 
-                   fontFamily: "'Europa', 'proxima-nova', 'Helvetica Neue', Arial, sans-serif",
-                   fontSize: '1.8em',
-                   marginBottom: '1.5em',
-                   marginTop: '2em',
-                   color: '#333',
-                   textAlign: 'center',
-                   whiteSpace: 'pre-wrap'
-                 }}
-               >
-                 Explore The POCUS Atlas
-               </Typography>
+              <Typography 
+                variant="h2" 
+                component="h2"
+                sx={{ 
+                  fontFamily: "'Europa', 'proxima-nova', 'Helvetica Neue', Arial, sans-serif",
+                  fontSize: '1.8em',
+                  marginBottom: '1.5em',
+                  marginTop: '2em',
+                  color: '#333',
+                  textAlign: 'center',
+                  whiteSpace: 'pre-wrap'
+                }}
+              >
+                Explore The POCUS Atlas
+              </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={2} /> {/* Spacer - exact layout from original */}

@@ -234,20 +234,21 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ open, onClose, onUploadSucces
         }
       }}
     >
-      <DialogTitle sx={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        pb: 1,
-        borderBottom: '1px solid #dee2e6'
-      }}>
-        <Typography variant="h6" sx={{ 
+      <DialogTitle 
+        component="h1"
+        sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          pb: 1,
+          borderBottom: '1px solid #dee2e6',
           fontFamily: 'system-ui, -apple-system, sans-serif', 
           fontWeight: 600,
-          color: '#212529'
-        }}>
-          Upload VEXUS Image
-        </Typography>
+          color: '#212529',
+          fontSize: '1.25rem'
+        }}
+      >
+        Upload VEXUS Image
         <IconButton onClick={handleClose} disabled={uploading} size="small">
           <Close />
         </IconButton>

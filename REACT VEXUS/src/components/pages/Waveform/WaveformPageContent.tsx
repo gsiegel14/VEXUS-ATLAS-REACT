@@ -1178,14 +1178,14 @@ const WaveformPageContent: React.FC = () => {
                         sx={{
                           display: 'inline-block',
                           p: '0.3em 0.6em',
-                          backgroundColor: '#007bff',
+                          backgroundColor: '#757575',
                           color: 'white',
                           textDecoration: 'none',
                           borderRadius: '0.2em',
                           fontSize: '0.9em',
                           fontFamily: 'Europa, sans-serif',
                           '&:hover': {
-                            backgroundColor: '#0056b3'
+                            backgroundColor: '#616161'
                           }
                         }}
                       >

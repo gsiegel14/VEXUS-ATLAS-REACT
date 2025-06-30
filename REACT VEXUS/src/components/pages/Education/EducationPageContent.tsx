@@ -22,6 +22,7 @@ import {
   Link,
   Grid,
   DialogTitle,
+  Divider,
 } from '@mui/material';
 import { Close, ZoomIn, Launch } from '@mui/icons-material';
 
@@ -325,30 +326,34 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Key Structures:
           </Typography>
-          <List dense>
-            {["Inferior Vena Cava (IVC)", "Right atrial junction", "Hepatic vein confluence", "Liver"].map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161' } }} />
-              </ListItem>
-            ))}
-          </List>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <List dense sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0', maxWidth: 600 }}>
+              {["Inferior Vena Cava (IVC)", "Right atrial junction", "Hepatic vein confluence", "Liver"].map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161', textAlign: 'center' } }} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
           
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Key Points:
           </Typography>
-          <List dense>
-            {[
-              "Place patient in supine position",
-              "Use a low frequency (curvilinear) probe", 
-              "Measure IVC diameter 2-3 cm from right atrial junction",
-              "Assess for inspiratory collapse (if applicable)",
-              "Record maximum diameter for VEXUS classification"
-            ].map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161' } }} />
-              </ListItem>
-            ))}
-          </List>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <List dense sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0', maxWidth: 600 }}>
+              {[
+                "Place patient in supine position",
+                "Use a low frequency (curvilinear) probe", 
+                "Measure IVC diameter 2-3 cm from right atrial junction",
+                "Assess for inspiratory collapse (if applicable)",
+                "Record maximum diameter for VEXUS classification"
+              ].map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161', textAlign: 'center' } }} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
         </Box>
       </Box>
     )
@@ -399,28 +404,32 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Key Structures:
           </Typography>
-          <List dense>
-            {["Hepatic vein", "IVC junction", "Liver parenchyma"].map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161' } }} />
-              </ListItem>
-            ))}
-          </List>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <List dense sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0', maxWidth: 600 }}>
+              {["Hepatic vein", "IVC junction", "Liver parenchyma"].map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161', textAlign: 'center' } }} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
           
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Doppler Waveforms:
           </Typography>
-          <List dense>
-            {[
-              "Triphasic: Normal venous return",
-              "Biphasic: Mild congestion",
-              "Monophasic: Severe congestion"
-            ].map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161' } }} />
-              </ListItem>
-            ))}
-          </List>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <List dense sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0', maxWidth: 600 }}>
+              {[
+                "Triphasic: Normal venous return",
+                "Biphasic: Mild congestion",
+                "Monophasic: Severe congestion"
+              ].map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161', textAlign: 'center' } }} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
         </Box>
       </Box>
     )
@@ -472,28 +481,32 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Key Structures:
           </Typography>
-          <List dense>
-            {["Portal vein main trunk", "Hepatic artery", "Liver parenchyma"].map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161' } }} />
-              </ListItem>
-            ))}
-          </List>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <List dense sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0', maxWidth: 600 }}>
+              {["Portal vein main trunk", "Hepatic artery", "Liver parenchyma"].map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161', textAlign: 'center' } }} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
           
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Doppler Waveforms:
           </Typography>
-          <List dense>
-            {[
-              "Normal: Continuous flow with minimal pulsatility",
-              "Pulsatile: Mild congestion",
-              "Highly pulsatile: Severe congestion"
-            ].map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161' } }} />
-              </ListItem>
-            ))}
-          </List>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <List dense sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0', maxWidth: 600 }}>
+              {[
+                "Normal: Continuous flow with minimal pulsatility",
+                "Pulsatile: Mild congestion",
+                "Highly pulsatile: Severe congestion"
+              ].map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161', textAlign: 'center' } }} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
         </Box>
       </Box>
     )
@@ -544,28 +557,32 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Key Structures:
           </Typography>
-          <List dense>
-            {["Renal vein", "IVC junction", "Kidney", "Right renal artery"].map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161' } }} />
-              </ListItem>
-            ))}
-          </List>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <List dense sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0', maxWidth: 600 }}>
+              {["Renal vein", "IVC junction", "Kidney", "Right renal artery"].map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161', textAlign: 'center' } }} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
           
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
             Doppler Waveforms:
           </Typography>
-          <List dense>
-            {[
-              "Continuous: Normal venous return",
-              "Pulsatile: Mild congestion", 
-              "Discontinuous/phasic reversal: Severe congestion"
-            ].map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161' } }} />
-              </ListItem>
-            ))}
-          </List>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <List dense sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0', maxWidth: 600 }}>
+              {[
+                "Continuous: Normal venous return",
+                "Pulsatile: Mild congestion", 
+                "Discontinuous/phasic reversal: Severe congestion"
+              ].map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161', textAlign: 'center' } }} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
         </Box>
       </Box>
     )
@@ -638,6 +655,63 @@ const EducationPageContent: React.FC = () => {
     </Card>
   );
 
+  // Enhanced numbered list component
+  const NumberedListItem: React.FC<{ number: number; children: React.ReactNode }> = ({ number, children }) => (
+    <Box sx={{ 
+      display: 'flex', 
+      alignItems: 'flex-start', 
+      gap: 2, 
+      mb: 2,
+      justifyContent: 'center',
+      textAlign: 'left',
+      maxWidth: 800,
+      mx: 'auto'
+    }}>
+      <Chip 
+        label={number} 
+        sx={{ 
+          bgcolor: '#757575',
+          color: 'white', 
+          fontWeight: 'bold',
+          fontFamily: 'Europa, sans-serif',
+          minWidth: 32,
+          height: 32,
+          fontSize: '0.875rem',
+          flexShrink: 0,
+          mt: 0.5
+        }} 
+      />
+      <Typography sx={{ 
+        fontFamily: 'Europa, sans-serif', 
+        color: '#424242',
+        flex: 1,
+        pt: 0.5
+      }}>
+        {children}
+      </Typography>
+    </Box>
+  );
+
+  // Enhanced list component with centering
+  const CenteredList: React.FC<{ children: React.ReactNode; maxWidth?: number }> = ({ children, maxWidth = 800 }) => (
+    <Box sx={{ 
+      display: 'flex', 
+      justifyContent: 'center',
+      width: '100%'
+    }}>
+      <List sx={{ 
+        bgcolor: '#ffffff', 
+        borderRadius: 2, 
+        p: 2, 
+        border: '1px solid #e0e0e0',
+        maxWidth,
+        width: '100%'
+      }}>
+        {children}
+      </List>
+    </Box>
+  );
+
   return (
     <Box sx={{ py: 4 }}>
       {/* Header */}
@@ -706,9 +780,9 @@ const EducationPageContent: React.FC = () => {
           <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
               The VEXUS components are:
             </Typography>
-          <List sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, border: '1px solid #e0e0e0' }}>
+          <CenteredList>
               {['Inferior Vena Cava (IVC) Diameter', 'Hepatic Vein Doppler', 'Portal Vein Doppler', 'Renal Vein Doppler'].map((item, index) => (
-                <ListItem key={index}>
+                <ListItem key={index} sx={{ py: 1 }}>
                 <ListItemText 
                   primary={
                     <Typography 
@@ -716,7 +790,8 @@ const EducationPageContent: React.FC = () => {
                       sx={{ 
                         fontFamily: 'Europa, sans-serif',
                         fontWeight: 'medium',
-                        color: '#424242'
+                        color: '#424242',
+                        textAlign: 'center'
                       }}
                     >
                       <strong>{item}</strong>
@@ -725,7 +800,7 @@ const EducationPageContent: React.FC = () => {
                 />
                 </ListItem>
               ))}
-            </List>
+            </CenteredList>
         </EducationSection>
 
         {/* Why Use VEXUS Section */}
@@ -763,107 +838,370 @@ const EducationPageContent: React.FC = () => {
               fontFamily: 'Europa, sans-serif',
               color: '#424242', 
               borderBottom: '2px solid #9e9e9e', 
-              pb: 1,
+              pb: 2,
+              mb: 4,
               fontSize: '2.5rem',
               fontWeight: 'bold'
             }}
           >
-            VEXUS Step-by-Step:
+            VEXUS Step-by-Step Guide
           </Typography>
           
-          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 3, color: '#424242', fontSize: '2rem' }}>
-            1. Equipment and Preparation
-          </Typography>
-          <List sx={{ mb: 3 }}>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Ultrasound Machine:</strong> Must have 2D imaging, color Doppler, and pulsed-wave Doppler capabilities. Electrocardiogram gating adds to the interpretability of the exam, but is not essential.
-                  </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Supplies:</strong> Ultrasound gel, gloves.
-                  </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Patient Positioning:</strong> Supine or slightly recumbent, table adjusted to the operator's waist level.
-                  </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Important Note:</strong> Attempt to capture waveforms during end-expiration.
-                  </Typography>
-                } 
-              />
-            </ListItem>
-          </List>
+          {/* Step 1: Equipment and Preparation */}
+          <Card 
+            elevation={3} 
+            sx={{ 
+              mb: 4, 
+              border: '1px solid #e0e0e0',
+              borderRadius: 3,
+              overflow: 'hidden'
+            }}
+          >
+            <Box sx={{ 
+              bgcolor: '#f5f5f5', 
+              p: 3, 
+              borderBottom: '1px solid #e0e0e0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2
+            }}>
+              <Box sx={{ 
+                width: 50, 
+                height: 50, 
+                borderRadius: '50%', 
+                backgroundColor: '#757575', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center'
+              }}>
+                <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                  1
+                </Typography>
+              </Box>
+              <Typography variant="h4" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                color: '#424242', 
+                fontWeight: 'bold',
+                fontSize: '1.8rem'
+              }}>
+                Equipment and Preparation
+              </Typography>
+            </Box>
+            
+            <Box sx={{ p: 3 }}>
+              <TableContainer sx={{ border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                <Table>
+                  <TableHead>
+                    <TableRow sx={{ bgcolor: '#fafafa' }}>
+                      <TableCell 
+                        sx={{ 
+                          color: '#424242', 
+                          fontWeight: 'bold',
+                          fontFamily: 'Europa, sans-serif',
+                          borderBottom: '2px solid #e0e0e0',
+                          width: '25%'
+                        }}
+                      >
+                        Item
+                      </TableCell>
+                      <TableCell 
+                        sx={{ 
+                          color: '#424242', 
+                          fontWeight: 'bold',
+                          fontFamily: 'Europa, sans-serif',
+                          borderBottom: '2px solid #e0e0e0'
+                        }}
+                      >
+                        Description
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', fontWeight: 'bold' }}>
+                        Ultrasound Machine
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Must have 2D imaging, color Doppler, and pulsed-wave Doppler capabilities. Electrocardiogram gating adds to the interpretability of the exam, but is not essential.
+                      </TableCell>
+                    </TableRow>
+                    <TableRow sx={{ bgcolor: '#fafafa' }}>
+                      <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', fontWeight: 'bold' }}>
+                        Supplies
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Ultrasound gel, gloves.
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', fontWeight: 'bold' }}>
+                        Patient Positioning
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Supine or slightly recumbent, table adjusted to the operator's waist level.
+                      </TableCell>
+                    </TableRow>
+                    <TableRow sx={{ bgcolor: '#fafafa' }}>
+                      <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', fontWeight: 'bold' }}>
+                        Important Note
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Attempt to capture waveforms during end-expiration.
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </Card>
 
-          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', fontSize: '2rem' }}>
-            2. Inferior Vena Cava (IVC) Assessment
-          </Typography>
-          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
-            Measure the IVC using the curvilinear or phased-array probe in the subxiphoid view. Measure the diameter of the IVC just distal to the insertion of the hepatic vein into the IVC.
-          </Typography>
-          
-          <Box sx={{ mb: 3 }}>
-            <VeinButton veinType="ivc" onOpenAcquisition={handleOpenAcquisition}>
-              IVC Image Acquisition
-            </VeinButton>
-          </Box>
+          <Divider sx={{ my: 4, borderColor: '#e0e0e0' }} />
 
-          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', fontSize: '2rem' }}>
-            3. Hepatic Vein
-          </Typography>
-          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
-            Align the Doppler gate with the main hepatic vein as it enters the IVC, ensuring the angle of insonation is less than 60 degrees.
-          </Typography>
-          
-          <Box sx={{ mb: 3 }}>
-            <VeinButton veinType="hepatic" onOpenAcquisition={handleOpenAcquisition}>
-              Hepatic Vein Image Acquisition
-            </VeinButton>
-          </Box>
+          {/* Step 2: IVC Assessment */}
+          <Card 
+            elevation={3} 
+            sx={{ 
+              mb: 4, 
+              border: '1px solid #e0e0e0',
+              borderRadius: 3,
+              overflow: 'hidden'
+            }}
+          >
+            <Box sx={{ 
+              bgcolor: '#f5f5f5', 
+              p: 3, 
+              borderBottom: '1px solid #e0e0e0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2
+            }}>
+              <Box sx={{ 
+                width: 50, 
+                height: 50, 
+                borderRadius: '50%', 
+                backgroundColor: '#757575', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center'
+              }}>
+                <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                  2
+                </Typography>
+              </Box>
+              <Typography variant="h4" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                color: '#424242', 
+                fontWeight: 'bold',
+                fontSize: '1.8rem'
+              }}>
+                Inferior Vena Cava (IVC) Assessment
+              </Typography>
+            </Box>
+            
+            <Box sx={{ p: 3 }}>
+              <Typography variant="body1" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                lineHeight: 1.7, 
+                color: '#424242',
+                mb: 3,
+                fontSize: '1.1rem'
+              }}>
+                Measure the IVC using the curvilinear or phased-array probe in the subxiphoid view. Measure the diameter of the IVC just distal to the insertion of the hepatic vein into the IVC.
+              </Typography>
+              
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <VeinButton veinType="ivc" onOpenAcquisition={handleOpenAcquisition}>
+                  IVC Image Acquisition
+                </VeinButton>
+              </Box>
+            </Box>
+          </Card>
 
-          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', fontSize: '2rem' }}>
-            4. Portal Vein
-          </Typography>
-          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
-            Use Doppler to assess flow direction in the portal vein, ideally in the mid-to-distal portion. Aim for an angle less than 60 degrees.
-          </Typography>
-          
-          <Box sx={{ mb: 3 }}>
-            <VeinButton veinType="portal" onOpenAcquisition={handleOpenAcquisition}>
-              Portal Vein Image Acquisition
-            </VeinButton>
-          </Box>
+          <Divider sx={{ my: 4, borderColor: '#e0e0e0' }} />
 
-          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', fontSize: '2rem' }}>
-            5. Renal Vein
-          </Typography>
-          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
-            Place the doppler gate over distal portion of the renal interlobar vessels
-          </Typography>
-          
-          <Box sx={{ mb: 3 }}>
-            <VeinButton veinType="renal" onOpenAcquisition={handleOpenAcquisition}>
-              Renal Vein Image Acquisition
-            </VeinButton>
-          </Box>
+          {/* Step 3: Hepatic Vein */}
+          <Card 
+            elevation={3} 
+            sx={{ 
+              mb: 4, 
+              border: '1px solid #e0e0e0',
+              borderRadius: 3,
+              overflow: 'hidden'
+            }}
+          >
+            <Box sx={{ 
+              bgcolor: '#f5f5f5', 
+              p: 3, 
+              borderBottom: '1px solid #e0e0e0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2
+            }}>
+              <Box sx={{ 
+                width: 50, 
+                height: 50, 
+                borderRadius: '50%', 
+                backgroundColor: '#757575', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center'
+              }}>
+                <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                  3
+                </Typography>
+              </Box>
+              <Typography variant="h4" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                color: '#424242', 
+                fontWeight: 'bold',
+                fontSize: '1.8rem'
+              }}>
+                Hepatic Vein Assessment
+              </Typography>
+            </Box>
+            
+            <Box sx={{ p: 3 }}>
+              <Typography variant="body1" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                lineHeight: 1.7, 
+                color: '#424242',
+                mb: 3,
+                fontSize: '1.1rem'
+              }}>
+                Align the Doppler gate with the main hepatic vein as it enters the IVC, ensuring the angle of insonation is less than 60 degrees.
+              </Typography>
+              
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <VeinButton veinType="hepatic" onOpenAcquisition={handleOpenAcquisition}>
+                  Hepatic Vein Image Acquisition
+                </VeinButton>
+              </Box>
+            </Box>
+          </Card>
+
+          <Divider sx={{ my: 4, borderColor: '#e0e0e0' }} />
+
+          {/* Step 4: Portal Vein */}
+          <Card 
+            elevation={3} 
+            sx={{ 
+              mb: 4, 
+              border: '1px solid #e0e0e0',
+              borderRadius: 3,
+              overflow: 'hidden'
+            }}
+          >
+            <Box sx={{ 
+              bgcolor: '#f5f5f5', 
+              p: 3, 
+              borderBottom: '1px solid #e0e0e0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2
+            }}>
+              <Box sx={{ 
+                width: 50, 
+                height: 50, 
+                borderRadius: '50%', 
+                backgroundColor: '#757575', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center'
+              }}>
+                <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                  4
+                </Typography>
+              </Box>
+              <Typography variant="h4" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                color: '#424242', 
+                fontWeight: 'bold',
+                fontSize: '1.8rem'
+              }}>
+                Portal Vein Assessment
+              </Typography>
+            </Box>
+            
+            <Box sx={{ p: 3 }}>
+              <Typography variant="body1" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                lineHeight: 1.7, 
+                color: '#424242',
+                mb: 3,
+                fontSize: '1.1rem'
+              }}>
+                Use Doppler to assess flow direction in the portal vein, ideally in the mid-to-distal portion. Aim for an angle less than 60 degrees.
+              </Typography>
+              
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <VeinButton veinType="portal" onOpenAcquisition={handleOpenAcquisition}>
+                  Portal Vein Image Acquisition
+                </VeinButton>
+              </Box>
+            </Box>
+          </Card>
+
+          <Divider sx={{ my: 4, borderColor: '#e0e0e0' }} />
+
+          {/* Step 5: Renal Vein */}
+          <Card 
+            elevation={3} 
+            sx={{ 
+              mb: 4, 
+              border: '1px solid #e0e0e0',
+              borderRadius: 3,
+              overflow: 'hidden'
+            }}
+          >
+            <Box sx={{ 
+              bgcolor: '#f5f5f5', 
+              p: 3, 
+              borderBottom: '1px solid #e0e0e0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2
+            }}>
+              <Box sx={{ 
+                width: 50, 
+                height: 50, 
+                borderRadius: '50%', 
+                backgroundColor: '#757575', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center'
+              }}>
+                <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                  5
+                </Typography>
+              </Box>
+              <Typography variant="h4" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                color: '#424242', 
+                fontWeight: 'bold',
+                fontSize: '1.8rem'
+              }}>
+                Renal Vein Assessment
+              </Typography>
+            </Box>
+            
+            <Box sx={{ p: 3 }}>
+              <Typography variant="body1" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                lineHeight: 1.7, 
+                color: '#424242',
+                mb: 3,
+                fontSize: '1.1rem'
+              }}>
+                Place the doppler gate over distal portion of the renal interlobar vessels
+              </Typography>
+              
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <VeinButton veinType="renal" onOpenAcquisition={handleOpenAcquisition}>
+                  Renal Vein Image Acquisition
+                </VeinButton>
+              </Box>
+            </Box>
+          </Card>
         </EducationSection>
 
         {/* VEXUS Grading System */}
@@ -984,44 +1322,44 @@ const EducationPageContent: React.FC = () => {
             Organs particularly sensitive to venous congestion include:
           </Typography>
           
-          <List sx={{ ml: 2 }}>
-            <ListItem>
+          <CenteredList maxWidth={900}>
+            <ListItem sx={{ py: 1 }}>
               <ListItemText 
                 primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', textAlign: 'center' }}>
                     <strong>Kidneys:</strong> Venous congestion increases renal vein pressure, decreases glomerular filtration gradient, and can lead to acute kidney injury.
                   </Typography>
                 } 
               />
             </ListItem>
-            <ListItem>
+            <ListItem sx={{ py: 1 }}>
               <ListItemText 
                 primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', textAlign: 'center' }}>
                     <strong>Liver:</strong> Elevated hepatic venous pressure increases portal pressure and can impair hepatic function.
                   </Typography>
                 } 
               />
             </ListItem>
-            <ListItem>
+            <ListItem sx={{ py: 1 }}>
               <ListItemText 
                 primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', textAlign: 'center' }}>
                     <strong>Intestines:</strong> Venous congestion can lead to intestinal edema, malabsorption, and bacterial translocation.
                   </Typography>
                 } 
               />
             </ListItem>
-            <ListItem>
+            <ListItem sx={{ py: 1 }}>
               <ListItemText 
                 primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', textAlign: 'center' }}>
                     <strong>Brain:</strong> Increased venous pressure can elevate intracranial pressure and impair cerebral perfusion.
                   </Typography>
                 } 
               />
             </ListItem>
-          </List>
+          </CenteredList>
           
           <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
             VEXUS assessment helps identify and quantify venous congestion, allowing clinicians to intervene before significant organ dysfunction occurs.
@@ -1076,27 +1414,19 @@ const EducationPageContent: React.FC = () => {
             Flow Pattern Progression in Venous Congestion:
           </Typography>
           
-          <Box component="ol" sx={{ pl: 3, mb: 3 }}>
-            <Box component="li" sx={{ mb: 1 }}>
-              <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                <strong>Normal Flow:</strong> Continuous, minimally phasic flow with subtle respiratory variation.
-              </Typography>
-            </Box>
-            <Box component="li" sx={{ mb: 1 }}>
-              <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                <strong>Mild Congestion:</strong> Increased pulsatility with partial flow reversal during cardiac cycles.
-              </Typography>
-            </Box>
-            <Box component="li" sx={{ mb: 1 }}>
-              <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                <strong>Moderate Congestion:</strong> Marked pulsatility with periods of flow cessation.
-              </Typography>
-            </Box>
-            <Box component="li" sx={{ mb: 1 }}>
-              <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                <strong>Severe Congestion:</strong> To-and-fro flow or frank flow reversal, indicating critical venous congestion.
-              </Typography>
-            </Box>
+          <Box sx={{ mb: 3 }}>
+            <NumberedListItem number={1}>
+              <strong>Normal Flow:</strong> Continuous, minimally phasic flow with subtle respiratory variation.
+            </NumberedListItem>
+            <NumberedListItem number={2}>
+              <strong>Mild Congestion:</strong> Increased pulsatility with partial flow reversal during cardiac cycles.
+            </NumberedListItem>
+            <NumberedListItem number={3}>
+              <strong>Moderate Congestion:</strong> Marked pulsatility with periods of flow cessation.
+            </NumberedListItem>
+            <NumberedListItem number={4}>
+              <strong>Severe Congestion:</strong> To-and-fro flow or frank flow reversal, indicating critical venous congestion.
+            </NumberedListItem>
           </Box>
           
           <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
@@ -1152,91 +1482,331 @@ const EducationPageContent: React.FC = () => {
             The VEXUS protocol provides a comprehensive assessment of the cardiopulmonary-renal axis by examining how right atrial pressure and venous congestion affect multiple organ systems. This overview illustrates the interrelated nature of the hemodynamic parameters examined in VEXUS.
           </Typography>
           
-          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 3, color: '#424242', fontSize: '2rem' }}>
-            Key Components and Relationships:
+          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 3, color: '#424242', fontSize: '2rem', textAlign: 'center' }}>
+            Key Components and Relationships
           </Typography>
           
-          <List sx={{ ml: 2, mb: 3 }}>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Right Atrial Pressure (RAP):</strong> The central measurement in venous congestion. Elevated RAP is transmitted backward through the venous system, affecting IVC, hepatic, portal, and renal veins.
-                  </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Cardiac Output (CO):</strong> Represents the heart's pumping function. Venous congestion can reduce CO by impairing ventricular filling and function.
-                  </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Left Atrial Pressure (LAP):</strong> Elevated LAP leads to pulmonary congestion, manifesting as B-lines on lung ultrasound. This is often associated with, but distinct from, systemic venous congestion.
-                  </Typography>
-                } 
-              />
-            </ListItem>
-          </List>
+          {/* Core Hemodynamic Parameters */}
+          <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 4, mb: 3, color: '#424242', fontSize: '1.5rem', textAlign: 'center' }}>
+            Core Hemodynamic Parameters
+          </Typography>
           
-          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
+          <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid item xs={12} md={4}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                textAlign: 'center',
+                border: '2px solid #e0e0e0',
+                borderRadius: 3,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  borderColor: '#757575'
+                }
+              }}>
+                <Box sx={{ 
+                  width: 40, 
+                  height: 40, 
+                  borderRadius: '50%', 
+                  backgroundColor: '#757575', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2 
+                }}>
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                    RAP
+                  </Typography>
+                </Box>
+                <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  Right Atrial Pressure
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#616161', lineHeight: 1.6 }}>
+                  The central measurement in venous congestion. Elevated RAP is transmitted backward through the venous system, affecting IVC, hepatic, portal, and renal veins.
+                </Typography>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={4}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                textAlign: 'center',
+                border: '2px solid #e0e0e0',
+                borderRadius: 3,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  borderColor: '#757575'
+                }
+              }}>
+                <Box sx={{ 
+                  width: 40, 
+                  height: 40, 
+                  borderRadius: '50%', 
+                  backgroundColor: '#757575', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2 
+                }}>
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                    CO
+                  </Typography>
+                </Box>
+                <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  Cardiac Output
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#616161', lineHeight: 1.6 }}>
+                  Represents the heart's pumping function. Venous congestion can reduce CO by impairing ventricular filling and function.
+                </Typography>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={4}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                textAlign: 'center',
+                border: '2px solid #e0e0e0',
+                borderRadius: 3,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  borderColor: '#757575'
+                }
+              }}>
+                <Box sx={{ 
+                  width: 40, 
+                  height: 40, 
+                  borderRadius: '50%', 
+                  backgroundColor: '#757575', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2 
+                }}>
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                    LAP
+                  </Typography>
+                </Box>
+                <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  Left Atrial Pressure
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#616161', lineHeight: 1.6 }}>
+                  Elevated LAP leads to pulmonary congestion, manifesting as B-lines on lung ultrasound. This is often associated with, but distinct from, systemic venous congestion.
+                </Typography>
+              </Card>
+            </Grid>
+          </Grid>
+          
+          {/* VEXUS Assessment Components */}
+          <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 4, mb: 3, color: '#424242', fontSize: '1.5rem', textAlign: 'center' }}>
+            VEXUS Assessment Components
+          </Typography>
+          
+          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242', textAlign: 'center', mb: 4 }}>
             The VEXUS protocol integrates multiple ultrasound findings to create a comprehensive picture of a patient's congestion status:
           </Typography>
           
-          <List sx={{ ml: 2, mb: 3 }}>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>IVC Assessment:</strong> Evaluates central venous pressure with diameter and collapsibility.
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                textAlign: 'center',
+                border: '2px solid #e0e0e0',
+                borderRadius: 3,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  borderColor: '#757575'
+                }
+              }}>
+                <Box sx={{ 
+                  width: 35, 
+                  height: 35, 
+                  borderRadius: 2, 
+                  backgroundColor: '#757575', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2 
+                }}>
+                  <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                    1
                   </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Hepatic Vein Doppler:</strong> Provides information about right atrial pressure and function.
+                </Box>
+                <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  IVC Assessment
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#616161', lineHeight: 1.6 }}>
+                  Evaluates central venous pressure with diameter.
+                </Typography>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                textAlign: 'center',
+                border: '2px solid #e0e0e0',
+                borderRadius: 3,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  borderColor: '#757575'
+                }
+              }}>
+                <Box sx={{ 
+                  width: 35, 
+                  height: 35, 
+                  borderRadius: 2, 
+                  backgroundColor: '#757575', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2 
+                }}>
+                  <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                    2
                   </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Portal Vein Doppler:</strong> Reflects venous congestion's impact on splanchnic circulation.
+                </Box>
+                <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  Hepatic Vein Doppler
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#616161', lineHeight: 1.6 }}>
+                  Provides information about right atrial pressure and cardiac function through waveform analysis.
+                </Typography>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                textAlign: 'center',
+                border: '2px solid #e0e0e0',
+                borderRadius: 3,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  borderColor: '#757575'
+                }
+              }}>
+                <Box sx={{ 
+                  width: 35, 
+                  height: 35, 
+                  borderRadius: 2, 
+                  backgroundColor: '#757575', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2 
+                }}>
+                  <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                    3
                   </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Renal Vein Doppler:</strong> Shows how venous congestion affects kidney perfusion.
+                </Box>
+                <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  Portal Vein Doppler
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#616161', lineHeight: 1.6 }}>
+                  Reflects venous congestion's impact on splanchnic circulation and portal flow patterns.
+                </Typography>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                textAlign: 'center',
+                border: '2px solid #e0e0e0',
+                borderRadius: 3,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  borderColor: '#757575'
+                }
+              }}>
+                <Box sx={{ 
+                  width: 35, 
+                  height: 35, 
+                  borderRadius: 2, 
+                  backgroundColor: '#757575', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2 
+                }}>
+                  <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                    4
                   </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                    <strong>Lung Ultrasound:</strong> B-lines indicate pulmonary congestion from elevated left heart pressures.
+                </Box>
+                <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  Renal Vein Doppler
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#616161', lineHeight: 1.6 }}>
+                  Shows how venous congestion affects kidney perfusion and renal venous drainage.
+                </Typography>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                textAlign: 'center',
+                border: '2px solid #e0e0e0',
+                borderRadius: 3,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  borderColor: '#757575'
+                }
+              }}>
+                <Box sx={{ 
+                  width: 35, 
+                  height: 35, 
+                  borderRadius: 2, 
+                  backgroundColor: '#757575', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2 
+                }}>
+                  <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold', fontFamily: 'Europa, sans-serif' }}>
+                    +
                   </Typography>
-                } 
-              />
-            </ListItem>
-          </List>
+                </Box>
+                <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  Lung Ultrasound
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#616161', lineHeight: 1.6 }}>
+                  B-lines indicate pulmonary congestion from elevated left heart pressures - complementary to VEXUS.
+                </Typography>
+              </Card>
+            </Grid>
+          </Grid>
           
           <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
             By examining this interconnected system, VEXUS allows clinicians to differentiate between right-sided (systemic venous) congestion, left-sided (pulmonary) congestion, or both, leading to more targeted therapeutic interventions.

@@ -70,7 +70,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, variant = 'stan
             alt={member.name}
             onError={handleImageError}
             sx={{
-              height: isCompact ? 200 : 300,
+              height: isCompact ? 250 : 400,
               objectFit: 'cover',
               objectPosition: 'center top'
             }}
@@ -78,7 +78,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, variant = 'stan
         ) : (
           <Box
             sx={{
-              height: isCompact ? 200 : 300,
+              height: isCompact ? 250 : 400,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

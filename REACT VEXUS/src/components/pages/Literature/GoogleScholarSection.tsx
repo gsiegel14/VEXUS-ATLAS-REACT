@@ -22,7 +22,6 @@ import {
 } from '@mui/material';
 import {
   Launch,
-  Refresh,
   School,
   FileCopy,
 } from '@mui/icons-material';
@@ -166,7 +165,6 @@ const GoogleScholarSection: React.FC = () => {
                 color="inherit" 
                 size="small" 
                 onClick={() => fetchVEXUSArticles(currentPage)}
-                startIcon={<Refresh />}
               >
                 Retry
               </Button>
@@ -381,17 +379,7 @@ const GoogleScholarSection: React.FC = () => {
               </Typography>
             )}
           </Box>
-          <Box sx={{ ml: 'auto' }}>
-            <Button
-              startIcon={loading ? <CircularProgress size={16} /> : <Refresh />}
-              onClick={() => fetchVEXUSArticles(currentPage)}
-              disabled={loading}
-              variant="outlined"
-              size="small"
-            >
-              Refresh
-            </Button>
-          </Box>
+
         </Box>
 
         {results.length > 0 ? (
@@ -412,7 +400,7 @@ const GoogleScholarSection: React.FC = () => {
           </>
         ) : (
           <Alert severity="info">
-            No VEXUS articles found in current search. Try refreshing or check back later.
+            No VEXUS articles found in current search. Please check back later.
           </Alert>
         )}
 

@@ -67,8 +67,8 @@ export const teamConfig = {
     },
     {
       id: 'gabriel-siegel',
-      name: 'Gabriel Siegel, MD',
-      role: 'VEXUS ATLAS Creator & Ultrasound Fellow',
+      name: 'Gabe Siegel, MD',
+      role: 'VEXUS ATLAS Creator & DH Ultrasound Fellowship grad',
       type: 'core' as const,
       image: '/images/team/gabriel-siegel.jpg',
       specialties: ['Machine Learning', 'AI in Healthcare', 'Medical Imaging'],
@@ -163,6 +163,15 @@ export const teamConfig = {
       ]
     },
     // Contributors
+    {
+      id: 'lucia-lin',
+      name: 'Lucia Lin, MD',
+      role: 'Chief Resident',
+      type: 'contributor' as const,
+      image: '/images/team/lucia-lin.jpg',
+      specialties: ['Emergency Medicine', 'Ultrasound Fellowship', 'VEXUS'],
+      shortBio: 'Denver Health Emergency Medicine Chief Resident interested in pursuing an ultrasound fellowship with an interest in VEXUS.'
+    },
     {
       id: 'nhu-nguyen-le',
       name: 'Nhu-Nguyen Le, MD',

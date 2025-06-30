@@ -23,9 +23,9 @@ const Team: React.FC = () => {
       members: teamMembers.filter(member => member.type === 'core')
     },
     {
-      id: 'current-fellows',
-      title: 'Current Fellows',
-      description: 'Our current fellows who are advancing their expertise in ultrasound medicine and contributing to VEXUS research and education.',
+      id: 'current-contributors',
+      title: 'Current Contributors',
+      description: 'Our current contributors who are advancing their expertise in ultrasound medicine and contributing to VEXUS research and education.',
       members: teamMembers.filter(member => member.type === 'contributor')
     }
   ], [teamMembers]);
