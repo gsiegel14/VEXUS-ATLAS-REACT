@@ -53,10 +53,10 @@ const assessmentData: Record<string, AssessmentData> = {
     views: [
       {
         id: "ivc-long-view",
-        title: "Long Axis View (Subcostal)",
+        title: "IVC - Long Axis View (Subcostal)",
         images: [
           { 
-            src: "/images/acquisition/ivc-assessment.png", 
+            src: "/images/acquisition/ivc-assessment-corrected.png", 
             alt: "IVC Assessment Technique - Subcostal Long Axis View",
             caption: "IVC Assessment Technique - Subcostal Long Axis View"
           }
@@ -68,8 +68,8 @@ const assessmentData: Record<string, AssessmentData> = {
             "Place patient in supine position",
             "Use a low frequency (curvilinear) probe",
             "Measure IVC diameter 2-3 cm from right atrial junction",
-            "Assess for inspiratory collapse (if applicable)",
-            "Record maximum diameter for VEXUS classification"
+            "Record maximum diameter for VEXUS classification",
+            "NOTE: IVC collapsibility is NOT part of VEXUS protocol"
           ],
           specialNotes: [
             "Ensure measurement is taken during normal respiration",
@@ -78,17 +78,17 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/gifs/hepatic-long-axis.gif", 
-          alt: "IVC Assessment Animation", 
+          src: "/images/acquisition/ivc-assessment-corrected.png", 
+          alt: "IVC Assessment", 
           title: "IVC" 
         }
       },
       {
         id: "ivc-ruq-view",
-        title: "RUQ Intercostal View",
+        title: "IVC - RUQ Intercostal View",
         images: [
           { 
-            src: "/images/acquisition/ivc-ruq-view.png", 
+            src: "/images/acquisition/ivc-measurement-corrected.png", 
             alt: "IVC RUQ Intercostal View", 
             caption: "IVC Assessment Technique - RUQ Intercostal View"
           }
@@ -119,8 +119,8 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/gifs/hepatic-long-axis.gif", 
-          alt: "IVC RUQ View Animation", 
+          src: "/images/acquisition/ivc-measurement-corrected.png", 
+          alt: "IVC RUQ View", 
           title: "IVC RUQ" 
         }
       }
@@ -131,16 +131,16 @@ const assessmentData: Record<string, AssessmentData> = {
     views: [
       {
         id: "hepatic-long-view",
-        title: "Long Axis View",
+        title: "Hepatic Vein - Long Axis View",
         images: [
           { 
-            src: "/images/acquisition/hepatic-long-axis.png", 
+            src: "/images/acquisition/hepatic-vein-long-axis-corrected.png", 
             alt: "Hepatic Vein - Long Axis View",
             caption: "Hepatic Vein - Long Axis View"
           }
         ],
         technique: {
-          probePosition: "Place the probe in the right intercostal space, angled towards the right shoulder.",
+          probePosition: "Place the probe in the right 8th-10th intercostal space (typically the 9th), angled towards the right shoulder. Position the Doppler sample volume a few centimeters away from the hepatic vein-IVC junction to avoid turbulent flow artifacts.",
           keyStructures: ["Hepatic vein", "IVC junction", "Liver parenchyma"],
           dopplerWaveforms: [
             "Triphasic: Normal venous return",
@@ -149,17 +149,17 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/gifs/hepatic-long-axis.gif", 
-          alt: "Hepatic Long Axis Assessment Animation", 
+          src: "/images/acquisition/hepatic-vein-long-axis-corrected.png", 
+          alt: "Hepatic Long Axis Assessment", 
           title: "Hepatic Long Axis" 
         }
       },
       {
         id: "hepatic-short-view",
-        title: "Short Axis View",
+        title: "Hepatic Vein - Short Axis View",
         images: [
           { 
-            src: "/images/acquisition/hepatic-short-axis.png", 
+            src: "/images/acquisition/hepatic-vein-short-axis-corrected.png", 
             alt: "Hepatic Vein - Short Axis View",
             caption: "Hepatic Vein - Short Axis View"
           }
@@ -171,10 +171,10 @@ const assessmentData: Record<string, AssessmentData> = {
       },
       {
         id: "hepatic-subxiphoid-view",
-        title: "Subxiphoid View",
+        title: "Hepatic Vein - Subxiphoid View",
         images: [
           { 
-            src: "/images/acquisition/hepatic-subxiphoid.png", 
+            src: "/images/acquisition/hepatic-vein-subxiphoid-corrected.png", 
             alt: "Hepatic Vein - Subxiphoid View",
             caption: "Hepatic Vein - Subxiphoid View"
           }
@@ -182,11 +182,6 @@ const assessmentData: Record<string, AssessmentData> = {
         technique: {
           probePosition: "Probe in subxiphoid position, angling superiorly and slightly to the patient's right.",
           keyStructures: ["Left hepatic vein", "Middle hepatic vein", "Liver", "Right atrium", "IVC"]
-        },
-        atlasContent: { 
-          src: "/images/acquisition/gifs/portal-subxiphoid.gif", 
-          alt: "Portal Vein Subxiphoid View Animation", 
-          title: "Portal Subxiphoid" 
         }
       }
     ]
@@ -196,10 +191,10 @@ const assessmentData: Record<string, AssessmentData> = {
     views: [
       {
         id: "portal-long-view",
-        title: "Long Axis View",
+        title: "Portal Vein - Long Axis View",
         images: [
           { 
-            src: "/images/acquisition/portal-long-axis.png", 
+            src: "/images/acquisition/portal-vein-long-axis-corrected.png", 
             alt: "Portal Vein - Long Axis View",
             caption: "Portal Vein - Long Axis View"
           }
@@ -214,17 +209,17 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/gifs/portal-long-axis.gif", 
-          alt: "Portal Long Axis Assessment Animation", 
+          src: "/images/acquisition/portal-vein-long-axis-corrected.png", 
+          alt: "Portal Long Axis Assessment", 
           title: "Portal Long Axis" 
         }
       },
       {
         id: "portal-short-view",
-        title: "Short Axis View",
+        title: "Portal Vein - Short Axis View",
         images: [
           { 
-            src: "/images/acquisition/portal-short-axis.png", 
+            src: "/images/acquisition/portal-vein-short-axis-corrected.png", 
             alt: "Portal Vein - Short Axis View",
             caption: "Portal Vein - Short Axis View"
           }
@@ -239,10 +234,10 @@ const assessmentData: Record<string, AssessmentData> = {
       },
       {
         id: "portal-subxiphoid-view",
-        title: "Subxiphoid View",
+        title: "Portal Vein - Subxiphoid View",
         images: [
           { 
-            src: "/images/acquisition/portal-subxiphoid.png", 
+            src: "/images/acquisition/portal-vein-subxiphoid-corrected.png", 
             alt: "Portal Vein - Subxiphoid View",
             caption: "Portal Vein - Subxiphoid View"
           }
@@ -252,8 +247,8 @@ const assessmentData: Record<string, AssessmentData> = {
           keyStructures: ["Portal vein", "Liver", "IVC"]
         },
         atlasContent: { 
-          src: "/images/acquisition/gifs/portal-subxiphoid.gif", 
-          alt: "Portal Vein Subxiphoid View Animation", 
+          src: "/images/acquisition/portal-vein-subxiphoid-corrected.png", 
+          alt: "Portal Vein Subxiphoid View", 
           title: "Portal Subxiphoid" 
         }
       }
@@ -264,17 +259,23 @@ const assessmentData: Record<string, AssessmentData> = {
     views: [
       {
         id: "renal-long-view",
-        title: "Long Axis View",
+        title: "Renal Vein - Long Axis View",
         images: [
           { 
-            src: "/images/acquisition/renal-long-axis.png", 
+            src: "/images/acquisition/renal-vein-long-axis-corrected.png", 
             alt: "Renal Vein - Long Axis View",
             caption: "Renal Vein - Long Axis View"
           }
         ],
         technique: {
-          probePosition: "Position the probe in the right flank, posterior to the mid-axillary line.",
-          keyStructures: ["Renal vein", "IVC junction", "Kidney", "Right renal artery"],
+          probePosition: "Position the probe in the flank (right or left), posterior to the mid-axillary line. Start with the right kidney for consistency, but use the left kidney as an alternative when the right kidney is difficult to visualize due to body habitus, bowel gas, or patient positioning constraints.",
+          keyStructures: ["Renal interlobar vein", "Kidney hilum", "Renal artery", "Renal pyramids"],
+          keyPoints: [
+            "Either kidney can be used for VEXUS assessment",
+            "Left kidney may be easier to visualize in some patients",
+            "Focus on interlobar or arcuate veins within the kidney parenchyma",
+            "Sample volume should be placed in intrarenal veins, not the main renal vein"
+          ],
           dopplerWaveforms: [
             "Continuous: Normal venous return",
             "Pulsatile: Mild congestion",
@@ -282,31 +283,33 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/renal-long-still.png", 
-          alt: "Renal Long Axis Assessment Animation", 
+          src: "/images/acquisition/renal-vein-long-axis-corrected.png", 
+          alt: "Renal Long Axis Assessment", 
           title: "Renal Long Axis" 
         }
       },
       {
         id: "renal-short-view",
-        title: "Short Axis View",
+        title: "Renal Vein - Short Axis View",
         images: [
           { 
-            src: "/images/acquisition/renal-short-axis.png", 
+            src: "/images/acquisition/renal-vein-short-axis-corrected.png", 
             alt: "Renal Vein - Short Axis View",
             caption: "Renal Vein - Short Axis View"
           }
         ],
         technique: {
-          probePosition: "Position probe in transverse orientation at right flank, looking for the kidney in cross-section.",
-          keyStructures: ["Renal vein", "Renal artery", "Kidney hilum"],
+          probePosition: "Position probe in transverse orientation at flank (right or left), looking for the kidney in cross-section. Use whichever kidney provides better visualization.",
+          keyStructures: ["Renal interlobar vein", "Renal artery", "Kidney hilum", "Renal pyramids"],
           specialNotes: [
-            "This view is useful for assessing flow within the renal vein while avoiding angle-dependent errors in Doppler measurements."
+            "This view is useful for assessing flow within the intrarenal veins while avoiding angle-dependent errors in Doppler measurements.",
+            "Either kidney can be assessed - choose the one with better acoustic window",
+            "Focus on interlobar veins between the renal pyramids rather than the main renal vein"
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/gifs/renal-short-axis.gif", 
-          alt: "Renal Short Axis Assessment Animation", 
+          src: "/images/acquisition/renal-vein-short-axis-corrected.png", 
+          alt: "Renal Short Axis Assessment", 
           title: "Renal Short Axis" 
         }
       }

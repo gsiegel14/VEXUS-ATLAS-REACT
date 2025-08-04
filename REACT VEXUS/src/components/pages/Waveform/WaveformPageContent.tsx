@@ -593,6 +593,53 @@ const WaveformPageContent: React.FC = () => {
                 Portal Vein Waveforms
               </Typography>
 
+              {/* Portal Pulsatility Index Formula */}
+              <Card elevation={1} sx={{ mb: 4, bgcolor: '#e8f5e8', border: '2px solid #4caf50' }}>
+                <CardContent sx={{ p: { xs: 2, md: 3 } }}>
+                  <Typography 
+                    variant="h5" 
+                    component="h3" 
+                    gutterBottom 
+                    sx={{ 
+                      fontFamily: 'Europa, sans-serif',
+                      color: '#2e7d32',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      mb: 2
+                    }}
+                  >
+                    Portal Pulsatility Index Calculation
+                  </Typography>
+                  
+                  <Box sx={{ maxWidth: 600, mx: 'auto', textAlign: 'center' }}>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        fontFamily: 'Europa, sans-serif',
+                        color: '#2e7d32',
+                        fontWeight: 'bold',
+                        mb: 2,
+                        fontSize: '1.3rem'
+                      }}
+                    >
+                      Portal Pulsatility Index (%) = [(V<sub>max</sub> - V<sub>min</sub>) / V<sub>max</sub>] × 100
+                    </Typography>
+                    
+                    <Box sx={{ bgcolor: '#ffffff', p: 2, borderRadius: 2, border: '1px solid #4caf50', mb: 2 }}>
+                      <Typography variant="body1" sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', lineHeight: 1.6 }}>
+                        Where:<br/>
+                        • V<sub>max</sub> = Maximum velocity during cardiac cycle<br/>
+                        • V<sub>min</sub> = Minimum velocity during cardiac cycle
+                      </Typography>
+                    </Box>
+                    
+                    <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#555', fontStyle: 'italic' }}>
+                      This quantitative measurement helps distinguish between normal (&lt;30%), mild (30-50%), and severe (&gt;50%) portal vein congestion.
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+
               {/* Normal Pattern */}
               <Card elevation={2} sx={{ mb: 3, bgcolor: '#fafafa', border: '1px solid #e0e0e0' }}>
                 <CardContent sx={{ p: { xs: 2, md: 3 } }}>
@@ -785,6 +832,51 @@ const WaveformPageContent: React.FC = () => {
               >
                 Intrarenal (Renal Parenchymal) Vein Waveforms
               </Typography>
+
+              {/* Understanding Arterial Pulsations */}
+              <Card elevation={1} sx={{ mb: 4, bgcolor: '#fff3e0', border: '2px solid #ff9800' }}>
+                <CardContent sx={{ p: { xs: 2, md: 3 } }}>
+                  <Typography 
+                    variant="h5" 
+                    component="h3" 
+                    gutterBottom 
+                    sx={{ 
+                      fontFamily: 'Europa, sans-serif',
+                      color: '#e65100',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      mb: 2
+                    }}
+                  >
+                    Understanding Arterial Pulsations in Renal Doppler
+                  </Typography>
+                  
+                  <Box sx={{ maxWidth: 800, mx: 'auto' }}>
+                    <Box sx={{ bgcolor: '#ffffff', p: 3, borderRadius: 2, border: '1px solid #ff9800', mb: 2 }}>
+                      <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', lineHeight: 1.7 }}>
+                        When examining renal venous waveforms, you may also observe <strong>arterial pulsations</strong> on the Doppler display. These represent the adjacent renal artery's flow pattern and appear as rhythmic, high-velocity spikes above the baseline.
+                      </Typography>
+                      
+                      <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', lineHeight: 1.7 }}>
+                        <strong>Key characteristics of arterial pulsations:</strong>
+                      </Typography>
+                      
+                      <Box sx={{ pl: 2, mb: 2 }}>
+                        <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', color: '#616161', lineHeight: 1.6 }}>
+                          • <strong>Direction:</strong> Flow away from the transducer (typically above baseline)<br/>
+                          • <strong>Pattern:</strong> Sharp, high-velocity peaks corresponding to systolic ejection<br/>
+                          • <strong>Timing:</strong> Synchronous with cardiac systole, easily distinguished from venous flow<br/>
+                          • <strong>Clinical significance:</strong> Confirms anatomical proximity and helps with vessel identification
+                        </Typography>
+                      </Box>
+                      
+                      <Typography variant="body1" sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', lineHeight: 1.7, fontStyle: 'italic' }}>
+                        <strong>Important:</strong> Focus on the venous waveform (typically below baseline) for VExUS assessment. The arterial signals serve as anatomical landmarks but do not contribute to venous congestion scoring.
+                      </Typography>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
 
               {/* Normal Pattern */}
               <Card elevation={2} sx={{ mb: 3, bgcolor: '#fafafa', border: '1px solid #e0e0e0' }}>
@@ -979,12 +1071,49 @@ const WaveformPageContent: React.FC = () => {
                 Putting It All Together: VExUS Grading
               </Typography>
 
-              <ImageSection
-                title="VExUS Grading System"
-                imageSrc="/images/VExUS.grading.png"
-                imageAlt="VExUS Grading System"
-                caption="Comprehensive VExUS grading system showing the classification criteria for each grade based on venous waveform patterns and IVC characteristics."
-              />
+              <Box sx={{ mb: 3, textAlign: 'center' }}>
+                <Card 
+                  sx={{ 
+                    display: 'inline-block',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    border: '1px solid #e0e0e0',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                      boxShadow: 3
+                    }
+                  }}
+                  onClick={() => handleImageClick({ src: "/images/VExUS.grading.png", alt: "VExUS Grading System", caption: "Comprehensive VExUS grading system showing the classification criteria for each grade based on venous waveform patterns and IVC characteristics." })}
+                >
+                  <Box sx={{ position: 'relative' }}>
+                    <Box
+                      component="img"
+                      src="/images/VExUS.grading.png"
+                      alt="VExUS Grading System"
+                      sx={{ 
+                        width: '100%',
+                        maxWidth: 900,
+                        height: 'auto',
+                        display: 'block'
+                      }}
+                    />
+                  </Box>
+                </Card>
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    mt: 2,
+                    fontFamily: 'Europa, sans-serif',
+                    color: '#757575',
+                    fontStyle: 'italic',
+                    maxWidth: 900,
+                    mx: 'auto',
+                    lineHeight: 1.5
+                  }}
+                >
+                  Comprehensive VExUS grading system showing the classification criteria for each grade based on venous waveform patterns and IVC characteristics.
+                </Typography>
+              </Box>
 
               <Box sx={{ maxWidth: 800, mx: 'auto' }}>
                 <Card sx={{ p: 3, bgcolor: '#f8f9fa', border: '1px solid #e0e0e0' }}>

@@ -31,8 +31,8 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install --only=production && npm cache clean --force
 
-# Copy backend server
-COPY server.js ./
+# Copy backend server (renamed file without space)
+COPY server.js ./server.js
 
 # Copy built frontend from previous stage
 COPY --from=frontend-builder /app/dist ./dist
@@ -46,8 +46,11 @@ RUN adduser -S nextjs -u 1001
 RUN chown -R nextjs:nodejs /app
 USER nextjs
 
-# Expose port
+# Expose port (Cloud Run expects port 8080)
 EXPOSE 8080
+
+# Set PORT environment variable for production
+ENV PORT=8080
 
 # Start the application
 CMD ["node", "server.js"] 

@@ -18,9 +18,9 @@ import {
   Dialog,
   DialogContent,
   IconButton,
+  Grid,
   Button,
   Link,
-  Grid,
   DialogTitle,
   Divider,
 } from '@mui/material';
@@ -119,10 +119,10 @@ const references: Reference[] = [
 ];
 
 const gradingData = [
-  { grade: 0, ivc: '≤ 2 cm', hepatic: 'Normal S > D', portal: 'Normal Phasic', intrarenal: 'Continuous' },
-  { grade: 1, ivc: '2–2.5 cm', hepatic: 'Slight Reduction in S', portal: 'Mild Pulsatility', intrarenal: 'Slight Interruption' },
-  { grade: 2, ivc: '>= 2.5 cm', hepatic: 'S < D / Reversal', portal: 'Marked Pulsatility', intrarenal: 'Intermittent or Biphasic' },
-  { grade: 3, ivc: '>= 2.5 cm + Minimal Collapse', hepatic: 'Severe Abnormal Flow', portal: 'To-and-Fro or Reversal', intrarenal: 'Reversal' }
+  { grade: 0, hepatic: 'Normal S > D', portal: 'Normal Phasic', intrarenal: 'Continuous' },
+  { grade: 1, hepatic: 'Slight Reduction in S', portal: 'Mild Pulsatility', intrarenal: 'Slight Interruption' },
+  { grade: 2, hepatic: 'S < D / Reversal', portal: 'Marked Pulsatility', intrarenal: 'Intermittent or Biphasic' },
+  { grade: 3, hepatic: 'Severe Abnormal Flow', portal: 'To-and-Fro or Reversal', intrarenal: 'Reversal' }
 ];
 
 const CitationLink: React.FC<{ refNumber: number }> = ({ refNumber }) => (
@@ -345,8 +345,8 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
                 "Place patient in supine position",
                 "Use a low frequency (curvilinear) probe", 
                 "Measure IVC diameter 2-3 cm from right atrial junction",
-                "Assess for inspiratory collapse (if applicable)",
-                "Record maximum diameter for VEXUS classification"
+                "Record maximum diameter for VEXUS classification",
+                "NOTE: IVC collapsibility is NOT part of VEXUS protocol"
               ].map((item, index) => (
                 <ListItem key={index}>
                   <ListItemText primary={`• ${item}`} sx={{ '& .MuiListItemText-primary': { fontFamily: 'Europa, sans-serif', color: '#616161', textAlign: 'center' } }} />
@@ -398,7 +398,7 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
             Probe Position:
           </Typography>
           <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', color: '#616161' }}>
-            Place the probe in the right intercostal space, angled towards the right shoulder.
+            Place the probe in the right 8th-10th intercostal space (typically the 9th), angled towards the right shoulder. Position the Doppler sample volume a few centimeters away from the hepatic vein-IVC junction to avoid turbulent flow artifacts.
           </Typography>
           
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
@@ -922,7 +922,7 @@ const EducationPageContent: React.FC = () => {
                         Ultrasound Machine
                       </TableCell>
                       <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-                        Must have 2D imaging, color Doppler, and pulsed-wave Doppler capabilities. Electrocardiogram gating adds to the interpretability of the exam, but is not essential.
+                        Must have 2D imaging and pulsed-wave Doppler capabilities. Color Doppler and electrocardiogram gating enhance interpretability but are not essential.
                       </TableCell>
                     </TableRow>
                     <TableRow sx={{ bgcolor: '#fafafa' }}>
@@ -1003,11 +1003,28 @@ const EducationPageContent: React.FC = () => {
                 fontFamily: 'Europa, sans-serif', 
                 lineHeight: 1.7, 
                 color: '#424242',
-                mb: 3,
+                mb: 2,
                 fontSize: '1.1rem'
               }}>
                 Measure the IVC using the curvilinear or phased-array probe in the subxiphoid view. Measure the diameter of the IVC just distal to the insertion of the hepatic vein into the IVC.
               </Typography>
+              
+              <Box sx={{ 
+                p: 2, 
+                backgroundColor: '#fff3e0', 
+                border: '1px solid #ff9800', 
+                borderRadius: 2, 
+                mb: 3 
+              }}>
+                <Typography variant="body2" sx={{ 
+                  fontFamily: 'Europa, sans-serif', 
+                  fontWeight: 600,
+                  color: '#e65100',
+                  fontSize: '1rem'
+                }}>
+                  Important: IVC collapsibility is NOT part of the VEXUS protocol. Only IVC diameter (&lt; 2cm vs &gt; 2cm) is used for VEXUS scoring.
+                </Typography>
+              </Box>
               
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <VeinButton veinType="ivc" onOpenAcquisition={handleOpenAcquisition}>
@@ -1065,10 +1082,25 @@ const EducationPageContent: React.FC = () => {
                 fontFamily: 'Europa, sans-serif', 
                 lineHeight: 1.7, 
                 color: '#424242',
-                mb: 3,
+                mb: 2,
                 fontSize: '1.1rem'
               }}>
                 Align the Doppler gate with the main hepatic vein as it enters the IVC, ensuring the angle of insonation is less than 60 degrees.
+              </Typography>
+              
+              <Typography variant="body1" sx={{ 
+                fontFamily: 'Europa, sans-serif', 
+                lineHeight: 1.7, 
+                color: '#424242',
+                mb: 3,
+                fontSize: '1.1rem',
+                fontStyle: 'italic',
+                backgroundColor: '#f8f9fa',
+                padding: 2,
+                borderRadius: 1,
+                borderLeft: '4px solid #43c3ac'
+              }}>
+                <strong>Clinical Tip:</strong> Position the Doppler sample volume a few centimeters away from the hepatic vein-IVC insertion point to avoid turbulent flow artifacts that can interfere with accurate waveform interpretation.
               </Typography>
               
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -1225,7 +1257,7 @@ const EducationPageContent: React.FC = () => {
               <Table>
                 <TableHead>
                 <TableRow sx={{ bgcolor: '#ffffff' }}>
-                    {['Grade', 'IVC Diameter', 'Hepatic Vein Flow', 'Portal Vein Flow', 'Intrarenal Vein Flow'].map((header) => (
+                    {['Grade', 'Hepatic Vein Flow', 'Portal Vein Flow', 'Intrarenal Vein Flow'].map((header) => (
                     <TableCell 
                       key={header} 
                       sx={{ 
@@ -1243,22 +1275,21 @@ const EducationPageContent: React.FC = () => {
                 <TableBody>
                   {gradingData.map((row) => (
                   <TableRow key={row.grade} sx={{ '&:nth-of-type(odd)': { bgcolor: '#ffffff' } }}>
-                      <TableCell>
-                      <Chip 
-                        label={row.grade} 
-                        sx={{ 
-                          bgcolor: '#757575',
-                          color: 'white', 
-                          fontWeight: 'bold', 
-                          minWidth: 40,
-                          fontFamily: 'Europa, sans-serif'
-                        }} 
-                      />
-                      </TableCell>
-                    <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>{row.ivc}</TableCell>
-                    <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>{row.hepatic}</TableCell>
-                    <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>{row.portal}</TableCell>
-                    <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>{row.intrarenal}</TableCell>
+                                          <TableCell>
+                    <Chip 
+                      label={row.grade} 
+                      sx={{ 
+                        bgcolor: '#757575',
+                        color: 'white', 
+                        fontWeight: 'bold', 
+                        minWidth: 40,
+                        fontFamily: 'Europa, sans-serif'
+                      }} 
+                    />
+                    </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>{row.hepatic}</TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>{row.portal}</TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>{row.intrarenal}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -1268,143 +1299,864 @@ const EducationPageContent: React.FC = () => {
 
         {/* Organ Perfusion Pressure Section */}
         <EducationSection id="organ-perfusion-pressure">
-          <ImageInfoTable 
-            title="Understanding Organ Perfusion Pressure"
-            imageSrc="/images/education/organ-perfusion-diagram.png"
-            onImageClick={handleImageClick}
-            data={[
-              {
-                label: "Perfusion Formula",
-                value: "Perfusion Pressure = Arterial Pressure - Venous Pressure",
-                description: "The fundamental equation for tissue perfusion"
-              },
-              {
-                label: "Arterial Component",
-                value: "Mean Arterial Pressure (MAP)",
-                description: "Driving pressure for organ blood flow"
-              },
-              {
-                label: "Venous Component", 
-                value: "Central Venous Pressure (CVP)",
-                description: "Back-pressure opposing organ perfusion"
-              },
-              {
-                label: "Clinical Impact",
-                value: "Elevated CVP ↓ Perfusion",
-                description: "Venous congestion reduces organ function"
-              },
-              {
-                label: "VEXUS Role",
-                value: "Non-invasive CVP assessment",
-                description: "Doppler ultrasound estimates venous pressure"
-              },
-              {
-                label: "Sensitive Organs",
-                value: "Kidneys, Liver, Intestines, Brain",
-                description: "Organs particularly affected by venous congestion"
-              }
-            ]}
-          />
+          <Typography 
+            variant="h2" 
+            component="h2" 
+            gutterBottom 
+            sx={{ 
+              fontFamily: 'Europa, sans-serif',
+              color: '#424242', 
+              borderBottom: '2px solid #9e9e9e', 
+              pb: 1,
+              fontSize: '2.5rem',
+              fontWeight: 'bold'
+            }}
+          >
+            Understanding Organ Perfusion Pressure
+          </Typography>
           
-          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242', mt: 3 }}>
-            Organ perfusion pressure is a critical concept in understanding venous congestion and its impact on tissue health. 
-            While we often focus on arterial pressure as the main determinant of organ perfusion, increased venous pressure 
-            can have equally detrimental effects on tissue perfusion.
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+            <img 
+              src="/images/education/organ-perfusion-diagram.png" 
+              alt="Organ perfusion pressure diagram showing pMSF, MAP, and OPP relationship" 
+              style={{ 
+                width: '100%', 
+                maxWidth: '600px', 
+                height: 'auto', 
+                borderRadius: '8px',
+                cursor: 'pointer',
+                border: '1px solid #e0e0e0'
+              }}
+              onClick={() => handleImageClick('/images/education/organ-perfusion-diagram.png')}
+            />
+          </Box>
+          
+          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242', mb: 3 }}>
+            Organ perfusion pressure represents the net driving force for blood flow through tissues. Understanding this concept is fundamental to appreciating why venous congestion can cause organ dysfunction even when arterial pressures appear normal.
+          </Typography>
+          
+          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 3, color: '#424242', fontSize: '2rem' }}>
+            The Perfusion Pressure Formula
+          </Typography>
+          
+          <Box sx={{ 
+            backgroundColor: '#f8f9fa', 
+            padding: 3, 
+            borderRadius: 2, 
+            border: '1px solid #e0e0e0',
+            mb: 3,
+            textAlign: 'center'
+          }}>
+            <Typography variant="h4" sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242', mb: 2 }}>
+              Organ Perfusion Pressure = MAP - CVP
+            </Typography>
+            <Typography variant="body1" sx={{ fontFamily: 'Europa, sans-serif', color: '#616161' }}>
+              Mean Arterial Pressure minus Central Venous Pressure
+            </Typography>
+          </Box>
+          
+          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 4, color: '#424242', fontSize: '1.8rem' }}>
+            Key Components Explained
+          </Typography>
+          
+          <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid item xs={12} md={6}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                border: '2px solid #757575',
+                borderRadius: 3,
+                backgroundColor: '#fafafa'
+              }}>
+                <Typography variant="h5" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  Mean Arterial Pressure (MAP)
+                </Typography>
+                <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
+                  <strong>Definition:</strong> The average arterial pressure during a cardiac cycle, representing the driving force that pushes blood through organs.
+                </Typography>
+                <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
+                  <strong>Formula:</strong> DBP + ⅓(SBP - DBP)
+                </Typography>
+                <Typography variant="body1" sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
+                  <strong>Normal Range:</strong> 65-100 mmHg
+                </Typography>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <Card sx={{ 
+                height: '100%', 
+                p: 3, 
+                border: '2px solid #757575',
+                borderRadius: 3,
+                backgroundColor: '#f5f5f5'
+              }}>
+                <Typography variant="h5" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                  Central Venous Pressure (CVP)
+                </Typography>
+                <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
+                  <strong>Definition:</strong> The pressure in the central venous system near the right atrium, representing back-pressure or "venous afterload" that opposes arterial inflow.
+                </Typography>
+                <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
+                  <strong>Normal Range:</strong> 2-8 mmHg
+                </Typography>
+                <Typography variant="body1" sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.6, color: '#424242' }}>
+                  <strong>Elevated (&gt;10-12 mmHg):</strong> Impairs tissue perfusion
+                </Typography>
+              </Card>
+            </Grid>
+          </Grid>
+          
+          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 4, color: '#424242', fontSize: '1.8rem' }}>
+            Understanding pMSF (Mean Systemic Filling Pressure)
+          </Typography>
+          
+          <Box sx={{ 
+            backgroundColor: '#f5f5f5', 
+            padding: 3, 
+            borderRadius: 2, 
+            border: '1px solid #9e9e9e',
+            mb: 3
+          }}>
+            <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
+              <strong>pMSF (Mean Systemic Filling Pressure)</strong> represents the upstream pressure driving venous return to the heart. It reflects the effective circulating blood volume and venous tone, serving as an indicator of preload and venous return capacity. Normal pMSF values range from 12-23 mmHg depending on clinical conditions.
+            </Typography>
+            <Typography variant="body1" sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
+              While pMSF is not directly measured by ultrasound, understanding its role helps interpret how changes in systemic filling pressures influence organ-level perfusion patterns visible on VEXUS assessment.
+            </Typography>
+          </Box>
+          
+          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 4, color: '#424242', fontSize: '1.8rem' }}>
+            Clinical Significance
           </Typography>
           
           <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
-            When venous pressure rises (venous congestion), it reduces the pressure gradient across the organ, resulting in 
-            decreased blood flow despite normal arterial pressure. This mechanism explains why venous congestion can lead to 
-            organ dysfunction even with normal arterial pressure and cardiac output.
+            When venous pressure rises due to congestion, it reduces the pressure gradient across organs, resulting in decreased blood flow despite normal arterial pressure. This mechanism explains why venous congestion can lead to organ dysfunction even with normal arterial pressure and cardiac output.
           </Typography>
           
-          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
-            Organs particularly sensitive to venous congestion include:
+          <Box sx={{ 
+            backgroundColor: '#fafafa', 
+            padding: 3, 
+            borderRadius: 2, 
+            border: '2px solid #757575',
+            mb: 3
+          }}>
+            <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+              Key Clinical Pearl
+            </Typography>
+            <Typography variant="body1" sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
+              Even if MAP is adequate (&gt;65 mmHg), elevated CVP (&gt;10-12 mmHg) can cause organ hypoperfusion by increasing "venous afterload." This uncouples macro-hemodynamics from actual tissue perfusion, highlighting why VEXUS assessment of venous congestion is crucial for comprehensive patient evaluation.
+            </Typography>
+          </Box>
+          
+          <Typography variant="h6" gutterBottom sx={{ 
+            fontFamily: 'Europa, sans-serif', 
+            fontWeight: 'bold', 
+            color: '#424242',
+            textAlign: 'center',
+            mb: 3
+          }}>
+            Organs Particularly Sensitive to Venous Congestion
           </Typography>
           
-          <CenteredList maxWidth={900}>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', textAlign: 'center' }}>
-                    <strong>Kidneys:</strong> Venous congestion increases renal vein pressure, decreases glomerular filtration gradient, and can lead to acute kidney injury.
+          <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid item xs={12} md={6}>
+              <Card sx={{ 
+                height: '100%',
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #dee2e6',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: 3
+                }
+              }}>
+                <CardContent sx={{ p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      width: 40, 
+                      height: 40, 
+                      borderRadius: '50%', 
+                      backgroundColor: '#e9ecef',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mr: 2
+                    }}>
+                      <Typography sx={{ 
+                        fontFamily: 'Europa, sans-serif', 
+                        fontWeight: 'bold',
+                        color: '#424242',
+                        fontSize: '1.1rem'
+                      }}>
+                        K
+                      </Typography>
+                    </Box>
+                    <Typography variant="h6" sx={{ 
+                      fontFamily: 'Europa, sans-serif', 
+                      fontWeight: 'bold',
+                      color: '#424242'
+                    }}>
+                      Kidneys
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ 
+                    fontFamily: 'Europa, sans-serif', 
+                    lineHeight: 1.6,
+                    color: '#424242'
+                  }}>
+                    Venous congestion increases renal vein pressure, decreases glomerular filtration gradient, and can lead to acute kidney injury.
                   </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', textAlign: 'center' }}>
-                    <strong>Liver:</strong> Elevated hepatic venous pressure increases portal pressure and can impair hepatic function.
+                </CardContent>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <Card sx={{ 
+                height: '100%',
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #dee2e6',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: 3
+                }
+              }}>
+                <CardContent sx={{ p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      width: 40, 
+                      height: 40, 
+                      borderRadius: '50%', 
+                      backgroundColor: '#e9ecef',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mr: 2
+                    }}>
+                      <Typography sx={{ 
+                        fontFamily: 'Europa, sans-serif', 
+                        fontWeight: 'bold',
+                        color: '#424242',
+                        fontSize: '1.1rem'
+                      }}>
+                        L
+                      </Typography>
+                    </Box>
+                    <Typography variant="h6" sx={{ 
+                      fontFamily: 'Europa, sans-serif', 
+                      fontWeight: 'bold',
+                      color: '#424242'
+                    }}>
+                      Liver
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ 
+                    fontFamily: 'Europa, sans-serif', 
+                    lineHeight: 1.6,
+                    color: '#424242'
+                  }}>
+                    Elevated hepatic venous pressure increases portal pressure and can impair hepatic function.
                   </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', textAlign: 'center' }}>
-                    <strong>Intestines:</strong> Venous congestion can lead to intestinal edema, malabsorption, and bacterial translocation.
+                </CardContent>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <Card sx={{ 
+                height: '100%',
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #dee2e6',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: 3
+                }
+              }}>
+                <CardContent sx={{ p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      width: 40, 
+                      height: 40, 
+                      borderRadius: '50%', 
+                      backgroundColor: '#e9ecef',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mr: 2
+                    }}>
+                      <Typography sx={{ 
+                        fontFamily: 'Europa, sans-serif', 
+                        fontWeight: 'bold',
+                        color: '#424242',
+                        fontSize: '1.1rem'
+                      }}>
+                        I
+                      </Typography>
+                    </Box>
+                    <Typography variant="h6" sx={{ 
+                      fontFamily: 'Europa, sans-serif', 
+                      fontWeight: 'bold',
+                      color: '#424242'
+                    }}>
+                      Intestines
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ 
+                    fontFamily: 'Europa, sans-serif', 
+                    lineHeight: 1.6,
+                    color: '#424242'
+                  }}>
+                    Venous congestion can lead to intestinal edema, malabsorption, and bacterial translocation.
                   </Typography>
-                } 
-              />
-            </ListItem>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText 
-                primary={
-                  <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', textAlign: 'center' }}>
-                    <strong>Brain:</strong> Increased venous pressure can elevate intracranial pressure and impair cerebral perfusion.
+                </CardContent>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <Card sx={{ 
+                height: '100%',
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #dee2e6',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: 3
+                }
+              }}>
+                <CardContent sx={{ p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      width: 40, 
+                      height: 40, 
+                      borderRadius: '50%', 
+                      backgroundColor: '#e9ecef',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mr: 2
+                    }}>
+                      <Typography sx={{ 
+                        fontFamily: 'Europa, sans-serif', 
+                        fontWeight: 'bold',
+                        color: '#424242',
+                        fontSize: '1.1rem'
+                      }}>
+                        B
+                      </Typography>
+                    </Box>
+                    <Typography variant="h6" sx={{ 
+                      fontFamily: 'Europa, sans-serif', 
+                      fontWeight: 'bold',
+                      color: '#424242'
+                    }}>
+                      Brain
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ 
+                    fontFamily: 'Europa, sans-serif', 
+                    lineHeight: 1.6,
+                    color: '#424242'
+                  }}>
+                    Increased venous pressure can elevate intracranial pressure and impair cerebral perfusion.
                   </Typography>
-                } 
-              />
-            </ListItem>
-          </CenteredList>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
           
-          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
-            VEXUS assessment helps identify and quantify venous congestion, allowing clinicians to intervene before significant organ dysfunction occurs.
-          </Typography>
+          <Box sx={{ 
+            backgroundColor: '#e8f5e8',
+            border: '2px solid #4caf50',
+            borderRadius: 2,
+            p: 3,
+            mt: 3,
+            textAlign: 'center'
+          }}>
+            <Typography variant="h6" gutterBottom sx={{ 
+              fontFamily: 'Europa, sans-serif', 
+              fontWeight: 'bold',
+              color: '#2e7d32'
+            }}>
+              Clinical Significance
+            </Typography>
+            <Typography sx={{ 
+              fontFamily: 'Europa, sans-serif', 
+              lineHeight: 1.7,
+              color: '#424242',
+              fontSize: '1.1rem'
+            }}>
+              VEXUS assessment helps identify and quantify venous congestion, allowing clinicians to intervene before significant organ dysfunction occurs.
+            </Typography>
+          </Box>
+          
+          {/* Lung Ultrasound - Complementary Assessment */}
+          <Box sx={{ 
+            mt: 4,
+            p: 3,
+            backgroundColor: '#fff8e1',
+            border: '2px dashed #ff9800',
+            borderRadius: 2
+          }}>
+            <Typography variant="h6" gutterBottom sx={{ 
+              fontFamily: 'Europa, sans-serif', 
+              fontWeight: 'bold',
+              color: '#f57c00',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1
+            }}>
+              <Box sx={{ 
+                width: 32, 
+                height: 32, 
+                borderRadius: '50%', 
+                backgroundColor: '#ffe0b2',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Typography sx={{ 
+                  fontFamily: 'Europa, sans-serif', 
+                  fontWeight: 'bold',
+                  color: '#f57c00',
+                  fontSize: '0.9rem'
+                }}>
+                  +
+                </Typography>
+              </Box>
+              Lung Ultrasound: Complementary Assessment
+            </Typography>
+            
+            <Typography variant="body1" sx={{ 
+              fontFamily: 'Europa, sans-serif', 
+              lineHeight: 1.7,
+              color: '#424242',
+              mb: 2
+            }}>
+              <strong>Important Note:</strong> Lung ultrasound is <em>not part of VEXUS</em> but can provide valuable complementary information during assessment.
+            </Typography>
+            
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'flex-start', 
+              gap: 2,
+              backgroundColor: '#ffffff',
+              p: 2,
+              borderRadius: 1,
+              border: '1px solid #ffcc02'
+            }}>
+              <Box sx={{ 
+                width: 40, 
+                height: 40, 
+                borderRadius: '50%', 
+                backgroundColor: '#e1f5fe',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <Typography sx={{ 
+                  fontFamily: 'Europa, sans-serif', 
+                  fontWeight: 'bold',
+                  color: '#0277bd',
+                  fontSize: '1.1rem'
+                }}>
+                  L
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="h6" sx={{ 
+                  fontFamily: 'Europa, sans-serif', 
+                  fontWeight: 'bold',
+                  color: '#0277bd',
+                  mb: 1
+                }}>
+                  Lung B-lines
+                </Typography>
+                <Typography sx={{ 
+                  fontFamily: 'Europa, sans-serif', 
+                  lineHeight: 1.6,
+                  color: '#424242'
+                }}>
+                  B-lines indicate pulmonary congestion from elevated left heart pressures - complementary to VEXUS assessment of systemic venous congestion.
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
         </EducationSection>
         
         {/* Venous Congestion POCUS Section */}
         <EducationSection id="venous-congestion-flow-patterns">
-          <ImageInfoTable 
-            title="Venous Congestion on POCUS: Flow Patterns"
-            imageSrc="/images/education/venous-congestion-patterns.png"
-            onImageClick={handleImageClick}
-            data={[
-              {
-                label: "Normal Flow",
-                value: "Continuous, minimal phasic",
-                description: "Subtle respiratory variation, stable flow"
-              },
-              {
-                label: "Mild Congestion",
-                value: "Increased pulsatility",
-                description: "Partial flow reversal during cardiac cycles"
-              },
-              {
-                label: "Moderate Congestion",
-                value: "Marked pulsatility",
-                description: "Periods of flow cessation"
-              },
-              {
-                label: "Severe Congestion",
-                value: "To-and-fro flow",
-                description: "Frank flow reversal, critical congestion"
-              },
-              {
-                label: "Clinical Impact",
-                value: "Compromised venous drainage",
-                description: "Increased capillary pressure, tissue edema"
-              },
-              {
-                label: "Assessment Value",
-                value: "CVP estimation",
-                description: "Non-invasive venous pressure monitoring"
-              }
-            ]}
-          />
+          <Typography 
+            variant="h3" 
+            component="h3" 
+            gutterBottom 
+            sx={{ 
+              fontFamily: 'Europa, sans-serif',
+              color: '#424242', 
+              borderBottom: '2px solid #43c3ac', 
+              pb: 1,
+              fontSize: '2rem',
+              fontWeight: 'bold',
+              mb: 3
+            }}
+          >
+            VEXUS Venous Flow Assessment Guide
+          </Typography>
+
+          {/* Main Assessment Table */}
+          <Card sx={{ mb: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.1)', borderRadius: 3 }}>
+            <CardContent sx={{ p: 0 }}>
+              <Box sx={{ 
+                background: 'linear-gradient(135deg, #43c3ac 0%, #2c8a7a 100%)', 
+                color: 'white', 
+                p: 3, 
+                textAlign: 'center' 
+              }}>
+                <Typography variant="h5" sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', mb: 1 }}>
+                  🩸 Venous Congestion Flow Patterns
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', opacity: 0.9 }}>
+                  Progressive stages from normal drainage to critical congestion
+                </Typography>
+              </Box>
+
+              <Table sx={{ minWidth: 650 }}>
+                <TableHead>
+                  <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
+                    <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', fontSize: '1rem' }}>
+                      Congestion Level
+                    </TableCell>
+                    <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', fontSize: '1rem' }}>
+                      Ultrasound Appearance
+                    </TableCell>
+                    <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', fontSize: '1rem' }}>
+                      Pathophysiology
+                    </TableCell>
+                    <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', fontSize: '1rem' }}>
+                      Clinical Significance
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {/* Normal Flow */}
+                  <TableRow sx={{ '&:hover': { backgroundColor: '#f0fdf4' } }}>
+                    <TableCell>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ 
+                          width: 12, 
+                          height: 12, 
+                          borderRadius: '50%', 
+                          backgroundColor: '#22c55e',
+                          boxShadow: '0 0 8px rgba(34, 197, 94, 0.4)'
+                        }} />
+                        <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#16a34a' }}>
+                          Normal Flow
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', mb: 0.5 }}>
+                        • Smooth, continuous flow
+                      </Typography>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', mb: 0.5 }}>
+                        • Gentle respiratory variations
+                      </Typography>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        • No flow interruptions
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Blood flows freely back to heart. Normal venous pressure allows efficient drainage.
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip 
+                        label="No Congestion" 
+                        size="small" 
+                        sx={{ 
+                          backgroundColor: '#dcfce7', 
+                          color: '#16a34a', 
+                          fontFamily: 'Europa, sans-serif',
+                          mb: 1
+                        }} 
+                      />
+                      <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Heart pumping effectively, good organ perfusion
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+
+                  {/* Mild Congestion */}
+                  <TableRow sx={{ '&:hover': { backgroundColor: '#fffbeb' } }}>
+                    <TableCell>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ 
+                          width: 12, 
+                          height: 12, 
+                          borderRadius: '50%', 
+                          backgroundColor: '#eab308',
+                          boxShadow: '0 0 8px rgba(234, 179, 8, 0.4)'
+                        }} />
+                        <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#ca8a04' }}>
+                          Mild Congestion
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', mb: 0.5 }}>
+                        • More pulsing with heartbeat
+                      </Typography>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', mb: 0.5 }}>
+                        • Flow slows but doesn't stop
+                      </Typography>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        • Some backward flow during systole
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Heart working harder. Venous pressure rising slightly, early congestion signs.
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip 
+                        label="Early Warning" 
+                        size="small" 
+                        sx={{ 
+                          backgroundColor: '#fef3c7', 
+                          color: '#ca8a04', 
+                          fontFamily: 'Europa, sans-serif',
+                          mb: 1
+                        }} 
+                      />
+                      <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Monitor progression, consider fluid management
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+
+                  {/* Moderate Congestion */}
+                  <TableRow sx={{ '&:hover': { backgroundColor: '#fff7ed' } }}>
+                    <TableCell>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ 
+                          width: 12, 
+                          height: 12, 
+                          borderRadius: '50%', 
+                          backgroundColor: '#f97316',
+                          boxShadow: '0 0 8px rgba(249, 115, 22, 0.4)'
+                        }} />
+                        <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#ea580c' }}>
+                          Moderate Congestion
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', mb: 0.5 }}>
+                        • Strong pulsing pattern
+                      </Typography>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', mb: 0.5 }}>
+                        • Flow stops briefly each heartbeat
+                      </Typography>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        • Clear flow interruptions
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Venous pressure significantly elevated. Blood struggling to return to heart.
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip 
+                        label="Significant Congestion" 
+                        size="small" 
+                        sx={{ 
+                          backgroundColor: '#fed7aa', 
+                          color: '#ea580c', 
+                          fontFamily: 'Europa, sans-serif',
+                          mb: 1
+                        }} 
+                      />
+                      <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Organ function may be affected, intervention likely needed
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+
+                  {/* Severe Congestion */}
+                  <TableRow sx={{ '&:hover': { backgroundColor: '#fef2f2' } }}>
+                    <TableCell>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ 
+                          width: 12, 
+                          height: 12, 
+                          borderRadius: '50%', 
+                          backgroundColor: '#ef4444',
+                          boxShadow: '0 0 8px rgba(239, 68, 68, 0.4)'
+                        }} />
+                        <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#dc2626' }}>
+                          Severe Congestion
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', mb: 0.5 }}>
+                        • Flow goes backward and forward
+                      </Typography>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242', mb: 0.5 }}>
+                        • Complete flow reversal
+                      </Typography>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        • "To-and-fro" pattern
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Venous system severely overloaded. Blood cannot drain properly from organs.
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip 
+                        label="Critical Congestion" 
+                        size="small" 
+                        sx={{ 
+                          backgroundColor: '#fecaca', 
+                          color: '#dc2626', 
+                          fontFamily: 'Europa, sans-serif',
+                          mb: 1
+                        }} 
+                      />
+                      <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        High risk of organ damage, urgent treatment required
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          {/* Teaching Analogy Box */}
+          <Card sx={{ mb: 4, backgroundColor: '#f8fafc', border: '2px solid #e2e8f0' }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                <Box sx={{ 
+                  backgroundColor: '#43c3ac', 
+                  borderRadius: '50%', 
+                  p: 1, 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center' 
+                }}>
+                  <Typography sx={{ fontSize: '1.5rem' }}>💡</Typography>
+                </Box>
+                <Typography variant="h6" sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#1e293b' }}>
+                  Think of it Like a Drain
+                </Typography>
+              </Box>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#22c55e' }} />
+                    <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold' }}>Normal:</Typography>
+                    <Typography sx={{ fontFamily: 'Europa, sans-serif' }}>Water flows down smoothly</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#eab308' }} />
+                    <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold' }}>Mild:</Typography>
+                    <Typography sx={{ fontFamily: 'Europa, sans-serif' }}>Drain is slightly slow, some gurgling</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#f97316' }} />
+                    <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold' }}>Moderate:</Typography>
+                    <Typography sx={{ fontFamily: 'Europa, sans-serif' }}>Drain backing up, water stops flowing</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#ef4444' }} />
+                    <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold' }}>Severe:</Typography>
+                    <Typography sx={{ fontFamily: 'Europa, sans-serif' }}>Water flowing backward out of drain</Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+
+          {/* Clinical Application Table */}
+          <Card sx={{ boxShadow: '0 4px 20px rgba(0,0,0,0.1)', borderRadius: 3 }}>
+            <CardContent sx={{ p: 0 }}>
+              <Box sx={{ 
+                background: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)', 
+                color: 'white', 
+                p: 3, 
+                textAlign: 'center' 
+              }}>
+                <Typography variant="h6" sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', mb: 1 }}>
+                  🎯 Clinical Assessment Value
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'Europa, sans-serif', opacity: 0.9 }}>
+                  Why VEXUS matters in patient care
+                </Typography>
+              </Box>
+
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell sx={{ borderBottom: 'none', py: 2 }}>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                        📊 CVP Estimation
+                      </Typography>
+                    </TableCell>
+                    <TableCell sx={{ borderBottom: 'none', py: 2 }}>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Non-invasive way to estimate central venous pressure without catheters
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
+                    <TableCell sx={{ borderBottom: 'none', py: 2 }}>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                        🫀 Organ Assessment
+                      </Typography>
+                    </TableCell>
+                    <TableCell sx={{ borderBottom: 'none', py: 2 }}>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Identifies which organs are affected by poor venous drainage
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ borderBottom: 'none', py: 2 }}>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                        💊 Treatment Guidance
+                      </Typography>
+                    </TableCell>
+                    <TableCell sx={{ borderBottom: 'none', py: 2 }}>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Helps decide if patient needs more fluids or fluid removal (diuretics)
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
+                    <TableCell sx={{ borderBottom: 'none', py: 2 }}>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#424242' }}>
+                        ⚠️ Risk Stratification
+                      </Typography>
+                    </TableCell>
+                    <TableCell sx={{ borderBottom: 'none', py: 2 }}>
+                      <Typography sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                        Identifies patients at high risk for acute kidney injury and poor outcomes
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
           
           <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242', mt: 3 }}>
             Venous Doppler waveforms provide valuable information about central venous pressure and venous congestion. As venous congestion worsens, characteristic changes in flow patterns become evident on Doppler ultrasound.
@@ -1440,43 +2192,214 @@ const EducationPageContent: React.FC = () => {
         
         {/* VEXUS Overview Section */}
         <EducationSection id="vexus-complete-picture">
-          <ImageInfoTable 
-            title="VEXUS: The Complete Picture"
-            imageSrc="/images/education/vexus-overview-diagram.png"
-            onImageClick={handleImageClick}
-            data={[
-              {
-                label: "Right Atrial Pressure",
-                value: "Central measurement",
-                description: "Elevated RAP transmitted through venous system"
-              },
-              {
-                label: "Cardiac Output",
-                value: "Heart pumping function",
-                description: "Venous congestion impairs ventricular filling"
-              },
-              {
-                label: "Left Atrial Pressure",
-                value: "Pulmonary congestion",
-                description: "B-lines on lung ultrasound, distinct from systemic"
-              },
-              {
-                label: "IVC Assessment",
-                value: "Central venous pressure",
-                description: "Diameter and collapsibility evaluation"
-              },
-              {
-                label: "Hepatic Vein Doppler",
-                value: "Right atrial pressure info",
-                description: "Waveform changes reflect heart function"
-              },
-              {
-                label: "Portal & Renal Veins",
-                value: "Organ-specific impact",
-                description: "Shows congestion effects on specific organs"
-              }
-            ]}
-          />
+          <Typography 
+            variant="h2" 
+            component="h2" 
+            gutterBottom 
+            sx={{ 
+              fontFamily: 'Europa, sans-serif',
+              color: '#424242', 
+              borderBottom: '2px solid #9e9e9e', 
+              pb: 1,
+              fontSize: '2.5rem',
+              fontWeight: 'bold'
+            }}
+          >
+            VEXUS: The Complete Picture
+          </Typography>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+            <img 
+              src="/images/education/vexus-overview-diagram.png" 
+              alt="VEXUS complete picture diagram showing RAP, LAP, CO, MAP, OPP, pMSF and B-lines" 
+              style={{ 
+                width: '100%', 
+                maxWidth: '700px', 
+                height: 'auto', 
+                borderRadius: '8px',
+                cursor: 'pointer',
+                border: '1px solid #e0e0e0'
+              }}
+              onClick={() => handleImageClick('/images/education/vexus-overview-diagram.png')}
+            />
+          </Box>
+          
+          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242', mb: 4 }}>
+            This diagram illustrates the comprehensive hemodynamic assessment that VEXUS provides, showing the relationships between cardiac pressures, organ perfusion, and venous congestion. Understanding each component helps clinicians interpret VEXUS findings in the broader context of cardiovascular physiology.
+          </Typography>
+          
+          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 4, color: '#424242', fontSize: '2rem' }}>
+            Complete Terminology Reference
+          </Typography>
+          
+          <TableContainer component={Paper} elevation={2} sx={{ border: '1px solid #e0e0e0', mb: 4 }}>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ bgcolor: '#f5f5f5' }}>
+                  <TableCell sx={{ 
+                    color: '#424242', 
+                    fontWeight: 'bold',
+                    fontFamily: 'Europa, sans-serif',
+                    width: '20%'
+                  }}>
+                    Term
+                  </TableCell>
+                  <TableCell sx={{ 
+                    color: '#424242', 
+                    fontWeight: 'bold',
+                    fontFamily: 'Europa, sans-serif',
+                    width: '30%'
+                  }}>
+                    Definition
+                  </TableCell>
+                  <TableCell sx={{ 
+                    color: '#424242', 
+                    fontWeight: 'bold',
+                    fontFamily: 'Europa, sans-serif',
+                    width: '25%'
+                  }}>
+                    Normal Values
+                  </TableCell>
+                  <TableCell sx={{ 
+                    color: '#424242', 
+                    fontWeight: 'bold',
+                    fontFamily: 'Europa, sans-serif'
+                  }}>
+                    VEXUS Relationship
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#1976d2' }}>
+                    RAP
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    <strong>Right Atrial Pressure</strong> - Pressure in the right atrium reflecting venous return and right heart function
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    0-5 mmHg
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    Elevated RAP is transmitted through venous system, causing abnormal VEXUS flow patterns in hepatic, portal, and renal veins
+                  </TableCell>
+                </TableRow>
+                
+                <TableRow sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#1976d2' }}>
+                    LAP
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    <strong>Left Atrial Pressure</strong> - Pressure in the left atrium reflecting left ventricular filling pressure and volume status
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    8-15 mmHg
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    Elevated LAP causes pulmonary congestion (B-lines) but is separate from systemic venous congestion assessed by VEXUS
+                  </TableCell>
+                </TableRow>
+                
+                <TableRow sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#1976d2' }}>
+                    CO
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    <strong>Cardiac Output</strong> - Volume of blood pumped by the heart per minute
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    4-8 L/min
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    Venous congestion (high VEXUS scores) impairs ventricular filling and can reduce cardiac output
+                  </TableCell>
+                </TableRow>
+                
+                <TableRow sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#1976d2' }}>
+                    MAP
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    <strong>Mean Arterial Pressure</strong> - Average arterial pressure during cardiac cycle; driving force for organ perfusion
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    65-100 mmHg
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    Part of organ perfusion pressure calculation (MAP - CVP). Normal MAP with elevated venous pressure still impairs perfusion
+                  </TableCell>
+                </TableRow>
+                
+                <TableRow sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#1976d2' }}>
+                    OPP
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    <strong>Organ Perfusion Pressure</strong> - Net driving pressure for blood flow through organs (MAP - CVP)
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    &gt;60 mmHg for adequate perfusion
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    VEXUS identifies elevated venous pressure (CVP) that reduces OPP despite normal MAP, explaining organ dysfunction
+                  </TableCell>
+                </TableRow>
+                
+                <TableRow sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#1976d2' }}>
+                    pMSF
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    <strong>Mean Systemic Filling Pressure</strong> - Upstream pressure driving venous return; reflects blood volume and venous tone
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    12-23 mmHg
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    Gradient between pMSF and RAP drives venous return. VEXUS patterns help assess this relationship non-invasively
+                  </TableCell>
+                </TableRow>
+                
+                <TableRow sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#1976d2' }}>
+                    B-lines
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    <strong>Lung Ultrasound B-lines</strong> - Vertical artifacts indicating pulmonary edema from elevated left heart pressures
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    &lt;3 B-lines per lung zone
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
+                    Complementary to VEXUS: B-lines show pulmonary congestion while VEXUS shows systemic venous congestion
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          
+          <Typography variant="h3" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', mt: 4, color: '#424242', fontSize: '1.8rem' }}>
+            Clinical Integration
+          </Typography>
+          
+          <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
+            This comprehensive assessment allows clinicians to understand the complete hemodynamic picture. VEXUS specifically addresses the often-overlooked venous side of circulation, providing insights into how elevated venous pressures affect organ perfusion even when arterial pressures appear adequate.
+          </Typography>
+          
+          <Box sx={{ 
+            backgroundColor: '#e3f2fd', 
+            padding: 3, 
+            borderRadius: 2, 
+            border: '1px solid #2196f3',
+            mb: 3
+          }}>
+            <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', fontWeight: 'bold', color: '#1976d2' }}>
+              Key Clinical Insight
+            </Typography>
+            <Typography variant="body1" sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242' }}>
+              The formula <strong>OPP = MAP - pMSF</strong> shown in the diagram emphasizes that organ perfusion depends not just on arterial pressure, but on the pressure gradient across the entire cardiovascular system. VEXUS provides the missing piece by non-invasively assessing the venous component that traditional monitoring often overlooks.
+            </Typography>
+          </Box>
           
           <Typography variant="body1" paragraph sx={{ fontFamily: 'Europa, sans-serif', lineHeight: 1.7, color: '#424242', mt: 3 }}>
             The VEXUS protocol provides a comprehensive assessment of the cardiopulmonary-renal axis by examining how right atrial pressure and venous congestion affect multiple organ systems. This overview illustrates the interrelated nature of the hemodynamic parameters examined in VEXUS.

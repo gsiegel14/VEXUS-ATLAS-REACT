@@ -26,7 +26,7 @@ export const stepsConfig: StepConfig[] = [
     inputType: 'dropdown',
     instructions: 'Select whether IVC is < 2 cm or > 2 cm.',
     options: {
-      label: 'IVC Diameter & Collapse',
+      label: 'IVC Diameter (Collapsibility NOT used in VEXUS)',
       values: [
         { label: 'IVC < 2cm', value: '<2cm', score: 0 },
         { label: 'IVC > 2cm', value: '>2cm', score: 1 },

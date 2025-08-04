@@ -759,8 +759,8 @@ const assessmentData = {
             "Place patient in supine position",
             "Use a low frequency (curvilinear) probe",
             "Measure IVC diameter 2-3 cm from right atrial junction",
-            "Assess for inspiratory collapse (if applicable)",
-            "Record maximum diameter for VEXUS classification"
+            "Record maximum diameter for VEXUS classification",
+            "NOTE: IVC collapsibility is NOT part of VEXUS protocol"
           ],
           measurements: {
             normalRange: "15-25mm",

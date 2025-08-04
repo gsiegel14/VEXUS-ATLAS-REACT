@@ -588,12 +588,10 @@ export const stepsConfig = [
     veinType: 'ivc',
     inputType: 'dropdown', // Or 'image_ai' or 'manual_measurement'
     options: {
-      label: 'IVC Diameter & Collapse',
+      label: 'IVC Diameter (Collapsibility NOT used in VEXUS)',
       values: [
-        { label: '<2cm, >50% collapse', value: 0, score: 0 },
-        { label: '<2cm, <50% collapse', value: 1, score: 1 },
-        { label: '>2cm, >50% collapse', value: 2, score: 1 },
-        { label: '>2cm, <50% collapse', value: 3, score: 3 },
+        { label: 'IVC < 2cm', value: '<2cm', score: 0 },
+        { label: 'IVC > 2cm', value: '>2cm', score: 1 },
       ]
     }
   },

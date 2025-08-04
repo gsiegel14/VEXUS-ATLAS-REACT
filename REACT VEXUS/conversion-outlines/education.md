@@ -632,7 +632,7 @@ const gradingData = [
   },
   {
     grade: 3,
-    ivc: '>= 2.5 cm + Minimal Collapse',
+    ivc: '>= 2 cm (collapsibility NOT used)',
     hepatic: 'Severe Abnormal Flow',
     portal: 'To-and-Fro or Reversal',
     intrarenal: 'Reversal',

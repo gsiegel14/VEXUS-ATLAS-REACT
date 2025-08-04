@@ -15,6 +15,7 @@ NC='\033[0m' # No Color
 PROJECT_ID="decoded-app-457000-s2"
 SERVICE_NAME="vexus-atlas"
 REGION="us-central1"
+DEPLOY_EMAIL="thevexusatlas@gmail.com"
 
 echo -e "${BLUE}"
 echo "🚀 VEXUS Atlas Deployment"
@@ -22,15 +23,27 @@ echo "========================="
 echo "Project: $PROJECT_ID"
 echo "Service: $SERVICE_NAME"
 echo "Region: $REGION"
+echo "Email: $DEPLOY_EMAIL"
 echo -e "${NC}"
 
-# Check if user is authenticated
+# Check if user is authenticated with the correct email
 echo -e "${YELLOW}🔍 Checking authentication...${NC}"
-if ! gcloud auth list --filter=status:ACTIVE --format="value(account)" | grep -q .; then
+CURRENT_ACCOUNT=$(gcloud auth list --filter=status:ACTIVE --format="value(account)" | head -n1)
+
+if [ -z "$CURRENT_ACCOUNT" ]; then
     echo -e "${RED}❌ Not authenticated with gcloud. Please run:${NC}"
-    echo "   gcloud auth login"
+    echo "   gcloud auth login $DEPLOY_EMAIL"
     exit 1
 fi
+
+if [ "$CURRENT_ACCOUNT" != "$DEPLOY_EMAIL" ]; then
+    echo -e "${YELLOW}⚠️  Current account: $CURRENT_ACCOUNT${NC}"
+    echo -e "${YELLOW}Expected account: $DEPLOY_EMAIL${NC}"
+    echo -e "${YELLOW}Switching to correct account...${NC}"
+    gcloud auth login $DEPLOY_EMAIL
+fi
+
+echo -e "${GREEN}✅ Authenticated as: $DEPLOY_EMAIL${NC}"
 
 # Set project
 echo -e "${YELLOW}🔧 Setting project...${NC}"
@@ -44,7 +57,7 @@ npm run build
 echo -e "${YELLOW}🏗️  Building Docker image...${NC}"
 gcloud builds submit --tag gcr.io/$PROJECT_ID/$SERVICE_NAME
 
-# Deploy to Cloud Run
+# Deploy to Cloud Run (removed PORT from env vars - it's reserved)
 echo -e "${YELLOW}🚀 Deploying to Cloud Run...${NC}"
 gcloud run deploy $SERVICE_NAME \
   --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
