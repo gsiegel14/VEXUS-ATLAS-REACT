@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001; // Match frontend configuration (was 8080
 // Enable CORS for production
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://vexus-atlas-314467722862.us-central1.run.app', 'https://gsiegel14--vexus-hepatic-endpoint-hepaticmodel-predict.modal.run', 'https://gsiegel14--vexus-renal-portal-endpoint-portalmodel-predict.modal.run', 'https://gsiegel14--vexus-renal-portal-endpoint-renalmodel-predict.modal.run']
+    ? ['https://vexus-atlas-314467722862.us-central1.run.app', 'https://gsiegel14--vexus-hepatic-model-hepaticmodel-predict.modal.run', 'https://gsiegel14--vexus-portal-model-portalmodel-predict.modal.run', 'https://gsiegel14--vexus-renal-model-renalmodel-predict.modal.run']
     : ['http://localhost:5436', 'http://localhost:5437', 'http://localhost:5438', 'http://localhost:5439', 'http://localhost:5440'], // React dev server
   credentials: true
 }));
@@ -661,7 +661,7 @@ app.post('/api/hepatic', async (req, res) => {
         console.log(`🔄 Attempt ${attempts} for hepatic endpoint`);
         
         const response = await axios.post(
-          'https://gsiegel14--vexus-hepatic-endpoint-hepaticmodel-predict.modal.run/',
+          'https://gsiegel14--vexus-hepatic-model-hepaticmodel-predict.modal.run/',
           req.body,
           axiosConfig
         );
@@ -725,7 +725,7 @@ app.post('/api/portal', async (req, res) => {
         console.log(`🔄 Attempt ${attempts} for portal endpoint`);
         
         const response = await axios.post(
-          'https://gsiegel14--vexus-renal-portal-endpoint-portalmodel-predict.modal.run/',
+          'https://gsiegel14--vexus-portal-model-portalmodel-predict.modal.run/',
           req.body,
           axiosConfig
         );
@@ -789,7 +789,7 @@ app.post('/api/renal', async (req, res) => {
         console.log(`🔄 Attempt ${attempts} for renal endpoint`);
         
         const response = await axios.post(
-          'https://gsiegel14--vexus-renal-portal-endpoint-renalmodel-predict.modal.run/',
+          'https://gsiegel14--vexus-renal-model-renalmodel-predict.modal.run/',
           req.body,
           axiosConfig
         );

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Simple brain outline -->
+  <path d="M50 15c-8 0-15 4-19 10-2-1-4-1-6 0-4 2-7 6-7 11 0 2 1 4 2 6-1 2-1 4 0 6 1 3 3 5 6 6v8c0 6 4 10 10 10h28c6 0 10-4 10-10v-8c3-1 5-3 6-6 1-2 1-4 0-6 1-2 2-4 2-6 0-5-3-9-7-11-2-1-4-1-6 0-4-6-11-10-19-10z" 
+        fill="#453E3E" 
+        stroke="#453E3E" 
+        stroke-width="1"/>
+  
+  <!-- AI text centered in brain -->
+  <text x="50" y="55" 
+        text-anchor="middle" 
+        font-family="Arial, sans-serif" 
+        font-size="24" 
+        font-weight="bold" 
+        fill="white">AI</text>
+</svg>

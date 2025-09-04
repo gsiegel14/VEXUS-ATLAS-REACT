@@ -78,9 +78,9 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/ivc-assessment-corrected.png", 
-          alt: "IVC Assessment", 
-          title: "IVC" 
+          src: "/images/acquisition/gifs/ivc-long-axis.gif", 
+          alt: "IVC Assessment Animation", 
+          title: "IVC Animation" 
         }
       },
       {
@@ -88,7 +88,7 @@ const assessmentData: Record<string, AssessmentData> = {
         title: "IVC - RUQ Intercostal View",
         images: [
           { 
-            src: "/images/acquisition/ivc-measurement-corrected.png", 
+            src: "/images/acquisition/ivc-ruq-view.png", 
             alt: "IVC RUQ Intercostal View", 
             caption: "IVC Assessment Technique - RUQ Intercostal View"
           }
@@ -117,11 +117,6 @@ const assessmentData: Record<string, AssessmentData> = {
             "Can be challenging in patients with liver disease or altered anatomy",
             "Consider using harmonic imaging to improve visualization through liver tissue"
           ]
-        },
-        atlasContent: { 
-          src: "/images/acquisition/ivc-measurement-corrected.png", 
-          alt: "IVC RUQ View", 
-          title: "IVC RUQ" 
         }
       }
     ]
@@ -149,9 +144,9 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/hepatic-vein-long-axis-corrected.png", 
-          alt: "Hepatic Long Axis Assessment", 
-          title: "Hepatic Long Axis" 
+          src: "/images/acquisition/gifs/hepatic-long-axis.gif", 
+          alt: "Hepatic Long Axis Animation", 
+          title: "Hepatic Animation" 
         }
       },
       {
@@ -209,9 +204,9 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/portal-vein-long-axis-corrected.png", 
-          alt: "Portal Long Axis Assessment", 
-          title: "Portal Long Axis" 
+          src: "/images/acquisition/gifs/portal-long-axis.gif", 
+          alt: "Portal Long Axis Animation", 
+          title: "Portal Animation" 
         }
       },
       {
@@ -247,9 +242,9 @@ const assessmentData: Record<string, AssessmentData> = {
           keyStructures: ["Portal vein", "Liver", "IVC"]
         },
         atlasContent: { 
-          src: "/images/acquisition/portal-vein-subxiphoid-corrected.png", 
-          alt: "Portal Vein Subxiphoid View", 
-          title: "Portal Subxiphoid" 
+          src: "/images/acquisition/gifs/portal-subxiphoid.gif", 
+          alt: "Portal Subxiphoid Animation", 
+          title: "Portal Subxiphoid Animation" 
         }
       }
     ]
@@ -283,9 +278,9 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/renal-vein-long-axis-corrected.png", 
-          alt: "Renal Long Axis Assessment", 
-          title: "Renal Long Axis" 
+          src: "/images/acquisition/renal-long-still.png", 
+          alt: "Renal Long Axis Still Image", 
+          title: "Renal Long Axis Still Image" 
         }
       },
       {
@@ -308,9 +303,9 @@ const assessmentData: Record<string, AssessmentData> = {
           ]
         },
         atlasContent: { 
-          src: "/images/acquisition/renal-vein-short-axis-corrected.png", 
-          alt: "Renal Short Axis Assessment", 
-          title: "Renal Short Axis" 
+          src: "/images/acquisition/renal-short-still.png", 
+          alt: "Renal Short Axis Still Image", 
+          title: "Renal Short Axis Still Image" 
         }
       }
     ]

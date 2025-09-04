@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Box,
   Typography,
@@ -10,11 +10,7 @@ import {
   useTheme,
   useMediaQuery,
   Tooltip,
-  Collapse,
   IconButton,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   Grid,
   Paper,
   Fade,
@@ -25,9 +21,7 @@ import {
   ZoomIn,
   Info,
   LocalHospital,
-  HighQuality,
   AccessTime,
-  Close,
   Biotech,
   MonitorHeart,
   Science,
@@ -103,7 +97,11 @@ const ImageCard: React.FC<{
   };
 
   const getQualityColor = (quality: string) => {
-    switch (quality?.toLowerCase()) {
+    if (!quality || quality.trim() === '') {
+      return '#757575';
+    }
+    
+    switch (quality.toLowerCase()) {
       case 'high': return '#4caf50';
       case 'medium': return '#ff9800';
       case 'low': return '#f44336';
@@ -133,7 +131,11 @@ const ImageCard: React.FC<{
   };
 
   const getQualityDescription = (quality: string) => {
-    switch (quality?.toLowerCase()) {
+    if (!quality || quality.trim() === '') {
+      return 'Image quality assessment not available.';
+    }
+    
+    switch (quality.toLowerCase()) {
       case 'high':
         return 'Excellent image clarity with sharp anatomical details. Optimal for diagnostic assessment and educational use. All anatomical structures are clearly visible with minimal artifacts.';
       case 'medium':
@@ -141,7 +143,7 @@ const ImageCard: React.FC<{
       case 'low':
         return 'Suboptimal image quality with reduced clarity or significant artifacts. May still have diagnostic or educational value but with limitations in detail visualization.';
       default:
-        return 'Image quality assessment not available.';
+        return `Quality level: ${quality}. Assessment details may vary based on specific criteria.`;
     }
   };
 
@@ -258,11 +260,23 @@ const ImageCard: React.FC<{
             maxWidth: 'calc(100% - 24px)',
           }}
         >
-          {image.quality && (
+          {image.quality && image.quality.trim() !== '' && (
             <Tooltip 
               title={createTooltipContent('Image Quality', getQualityDescription(image.quality))}
               placement="top"
               arrow
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    maxWidth: 320,
+                    fontSize: '0.875rem',
+                    lineHeight: 1.4,
+                    padding: '12px 16px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    backdropFilter: 'blur(8px)',
+                  }
+                }
+              }}
             >
               <Chip
                 label={image.quality}
@@ -276,6 +290,7 @@ const ImageCard: React.FC<{
                   backdropFilter: 'blur(8px)',
                   border: '1px solid rgba(255,255,255,0.2)',
                   transition: 'all 0.2s ease',
+                  cursor: 'pointer',
                   '&:hover': {
                     transform: 'scale(1.05)',
                     boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
@@ -290,6 +305,18 @@ const ImageCard: React.FC<{
               title={createTooltipContent('VEXUS Grade', `Grade ${image.vexusGrade} - Clinical severity assessment based on venous flow patterns`)}
               placement="top"
               arrow
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    maxWidth: 320,
+                    fontSize: '0.875rem',
+                    lineHeight: 1.4,
+                    padding: '12px 16px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    backdropFilter: 'blur(8px)',
+                  }
+                }
+              }}
             >
               <Chip
                 icon={<Biotech sx={{ fontSize: '16px !important' }} />}
@@ -305,6 +332,7 @@ const ImageCard: React.FC<{
                   border: '1px solid rgba(255,255,255,0.2)',
                   '& .MuiChip-icon': { color: 'white' },
                   transition: 'all 0.2s ease',
+                  cursor: 'pointer',
                   '&:hover': {
                     transform: 'scale(1.05)',
                     boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
@@ -319,6 +347,18 @@ const ImageCard: React.FC<{
               title={createTooltipContent('Waveform Pattern', `${image.waveform} - Characteristic flow pattern observed in the ultrasound`)}
               placement="top"
               arrow
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    maxWidth: 320,
+                    fontSize: '0.875rem',
+                    lineHeight: 1.4,
+                    padding: '12px 16px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    backdropFilter: 'blur(8px)',
+                  }
+                }
+              }}
             >
               <Chip
                 label={image.waveform}
@@ -332,6 +372,7 @@ const ImageCard: React.FC<{
                   backdropFilter: 'blur(8px)',
                   border: `1px solid ${categoryColor}`,
                   transition: 'all 0.2s ease',
+                  cursor: 'pointer',
                   '&:hover': {
                     transform: 'scale(1.05)',
                     bgcolor: categoryColor,
@@ -356,7 +397,23 @@ const ImageCard: React.FC<{
           }}
         >
           {image.analysis && (
-            <Tooltip title={createTooltipContent('Analysis Available', image.analysis)} placement="left" arrow>
+            <Tooltip 
+              title={createTooltipContent('Analysis Available', image.analysis)} 
+              placement="left" 
+              arrow
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    maxWidth: 320,
+                    fontSize: '0.875rem',
+                    lineHeight: 1.4,
+                    padding: '12px 16px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    backdropFilter: 'blur(8px)',
+                  }
+                }
+              }}
+            >
               <Chip
                 label="Analysis"
                 size="small"
@@ -367,13 +424,33 @@ const ImageCard: React.FC<{
                   height: 20,
                   fontWeight: 600,
                   backdropFilter: 'blur(8px)',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    bgcolor: 'rgba(76, 175, 80, 1)',
+                  }
                 }}
               />
             </Tooltip>
           )}
           
           {image.qa && (
-            <Tooltip title={createTooltipContent('Quality Assurance', image.qa)} placement="left" arrow>
+            <Tooltip 
+              title={createTooltipContent('Quality Assurance', image.qa)} 
+              placement="left" 
+              arrow
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    maxWidth: 320,
+                    fontSize: '0.875rem',
+                    lineHeight: 1.4,
+                    padding: '12px 16px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    backdropFilter: 'blur(8px)',
+                  }
+                }
+              }}
+            >
               <Chip
                 label="QA"
                 size="small"
@@ -384,6 +461,10 @@ const ImageCard: React.FC<{
                   height: 20,
                   fontWeight: 600,
                   backdropFilter: 'blur(8px)',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    bgcolor: 'rgba(103, 58, 183, 1)',
+                  }
                 }}
               />
             </Tooltip>

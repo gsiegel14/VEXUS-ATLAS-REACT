@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Medical Image Frame -->
+  <rect x="15" y="20" width="50" height="40" 
+        stroke="#453E3E" 
+        stroke-width="2.5" 
+        fill="none" 
+        rx="3"/>
+  
+  <!-- Ultrasound/Medical Image representation -->
+  <g opacity="0.3">
+    <!-- Simulated ultrasound scan lines -->
+    <path d="M20 25 Q35 35 20 45 Q35 55 20 55" 
+          stroke="#453E3E" 
+          stroke-width="1" 
+          fill="none"/>
+    <path d="M25 25 Q40 35 25 45 Q40 55 25 55" 
+          stroke="#453E3E" 
+          stroke-width="1" 
+          fill="none"/>
+    <path d="M30 25 Q45 35 30 45 Q45 55 30 55" 
+          stroke="#453E3E" 
+          stroke-width="1" 
+          fill="none"/>
+    
+    <!-- Organ/vessel representation -->
+    <ellipse cx="40" cy="40" rx="12" ry="8" 
+             stroke="#453E3E" 
+             stroke-width="1.5" 
+             fill="none"/>
+    <ellipse cx="40" cy="40" rx="6" ry="4" 
+             stroke="#453E3E" 
+             stroke-width="1" 
+             fill="none"/>
+  </g>
+  
+  <!-- AI Analysis Elements -->
+  <!-- Neural network nodes -->
+  <circle cx="75" cy="25" r="3" fill="#453E3E"/>
+  <circle cx="85" cy="35" r="3" fill="#453E3E"/>
+  <circle cx="75" cy="45" r="3" fill="#453E3E"/>
+  <circle cx="85" cy="55" r="3" fill="#453E3E"/>
+  <circle cx="75" cy="65" r="3" fill="#453E3E"/>
+  
+  <!-- Neural connections -->
+  <path d="M75 25 L85 35 L75 45 L85 55 L75 65" 
+        stroke="#453E3E" 
+        stroke-width="1.5" 
+        fill="none" 
+        opacity="0.7"/>
+  
+  <!-- Analysis arrows from image to AI -->
+  <path d="M65 30 L72 27" 
+        stroke="#453E3E" 
+        stroke-width="2" 
+        marker-end="url(#arrowhead)"/>
+  <path d="M65 40 L72 42" 
+        stroke="#453E3E" 
+        stroke-width="2" 
+        marker-end="url(#arrowhead)"/>
+  <path d="M65 50 L72 62" 
+        stroke="#453E3E" 
+        stroke-width="2" 
+        marker-end="url(#arrowhead)"/>
+  
+  <!-- Analysis results indicators -->
+  <rect x="20" y="70" width="8" height="2" fill="#453E3E" rx="1"/>
+  <rect x="30" y="70" width="12" height="2" fill="#453E3E" rx="1"/>
+  <rect x="44" y="70" width="6" height="2" fill="#453E3E" rx="1"/>
+  
+  <!-- Percentage/confidence indicators -->
+  <text x="20" y="80" font-family="Arial, sans-serif" font-size="8" fill="#453E3E">87%</text>
+  <text x="35" y="80" font-family="Arial, sans-serif" font-size="8" fill="#453E3E">94%</text>
+  
+  <!-- AI chip/processor element -->
+  <rect x="70" y="75" width="20" height="12" 
+        stroke="#453E3E" 
+        stroke-width="1.5" 
+        fill="none" 
+        rx="2"/>
+  <rect x="72" y="77" width="4" height="2" fill="#453E3E"/>
+  <rect x="78" y="77" width="4" height="2" fill="#453E3E"/>
+  <rect x="84" y="77" width="4" height="2" fill="#453E3E"/>
+  <rect x="72" y="81" width="4" height="2" fill="#453E3E"/>
+  <rect x="78" y="81" width="4" height="2" fill="#453E3E"/>
+  <rect x="84" y="81" width="4" height="2" fill="#453E3E"/>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#453E3E"/>
+    </marker>
+  </defs>
+  
+  <!-- Subtle glow effect for AI elements -->
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Apply glow to AI elements -->
+  <g filter="url(#glow)" opacity="0.8">
+    <circle cx="75" cy="25" r="2" fill="#453E3E"/>
+    <circle cx="85" cy="35" r="2" fill="#453E3E"/>
+    <circle cx="75" cy="45" r="2" fill="#453E3E"/>
+    <circle cx="85" cy="55" r="2" fill="#453E3E"/>
+    <circle cx="75" cy="65" r="2" fill="#453E3E"/>
+  </g>
+</svg>

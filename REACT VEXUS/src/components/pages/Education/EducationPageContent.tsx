@@ -290,7 +290,7 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
   ivc: {
     title: "IVC Assessment Technique",
     images: [
-      '/images/acquisition/ivc-assessment.png',
+      '/images/acquisition/ivc-assessment-corrected.png',
       '/images/acquisition/ivc-ruq-view.png'
     ],
     content: (
@@ -302,13 +302,13 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <img 
-              src="/images/acquisition/ivc-assessment.png" 
+              src="/images/acquisition/ivc-assessment-corrected.png" 
               alt="IVC Assessment" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
             <img 
               src="/images/acquisition/ivc-ruq-view.png" 
-              alt="IVC RUQ View" 
+              alt="IVC RUQ Intercostal View" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
           </Box>
@@ -361,9 +361,9 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
   hepatic: {
     title: "Hepatic Vein Assessment Technique",
     images: [
-      '/images/acquisition/hepatic-long-axis.png',
-      '/images/acquisition/hepatic-short-axis.png',
-      '/images/acquisition/hepatic-subxiphoid.png',
+      '/images/acquisition/hepatic-vein-long-axis-corrected.png',
+      '/images/acquisition/hepatic-vein-short-axis-corrected.png',
+      '/images/acquisition/hepatic-vein-subxiphoid-corrected.png',
       '/images/acquisition/gifs/hepatic-long-axis.gif'
     ],
     content: (
@@ -375,18 +375,18 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <img 
-              src="/images/acquisition/hepatic-long-axis.png" 
+              src="/images/acquisition/hepatic-vein-long-axis-corrected.png" 
               alt="Hepatic Long Axis" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
             <img 
-              src="/images/acquisition/hepatic-short-axis.png" 
+              src="/images/acquisition/hepatic-vein-short-axis-corrected.png" 
               alt="Hepatic Short Axis" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
             <img 
-              src="/images/acquisition/gifs/hepatic-long-axis.gif" 
-              alt="Hepatic Animation" 
+              src="/images/acquisition/hepatic-vein-subxiphoid-corrected.png" 
+              alt="Hepatic Subxiphoid" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
           </Box>
@@ -437,9 +437,9 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
   portal: {
     title: "Portal Vein Assessment Technique",
     images: [
-      '/images/acquisition/portal-long-axis.png',
-      '/images/acquisition/portal-short-axis.png',
-      '/images/acquisition/portal-subxiphoid.png',
+      '/images/acquisition/portal-vein-long-axis-corrected.png',
+      '/images/acquisition/portal-vein-short-axis-corrected.png',
+      '/images/acquisition/portal-vein-subxiphoid-corrected.png',
       '/images/acquisition/gifs/portal-long-axis.gif',
       '/images/acquisition/gifs/portal-subxiphoid.gif'
     ],
@@ -452,18 +452,18 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <img 
-              src="/images/acquisition/portal-long-axis.png" 
+              src="/images/acquisition/portal-vein-long-axis-corrected.png" 
               alt="Portal Long Axis" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
             <img 
-              src="/images/acquisition/portal-short-axis.png" 
+              src="/images/acquisition/portal-vein-short-axis-corrected.png" 
               alt="Portal Short Axis" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
             <img 
-              src="/images/acquisition/gifs/portal-long-axis.gif" 
-              alt="Portal Animation" 
+              src="/images/acquisition/portal-vein-subxiphoid-corrected.png" 
+              alt="Portal Subxiphoid" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
           </Box>
@@ -514,8 +514,8 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
   renal: {
     title: "Renal Vein Assessment Technique",
     images: [
-      '/images/acquisition/renal-long-axis.png',
-      '/images/acquisition/renal-short-axis.png',
+      '/images/acquisition/renal-vein-long-axis-corrected.png',
+      '/images/acquisition/renal-vein-short-axis-corrected.png',
       '/images/acquisition/renal-long-still.png',
       '/images/acquisition/gifs/renal-short-axis.gif'
     ],
@@ -528,12 +528,12 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <img 
-              src="/images/acquisition/renal-long-axis.png" 
+              src="/images/acquisition/renal-vein-long-axis-corrected.png" 
               alt="Renal Long Axis" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
             <img 
-              src="/images/acquisition/renal-short-axis.png" 
+              src="/images/acquisition/renal-vein-short-axis-corrected.png" 
               alt="Renal Short Axis" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />

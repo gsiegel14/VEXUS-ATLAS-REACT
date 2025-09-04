@@ -18,7 +18,7 @@ const HeroSection: React.FC = () => {
     },
     {
       title: 'AI Image Analysis',
-      icon: '/images/noun-artificial-intelligence-3616347-453E3E.svg', // AI/futuristic icon
+      icon: '/images/noun-laptop-ai-453E3E.svg', // Laptop AI icon
       link: '/calculator',
       description: 'AI-powered image recognition'
     },
@@ -30,7 +30,7 @@ const HeroSection: React.FC = () => {
     },
     {
       title: 'Interpret VEXUS Waveforms',
-      icon: '/images/noun-microscope-1479193-453E3E.svg', // Microscope icon
+      icon: '/images/noun-waveform-453E3E.svg', // Waveform icon
       link: '/waveform',
       description: 'Pulse wave Doppler analysis'
     }
