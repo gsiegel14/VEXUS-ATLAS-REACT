@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log
+yarn-error.log
+.git
+.gitignore
+.DS_Store
+dist
+google-credentials*.json
+REACT VEXUS
+REACT_VEXUS_BACKUP_*
+TPA test

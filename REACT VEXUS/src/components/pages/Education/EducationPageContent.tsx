@@ -517,14 +517,14 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
       '/images/acquisition/renal-vein-long-axis-corrected.png',
       '/images/acquisition/renal-vein-short-axis-corrected.png',
       '/images/acquisition/renal-long-still.png',
-      '/images/acquisition/gifs/renal-short-axis.gif'
+      '/images/acquisition/renal-short-still.png'
     ],
     content: (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {/* Images Section - Stacked vertically */}
         <Box sx={{ backgroundColor: '#ffffff', p: 2, borderRadius: 2 }}>
           <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Europa, sans-serif', color: '#424242' }}>
-            Renal Vein Images & Animations
+            Renal Vein Images
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <img 
@@ -538,8 +538,13 @@ const acquisitionContent: Record<string, { title: string; content: JSX.Element; 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
             <img 
-              src="/images/acquisition/gifs/renal-short-axis.gif" 
-              alt="Renal Animation" 
+              src="/images/acquisition/renal-long-still.png" 
+              alt="Renal Long Still" 
+              style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
+            />
+            <img 
+              src="/images/acquisition/renal-short-still.png" 
+              alt="Renal Short Still" 
               style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: '8px', alignSelf: 'center' }}
             />
           </Box>

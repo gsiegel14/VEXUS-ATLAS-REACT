@@ -89,7 +89,7 @@ export const homeConfig = {
     {
       id: 3,
       title: 'Live Course in San Diego!',
-      description: 'Want to come to an awesome POCUS course in San Diego? Check out our NextGen POCUS: Beyond Essentials for Acute Care Course scheduled for November 6th-8th, 2024!',
+      description: 'Want to come to an awesome POCUS course in San Diego? Check out our NextGen POCUS: Beyond Essentials for Acute Care Course scheduled for Nov 13-14, 2025!',
       image: '/images/IMG_2864_LR-1.jpg',
       link: 'https://www.soundandsurf.com',
       linkText: 'Learn more',

@@ -1,31 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-  <!-- Book/Education Icon -->
+  <!-- Book/Education Icon - Maximum Size -->
   <g fill="#453E3E">
-    <!-- Book cover - larger -->
-    <rect x="20" y="15" width="60" height="70" rx="3" ry="3"/>
+    <!-- Book cover - maximum size -->
+    <rect x="15" y="8" width="70" height="84" rx="4" ry="4"/>
     
     <!-- Book spine - larger -->
-    <rect x="12" y="15" width="12" height="70" rx="3" ry="3"/>
+    <rect x="5" y="8" width="15" height="84" rx="4" ry="4"/>
     
     <!-- Book pages - larger -->
-    <rect x="25" y="20" width="50" height="60" fill="white"/>
+    <rect x="20" y="13" width="60" height="74" fill="white"/>
     
-    <!-- Text lines on pages - more prominent -->
-    <line x1="30" y1="30" x2="65" y2="30" stroke="#453E3E" stroke-width="1.5"/>
-    <line x1="30" y1="36" x2="70" y2="36" stroke="#453E3E" stroke-width="1.5"/>
-    <line x1="30" y1="42" x2="60" y2="42" stroke="#453E3E" stroke-width="1.5"/>
-    <line x1="30" y1="48" x2="68" y2="48" stroke="#453E3E" stroke-width="1.5"/>
-    <line x1="30" y1="54" x2="62" y2="54" stroke="#453E3E" stroke-width="1.5"/>
-    <line x1="30" y1="60" x2="69" y2="60" stroke="#453E3E" stroke-width="1.5"/>
-    <line x1="30" y1="66" x2="58" y2="66" stroke="#453E3E" stroke-width="1.5"/>
-    <line x1="30" y1="72" x2="66" y2="72" stroke="#453E3E" stroke-width="1.5"/>
+    <!-- Text lines on pages - more prominent and spaced -->
+    <line x1="25" y1="22" x2="70" y2="22" stroke="#453E3E" stroke-width="2"/>
+    <line x1="25" y1="30" x2="75" y2="30" stroke="#453E3E" stroke-width="2"/>
+    <line x1="25" y1="38" x2="65" y2="38" stroke="#453E3E" stroke-width="2"/>
+    <line x1="25" y1="46" x2="73" y2="46" stroke="#453E3E" stroke-width="2"/>
+    <line x1="25" y1="54" x2="67" y2="54" stroke="#453E3E" stroke-width="2"/>
+    <line x1="25" y1="62" x2="74" y2="62" stroke="#453E3E" stroke-width="2"/>
+    <line x1="25" y1="70" x2="63" y2="70" stroke="#453E3E" stroke-width="2"/>
+    <line x1="25" y1="78" x2="71" y2="78" stroke="#453E3E" stroke-width="2"/>
     
-    <!-- Bookmark - larger -->
-    <rect x="48" y="10" width="4" height="20" fill="#453E3E"/>
-    <polygon points="48,30 52,30 50,22" fill="#453E3E"/>
+    <!-- Bookmark - larger and more prominent -->
+    <rect x="47" y="3" width="6" height="25" fill="#453E3E"/>
+    <polygon points="47,28 53,28 50,18" fill="#453E3E"/>
     
-    <!-- Additional book details -->
-    <rect x="15" y="20" width="6" height="3" fill="white"/>
-    <rect x="15" y="25" width="6" height="3" fill="white"/>
+    <!-- Additional book spine details - larger -->
+    <rect x="8" y="15" width="9" height="4" fill="white"/>
+    <rect x="8" y="22" width="9" height="4" fill="white"/>
+    <rect x="8" y="29" width="9" height="4" fill="white"/>
   </g>
 </svg> 

@@ -95,8 +95,8 @@ export interface ScoreGrade {
 
 export const scoreLogic = {
   gradingSystem: [
-    { range: [0, 1] as [number, number], grade: 0, description: 'No Venous Congestion', color: '#4caf50' },
-    { range: [2, 4] as [number, number], grade: 1, description: 'Mild Venous Congestion', color: '#ff9800' },
+    { range: [0, 0] as [number, number], grade: 0, description: 'No Venous Congestion', color: '#4caf50' },
+    { range: [1, 4] as [number, number], grade: 1, description: 'Mild Venous Congestion', color: '#ff9800' },
     { range: [5, 7] as [number, number], grade: 2, description: 'Moderate Venous Congestion', color: '#f44336' },
     { range: [8, 9] as [number, number], grade: 3, description: 'Severe Venous Congestion', color: '#d32f2f' },
   ],

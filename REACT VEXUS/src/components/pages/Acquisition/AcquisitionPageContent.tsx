@@ -11,10 +11,6 @@ import {
   Dialog,
   DialogContent,
   IconButton,
-  Chip,
-  Button,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import { Close, ZoomIn, PlayArrow } from '@mui/icons-material';
 
@@ -59,6 +55,16 @@ const assessmentData: Record<string, AssessmentData> = {
             src: "/images/acquisition/ivc-assessment-corrected.png", 
             alt: "IVC Assessment Technique - Subcostal Long Axis View",
             caption: "IVC Assessment Technique - Subcostal Long Axis View"
+          },
+          { 
+            src: "/images/acquisition/stills/IVC_2.png", 
+            alt: "IVC Still Image - Subcostal View",
+            caption: "IVC Still Image - Subcostal longitudinal view showing IVC measurement technique"
+          },
+          { 
+            src: "/images/acquisition/stills/IVC.png", 
+            alt: "IVC Still Image - Alternative View",
+            caption: "IVC Still Image - Alternative subcostal view demonstrating proper IVC visualization"
           }
         ],
         technique: {
@@ -132,6 +138,16 @@ const assessmentData: Record<string, AssessmentData> = {
             src: "/images/acquisition/hepatic-vein-long-axis-corrected.png", 
             alt: "Hepatic Vein - Long Axis View",
             caption: "Hepatic Vein - Long Axis View"
+          },
+          { 
+            src: "/images/acquisition/stills/HV RUQ.png", 
+            alt: "Hepatic Vein Still - RUQ Normal Flow",
+            caption: "Hepatic Vein Still - Doppler gate is placed in the center of blue color flow typical of hepatic veins. You can see the mild A, S, V, D. pattern here"
+          },
+          { 
+            src: "/images/acquisition/stills/Hepatic RUQ reversal.png", 
+            alt: "Hepatic Vein Still - RUQ Flow Reversal",
+            caption: "Hepatic Vein Still - Doppler gate is placed in the HV in the RUQ. Color doppler is red due to reversal of flow in the hepatic vein with a severe waveform"
           }
         ],
         technique: {
@@ -172,6 +188,11 @@ const assessmentData: Record<string, AssessmentData> = {
             src: "/images/acquisition/hepatic-vein-subxiphoid-corrected.png", 
             alt: "Hepatic Vein - Subxiphoid View",
             caption: "Hepatic Vein - Subxiphoid View"
+          },
+          { 
+            src: "/images/acquisition/stills/Hepatic_subxi.png", 
+            alt: "Hepatic Vein Still - Subxiphoid Position",
+            caption: "Hepatic Vein Still - Doppler gate is placed in the blue hepatic vein (red artifact) as it drains in to the IVC in the subxiphoid position"
           }
         ],
         technique: {
@@ -192,6 +213,16 @@ const assessmentData: Record<string, AssessmentData> = {
             src: "/images/acquisition/portal-vein-long-axis-corrected.png", 
             alt: "Portal Vein - Long Axis View",
             caption: "Portal Vein - Long Axis View"
+          },
+          { 
+            src: "/images/acquisition/stills/PV RUQ.png", 
+            alt: "Portal Vein Still - RUQ Doppler View",
+            caption: "Portal Vein Still - Doppler gate is center in the portal vein with a hyperechoic vessel wall and you see the pulsitility of the PV"
+          },
+          { 
+            src: "/images/acquisition/stills/PV_RUQ.png", 
+            alt: "Portal Vein Still - RUQ Color Flow",
+            caption: "Portal Vein Still - Doppler gate is in the center of the hyperechoic portal vein with the typical red color flow pattern"
           }
         ],
         technique: {
@@ -313,8 +344,6 @@ const assessmentData: Record<string, AssessmentData> = {
 };
 
 const AcquisitionPageContent: React.FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
 
@@ -336,7 +365,7 @@ const AcquisitionPageContent: React.FC = () => {
     </Box>
   );
 
-  const ViewSection: React.FC<{ view: ViewContent; assessmentType: string }> = ({ view, assessmentType }) => (
+  const ViewSection: React.FC<{ view: ViewContent; assessmentType: string }> = ({ view }) => (
     <Card elevation={2} sx={{ mb: 3, bgcolor: '#fafafa', border: '1px solid #e0e0e0' }}>
       <CardContent sx={{ p: { xs: 2, md: 3 } }}>
         {/* Title */}
@@ -355,101 +384,70 @@ const AcquisitionPageContent: React.FC = () => {
           {view.title}
         </Typography>
         
-        {/* Image */}
+        {/* All Images Stacked Vertically */}
         {view.images.length > 0 && (
-          <Box sx={{ mb: 3, textAlign: 'center' }}>
-            <Card 
-              sx={{ 
-                display: 'inline-block',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                border: '1px solid #e0e0e0',
-                '&:hover': {
-                  transform: 'scale(1.02)',
-                  boxShadow: 3
-                }
-              }}
-              onClick={() => handleImageClick(view.images[0])}
-            >
-              <Box sx={{ position: 'relative' }}>
-                <Box
-                  component="img"
-                  src={view.images[0].src}
-                  alt={view.images[0].alt}
+          <Box sx={{ mb: 3, display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
+            {view.images.map((image, imageIndex) => (
+              <Box key={imageIndex} sx={{ textAlign: 'center', width: '100%' }}>
+                <Card 
                   sx={{ 
-                    width: '100%',
-                    maxWidth: 900,
-                    height: 'auto',
-                    display: 'block'
-                  }}
-                />
-                <IconButton 
-                  sx={{ 
-                    position: 'absolute',
-                    top: 8,
-                    right: 8,
-                    backgroundColor: 'rgba(255,255,255,0.9)',
-                    color: '#616161',
+                    display: 'inline-block',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    border: '1px solid #e0e0e0',
                     '&:hover': {
-                      backgroundColor: 'white'
+                      transform: 'scale(1.02)',
+                      boxShadow: 3
                     }
                   }}
+                  onClick={() => handleImageClick(image)}
                 >
-                  <ZoomIn />
-                </IconButton>
-              </Box>
-            </Card>
-          </Box>
-        )}
-
-        {/* Additional Images if any */}
-        {view.images.length > 1 && (
-          <Box sx={{ mb: 3, textAlign: 'center' }}>
-            <Grid container spacing={2} justifyContent="center">
-              {view.images.slice(1).map((image, imageIndex) => (
-                <Grid item key={imageIndex + 1}>
-                  <Card 
+                  <Box sx={{ position: 'relative' }}>
+                    <Box
+                      component="img"
+                      src={image.src}
+                      alt={image.alt}
+                      sx={{ 
+                        width: '100%',
+                        maxWidth: 900,
+                        height: 'auto',
+                        display: 'block'
+                      }}
+                    />
+                    <IconButton 
+                      sx={{ 
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        color: '#616161',
+                        '&:hover': {
+                          backgroundColor: 'white'
+                        }
+                      }}
+                    >
+                      <ZoomIn />
+                    </IconButton>
+                  </Box>
+                </Card>
+                {/* Image Caption */}
+                {image.caption && (
+                  <Typography 
+                    variant="body2" 
                     sx={{ 
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      border: '1px solid #e0e0e0',
-                      '&:hover': {
-                        transform: 'scale(1.02)',
-                        boxShadow: 3
-                      }
+                      mt: 1,
+                      fontFamily: 'Europa, sans-serif',
+                      color: '#666',
+                      fontStyle: 'italic',
+                      maxWidth: 900,
+                      mx: 'auto'
                     }}
-                    onClick={() => handleImageClick(image)}
                   >
-                    <Box sx={{ position: 'relative' }}>
-                      <Box
-                        component="img"
-                        src={image.src}
-                        alt={image.alt}
-                        sx={{ 
-                          width: 500,
-                          height: 350,
-                          objectFit: 'cover'
-                        }}
-                      />
-                      <IconButton 
-                        sx={{ 
-                          position: 'absolute',
-                          top: 8,
-                          right: 8,
-                          backgroundColor: 'rgba(255,255,255,0.9)',
-                          color: '#616161',
-                          '&:hover': {
-                            backgroundColor: 'white'
-                          }
-                        }}
-                      >
-                        <ZoomIn />
-                      </IconButton>
-                    </Box>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+                    {image.caption}
+                  </Typography>
+                )}
+              </Box>
+            ))}
           </Box>
         )}
         
