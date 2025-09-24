@@ -27,7 +27,7 @@ const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
   totalScore,
   scores,
 }) => {
-  const scoreGrade = getScoreGrade(totalScore);
+  const scoreGrade = getScoreGrade(totalScore, scores);
   
   const getSeverityIcon = () => {
     switch (scoreGrade.grade) {

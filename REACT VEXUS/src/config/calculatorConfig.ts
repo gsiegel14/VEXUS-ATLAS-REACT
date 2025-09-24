@@ -45,7 +45,7 @@ export const stepsConfig: StepConfig[] = [
       values: [
         { label: 'Hepatic Vein Normal', value: 'HV Normal', score: 0 },
         { label: 'Hepatic Vein Mild', value: 'HV Mild', score: 1 },
-        { label: 'Hepatic Vein Severe', value: 'HV Severe', score: 2 },
+        { label: 'Hepatic Vein Severe', value: 'HV Severe', score: 3 },
         { label: 'Confidence of waveform < 50%', value: 'Confidence of waveform < 50%', score: 0 },
       ]
     }
@@ -62,7 +62,7 @@ export const stepsConfig: StepConfig[] = [
       values: [
         { label: 'Portal Vein Normal', value: 'PV Normal', score: 0 },
         { label: 'Portal Vein Mild', value: 'PV Mild', score: 1 },
-        { label: 'Portal Vein Severe', value: 'PV Severe', score: 2 },
+        { label: 'Portal Vein Severe', value: 'PV Severe', score: 3 },
         { label: 'Confidence of waveform < 50%', value: 'Confidence of waveform < 50%', score: 0 },
       ]
     }
@@ -79,7 +79,7 @@ export const stepsConfig: StepConfig[] = [
       values: [
         { label: 'Renal Vein Normal', value: 'RV Normal', score: 0 },
         { label: 'Renal Vein Mild', value: 'RV Mild', score: 1 },
-        { label: 'Renal Vein Severe', value: 'RV Severe', score: 2 },
+        { label: 'Renal Vein Severe', value: 'RV Severe', score: 3 },
         { label: 'Confidence of waveform < 50%', value: 'Confidence of waveform < 50%', score: 0 },
       ]
     }
@@ -98,12 +98,17 @@ export const scoreLogic = {
     { range: [0, 0] as [number, number], grade: 0, description: 'No Venous Congestion', color: '#4caf50' },
     { range: [1, 4] as [number, number], grade: 1, description: 'Mild Venous Congestion', color: '#ff9800' },
     { range: [5, 7] as [number, number], grade: 2, description: 'Moderate Venous Congestion', color: '#f44336' },
-    { range: [8, 9] as [number, number], grade: 3, description: 'Severe Venous Congestion', color: '#d32f2f' },
+    { range: [8, 10] as [number, number], grade: 3, description: 'Severe Venous Congestion', color: '#d32f2f' },
   ],
-  maxScore: 9
+  maxScore: 10
 };
 
-export const getScoreGrade = (totalScore: number): ScoreGrade => {
+export const getScoreGrade = (totalScore: number, scores?: Record<string, number | null>): ScoreGrade => {
+  // VEXUS Rule: If IVC < 2cm (score = 0), always return Grade 0
+  if (scores && scores.ivc === 0) {
+    return scoreLogic.gradingSystem[0]; // Grade 0: No Venous Congestion
+  }
+  
   for (const grade of scoreLogic.gradingSystem) {
     if (totalScore >= grade.range[0] && totalScore <= grade.range[1]) {
       return grade;

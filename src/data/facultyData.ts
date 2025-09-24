@@ -74,7 +74,7 @@ export const facultyData: FacultyMember[] = [
     imageUrl: '/images/fred-milgrim.jpg'
   },
   {
-    id: 'gabe-siegel',
+    id: 'gabriel-siegel',
     name: 'Gabriel Siegel, MD',
     title: 'Current Fellow',
     roles: ['Emergency Ultrasound Fellow', 'VEXUS ATLAS Creator'],
@@ -86,7 +86,8 @@ export const facultyData: FacultyMember[] = [
     isCurrentFellow: true,
     expertise: ['Emergency Medicine', 'Ultrasound', 'Machine Learning', 'AI in Healthcare'],
     description: 'Current Emergency Ultrasound Fellow and creator of the VEXUS ATLAS tool. Specializes in machine learning and AI applications in healthcare, focusing on developing innovative solutions for medical imaging analysis and clinical decision support systems. If I weren\'t an ER/PEM doc, I\'d be a Chef in a 1 star Michelin restaurant.',
-    imageUrl: '/images/gabriel-siegel.jpg'
+    imageUrl: '/images/gabriel-siegel.jpg',
+    googleScholarId: 'XKnXMIkAAAAJ'
   },
   {
     id: 'peter-alsharif',
@@ -106,16 +107,17 @@ export const facultyData: FacultyMember[] = [
   {
     id: 'nithin-ravi',
     name: 'Nithin Ravi, MD, MPH',
-    title: 'Current Fellow',
-    roles: ['Emergency Ultrasound Fellow'],
-    institution: 'Denver Health Medical Center',
+    title: 'Past Pediatric Emergency Ultrasound Fellow',
+    roles: ['Pediatric Emergency Ultrasound Fellow (2021-2024)'],
+    institution: 'Children\'s Hospital Colorado',
     residency: 'University of Colorado',
-    medSchool: 'University of Colorado School of Medicine',
-    undergrad: 'University of Colorado Boulder',
-    hobbies: ['Research', 'Medical Education', 'Point-of-Care Ultrasound'],
-    isCurrentFellow: true,
-    expertise: ['Emergency Medicine', 'Ultrasound', 'Public Health', 'Research'],
-    description: 'Emergency ultrasound fellow with MD/MPH focusing on research applications of point-of-care ultrasound and public health initiatives in emergency medicine.',
+    fellowship: 'Children\'s Hospital Colorado 2021-2024',
+    medSchool: 'University of Michigan Medical School',
+    undergrad: 'University of Michigan',
+    hobbies: ['Cycling', 'Tennis', 'Hiking', 'Fantasy Football'],
+    isCurrentFellow: false,
+    expertise: ['Pediatric Emergency Medicine', 'Ultrasound', 'Public Health', 'Research'],
+    description: 'Past pediatric emergency ultrasound fellow with an MD/MPH background focusing on point-of-care ultrasound education and research.',
     imageUrl: '/images/nithin-ravi.jpg'
   }
 ];

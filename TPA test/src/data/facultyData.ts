@@ -74,7 +74,7 @@ export const facultyData: FacultyMember[] = [
     imageUrl: '/images/fred-milgrim.jpg'
   },
   {
-    id: 'gabe-siegel',
+    id: 'gabriel-siegel',
     name: 'Gabriel Siegel, MD',
     title: 'Current Fellow',
     roles: ['Emergency Ultrasound Fellow', 'VEXUS ATLAS Creator'],
@@ -86,7 +86,8 @@ export const facultyData: FacultyMember[] = [
     isCurrentFellow: true,
     expertise: ['Emergency Medicine', 'Ultrasound', 'Machine Learning', 'AI in Healthcare'],
     description: 'Current Emergency Ultrasound Fellow and creator of the VEXUS ATLAS tool. Specializes in machine learning and AI applications in healthcare, focusing on developing innovative solutions for medical imaging analysis and clinical decision support systems. If I weren\'t an ER/PEM doc, I\'d be a Chef in a 1 star Michelin restaurant.',
-    imageUrl: '/images/gabriel-siegel.jpg'
+    imageUrl: '/images/gabriel-siegel.jpg',
+    googleScholarId: 'XKnXMIkAAAAJ'
   },
   {
     id: 'peter-alsharif',

@@ -233,6 +233,33 @@ export const teamConfig = {
           year: '2018'
         }
       ]
+    },
+    {
+      id: 'philippe-ayres',
+      name: 'Philippe Ayres, MD',
+      role: 'Ultrasound Fellow',
+      type: 'contributor' as const,
+      image: '/images/team/philippe-ayres.png',
+      specialties: ['Ultrasound Medicine', 'Point-of-Care Ultrasound', 'VEXUS'],
+      shortBio: 'Ultrasound fellow specializing in point-of-care ultrasound applications and VEXUS assessment techniques.'
+    },
+    {
+      id: 'jamie',
+      name: 'Jamie, MD',
+      role: 'Ultrasound Fellow',
+      type: 'contributor' as const,
+      image: '/images/team/jamie.jpg',
+      specialties: ['Ultrasound Medicine', 'Point-of-Care Ultrasound', 'VEXUS'],
+      shortBio: 'Ultrasound fellow with expertise in point-of-care ultrasound and venous congestion assessment.'
+    },
+    {
+      id: 'priya',
+      name: 'Priya, MD',
+      role: 'Ultrasound Fellow',
+      type: 'contributor' as const,
+      image: '/images/team/priya.jpg',
+      specialties: ['Ultrasound Medicine', 'Point-of-Care Ultrasound', 'VEXUS'],
+      shortBio: 'Ultrasound fellow focused on advancing VEXUS assessment techniques and clinical applications in critical care.'
     }
   ]
 }; 
