@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --port 5436",
     "build": "vite build",
+    "test:e2e": "npm --prefix e2e run test",
     "preview": "vite preview",
     "start": "node server.js",
     "deploy:setup": "chmod +x setup-production.sh && ./setup-production.sh",
