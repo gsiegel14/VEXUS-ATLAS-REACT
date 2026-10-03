@@ -4,6 +4,7 @@ npm-debug.log
 .gitignore
 README.md
 .env
+google-credentials-production.json
 .DS_Store
 Thumbs.db
 .vscode
@@ -18,4 +19,4 @@ jest.config.js
 planning/
 examples/
 conversion-outlines/
-yarn.lock 
+yarn.lock

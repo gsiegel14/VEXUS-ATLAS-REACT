@@ -27,8 +27,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // Initialize Google Secret Manager
 const secretClient = new SecretManagerServiceClient({
-  projectId: process.env.GOOGLE_CLOUD_PROJECT_ID || 'decoded-app-457000-s2',
-  keyFilename: process.env.NODE_ENV === 'production' ? undefined : './google-credentials-production.json'
+  projectId: process.env.GOOGLE_CLOUD_PROJECT_ID || 'decoded-app-457000-s2'
 });
 
 // -------- Research feed: simple in-memory caches + utils --------

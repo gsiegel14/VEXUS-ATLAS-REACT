@@ -3,6 +3,7 @@ npm-debug.log
 .git
 .gitignore
 .env
+google-credentials-production.json
 .nyc_output
 coverage
 .vscode
@@ -41,4 +42,4 @@ yarn-error.log*
 # MacOS
 .DS_Store
 .AppleDouble
-.LSOverride 
+.LSOverride
