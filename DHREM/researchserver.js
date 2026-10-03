@@ -131,11 +131,6 @@ const log = {
 // Use REST API to avoid gRPC/OpenSSL decoder issues
 const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT_ID || process.env.GOOGLE_CLOUD_PROJECT || '314467722862';
 
-// Set credentials path for local development
-if (process.env.NODE_ENV !== 'production' && !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-  process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, 'google-credentials-production.json');
-}
-
 const secretClient = new SecretManagerServiceClient({
   projectId: PROJECT_ID,
   fallback: 'rest' // Force REST transport to avoid gRPC issues

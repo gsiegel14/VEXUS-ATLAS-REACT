@@ -16,8 +16,7 @@ app.use(express.json());
 
 // Initialize Google Secret Manager
 const secretClient = new SecretManagerServiceClient({
-  projectId: 'decoded-app-457000-s2',
-  keyFilename: './google-credentials-production.json' // Use the service account key
+  projectId: 'decoded-app-457000-s2'
 });
 
 // Cache for secrets to avoid repeated API calls
@@ -360,4 +359,4 @@ app.listen(PORT, () => {
   getSecrets()
     .then(() => console.log('✅ Initial secret fetch successful'))
     .catch(err => console.error('❌ Initial secret fetch failed:', err.message));
-}); 
+});

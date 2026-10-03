@@ -40,7 +40,6 @@ COPY --from=frontend-builder /app/dist ./dist
 
 # Copy server files
 COPY researchserver.js ./
-COPY google-credentials-production.json ./
 
 # Set ownership
 RUN chown -R dhrem:nodejs /app
@@ -63,4 +62,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 ENTRYPOINT ["dumb-init", "--"]
 
 # Start the application
-CMD ["node", "researchserver.js"] 
+CMD ["node", "researchserver.js"]
