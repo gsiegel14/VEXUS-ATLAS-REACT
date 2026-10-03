@@ -2,6 +2,7 @@ import { test } from '@e2e-dev/web';
 import { expect } from 'e2e';
 
 test('the home page and its navigation open an education page', async ({ app, screen, browser }) => {
+  await browser.route('https://www.googletagmanager.com/gtag/js**', async (request) => request.abort());
   await app.open('/');
   await expect(browser).toHaveTitle('VEXUS ATLAS - Home');
   await expect(screen.getByRole('main')).toBeVisible();
@@ -12,6 +13,7 @@ test('the home page and its navigation open an education page', async ({ app, sc
 });
 
 test('the mobile drawer opens the VEXUS pages', async ({ app, screen, browser }) => {
+  await browser.route('https://www.googletagmanager.com/gtag/js**', async (request) => request.abort());
   await browser.setViewport({ width: 390, height: 844 });
   await app.open('/');
   await screen.getByRole('button', 'open drawer').tap();

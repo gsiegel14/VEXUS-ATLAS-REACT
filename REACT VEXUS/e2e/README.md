@@ -1,7 +1,8 @@
 # VEXUS browser checks
 
-Use Node 22.12 or newer. Install this test package with `npm ci` from `e2e/`,
-then run `npm run test:e2e` from `REACT VEXUS/`.
+Use Node 22.12 or newer. Run `npm ci` from `REACT VEXUS/` to install the app,
+then run `npm ci` from `REACT VEXUS/e2e/` to install the test runner. Run
+`npm run test:e2e` from `REACT VEXUS/`.
 
 The suite starts the local Vite app and uses Chromium without model calls. It
 checks all app routes, desktop and mobile navigation, publication search,
