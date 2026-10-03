@@ -13,7 +13,6 @@ sleep 2
 # Set up environment variables
 export NODE_ENV=development
 export GOOGLE_CLOUD_PROJECT=decoded-app-457000-s2
-export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/google-credentials-production.json"
 
 # Get the Google Scholar API key from Secret Manager
 echo "🔑 Fetching Google Scholar API key from Secret Manager..."
@@ -35,4 +34,3 @@ echo "Press Ctrl+C to stop the server"
 echo "----------------------------------------"
 
 node researchserver.js
-

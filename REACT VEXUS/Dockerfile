@@ -37,9 +37,6 @@ COPY server.js ./server.js
 # Copy built frontend from previous stage
 COPY --from=frontend-builder /app/dist ./dist
 
-# Copy Google credentials (will be overridden by Cloud Run service account)
-COPY google-credentials-production.json ./
-
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
@@ -53,4 +50,4 @@ EXPOSE 8080
 ENV PORT=8080
 
 # Start the application
-CMD ["node", "server.js"] 
+CMD ["node", "server.js"]
